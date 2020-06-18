@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Working with Fetch api</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description"><meta name="keywords" content="JavaScript"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Working with Fetch api"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry img,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  padding: 0 5px;
+  margin: 0 2px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+figure.highlight {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+figure.highlight figcaption {
+  margin-bottom: 5px;
+}
+
+figure.highlight figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+figure.highlight pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+figure.highlight table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+figure.highlight .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+figure.highlight .code {
+  color: #666;
+}
+
+figure.highlight .line {
+  height: 25px;
+}
+
+figure.highlight .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .addition,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Working with Fetch api</h1></header><div class="entry"><p>Fetch is a much needed improvement over XHR, it simplifies making network requests by exposing an easy to use api and having promise support out of the box.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">fetch(url).then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> response.json();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Wrapping-fetch"><a href="#Wrapping-fetch" class="headerlink" title="Wrapping fetch"></a>Wrapping fetch</h3><p>While the above example is good enough for most cases, sometimes you might need to send the same headers in all the requests or handle all the  responses in the same way. Doing so in each and every <code>fetch</code> call would be duplicating a lot of code. This can solved by creating a wrapper around the fetch method and using that wrapper throughout the application instead of fetch.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// fetch-wrapper.js</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetchWrapper</span>(<span class="params">url, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> options = options || &#123;&#125;;</span><br><span class="line">  options.headers[<span class="string">'Custom-Header'</span>] = <span class="string">'Your custom header value here'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> fetch(url, options);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// books.js</span></span><br><span class="line"></span><br><span class="line">fetchWrapper(<span class="string">'/api/books'</span>)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Rejecting-on-HTTP-errors"><a href="#Rejecting-on-HTTP-errors" class="headerlink" title="Rejecting on HTTP errors"></a>Rejecting on HTTP errors</h3><p>Coming from jQuery.ajax, one of the main gotcha’s about fetch is that it does not reject on HTTP errors - It only rejects on network failures. While this makes sense because any response (whether 2xx or 4xx etc) is still a response and thereby a ‘success’, you might want fetch to reject on http errors so that the <code>catch</code> part of your promise chain can handle them appropriately.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// fetch-wrapper.js</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetchWrapper</span>(<span class="params">url, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> fetch(url, options)</span><br><span class="line">    .then(handleResponse);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleResponse</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (response.ok) &#123;</span><br><span class="line">    <span class="keyword">return</span> response.json();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(response.statusText);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// books.js</span></span><br><span class="line"></span><br><span class="line">fetchWrapper(<span class="string">'/api/books'</span>)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(error);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Handling-JSON-responses"><a href="#Handling-JSON-responses" class="headerlink" title="Handling JSON responses"></a>Handling JSON responses</h3><p>If all the responses are guaranteed to be JSON, then we can parse them before passing them down the promise chain. Since fetch throws TypeError on network errors, we can handle it in <code>handleNetworkError</code> to throw a JSON object similar to ones we get from our backend.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// fetch-wrapper.js</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetchWrapper</span>(<span class="params">url, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> fetch(url, options)</span><br><span class="line">    .then(handleResponse, handleNetworkError);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleResponse</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (response.ok) &#123;</span><br><span class="line">    <span class="keyword">return</span> response.json();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> response.json().then(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">throw</span> error;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleNetworkError</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">throw</span> &#123;</span><br><span class="line">    msg: error.message</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// books.js</span></span><br><span class="line"></span><br><span class="line">fetchWrapper(<span class="string">'/api/books'</span>)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(error.msg);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Timeouts"><a href="#Timeouts" class="headerlink" title="Timeouts"></a>Timeouts</h3><p>There’s no support for timeouts in the fetch api, though this can be achieved by creating a promise that rejects on timeout and using it with the Promise.race api.</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">timeout</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Sorry, request timed out.'</span>));</span><br><span class="line">    &#125;, value);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.race([timeout(<span class="number">1000</span>), fetch(url)])</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(response);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(error);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>But keep in mind that since fetch has no support for aborting the request, the above example only rejects the promise but the request itself is still alive. This behavior is different from XHR based libraries which abort the request when it takes longer than the timeout value.</p>
+<h3 id="Browser-support"><a href="#Browser-support" class="headerlink" title="Browser support"></a>Browser support</h3><p>Fetch is <a href="http://caniuse.com/#feat=fetch" target="_blank" rel="noopener">supported in most browsers</a> and has a <a href="https://github.com/github/fetch" target="_blank" rel="noopener">polyfill</a> for those who don’t support it.</p>
+<h3 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h3><p>Fetch is being developed iteratively and there are certain things that it does not support like <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress" target="_blank" rel="noopener">monitoring progress</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/abort" target="_blank" rel="noopener">aborting</a> a request etc. If these are absolutely necessary to your application, then your should use XHR or its abstractions like jQuery.ajax, axios etc instead of fetch.</p>
+<h3 id="Closing-thoughts"><a href="#Closing-thoughts" class="headerlink" title="Closing thoughts"></a>Closing thoughts</h3><p>Though it seems to be limited compared to XHR, I think the current feature set is good enough for most of the cases. The simple api makes it beginner friendly and (future) native support means one less dependency to load.</p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a></div><div class="date-published">Published on: <time datetime="2016-09-25T10:20:00.000Z" itemprop="datePublished">25 Sep 2016</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

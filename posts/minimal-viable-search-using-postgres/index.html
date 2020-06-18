@@ -1,0 +1,330 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Minimal Viable Search using Postgres</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Minimal Viable Search using Postgres"><meta name="keywords" content="Postgres, Search, ElasticSearch, MVP"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Minimal Viable Search using Postgres"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry img,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  padding: 0 5px;
+  margin: 0 2px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+figure.highlight {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+figure.highlight figcaption {
+  margin-bottom: 5px;
+}
+
+figure.highlight figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+figure.highlight pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+figure.highlight table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+figure.highlight .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+figure.highlight .code {
+  color: #666;
+}
+
+figure.highlight .line {
+  height: 25px;
+}
+
+figure.highlight .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .addition,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Minimal Viable Search using Postgres</h1></header><div class="entry"><p>If you’re building a product, you might have deprioritized building the search feature thinking that it might take a long time to build. If you happen to be using Postgres, let me show you a quick and easy way to implement the search functionality.</p>
+<h2 id="Test-drive"><a href="#Test-drive" class="headerlink" title="Test drive"></a>Test drive</h2><p>Let’s say you’re building an ecommerce app and you want to be able to search on the product descriptions. This can be done using the following query:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  *</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">  products</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">  to_tsvector(description) @@ websearch_to_tsquery(<span class="string">'chocolate milk'</span>) = <span class="literal">TRUE</span></span><br></pre></td></tr></table></figure>
+
+<p>If you have a test database lying around, you can quickly try this out by replacing the table name, column name and search query. If you’re using Postgres 10 or below, “websearch_to_tsquery” won’t work. use “plainto_tsquery” instead.</p>
+<p>Now, you might be having a lot of questions like:</p>
+<ul>
+<li>“to_tsvector”, “websearch_to_tsquery”, “@@” look weird!</li>
+<li>How’s this different from “LIKE”?</li>
+<li>How to make this faster?</li>
+<li>What are the tradeoffs compared to ElasticSearch?</li>
+</ul>
+<h2 id="ts-what"><a href="#ts-what" class="headerlink" title="ts_what?"></a>ts_what?</h2><p>“ts” stands for Text Search.</p>
+<p>At the very minimum, you need to only learn four things:</p>
+<ul>
+<li>Use “to_tsvector” function on the columns you’re searching on</li>
+<li>Use “websearch_to_tsquery” function for the search query</li>
+<li>Use the match operator “@@” to see if the above two match</li>
+<li>Use “ts_rank” function to sort the results based on relevancy</li>
+</ul>
+<p>In simple terms, <code>to_tsvector</code> breaks down text into list of keywords and their positions.</p>
+<p>Running:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> to_tsvector(<span class="string">'A journey of a thousand miles begins with a single step'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>gives</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">'<span class="keyword">begin</span><span class="string">':7 '</span>journey<span class="string">':2 '</span>mile<span class="string">':6 '</span>singl<span class="string">':10 '</span>step<span class="string">':11 '</span>thousand<span class="string">':5</span></span><br></pre></td></tr></table></figure>
+
+<p>Notice that the <a href="https://en.wikipedia.org/wiki/Stop_words" target="_blank" rel="noopener">words</a> “A”, “of” and “with” are removed as they’re not useful in searching, the word “single” is normalized to its root form “singl” so it appears in more searches, the word “miles” is reduced to its singular form. This also takes care of normalizing the text to lowercase and removing special characters.</p>
+<p>The function <code>websearch_to_tsquery</code> converts the user submitted search term into something that Postgres can understand. You can use Google style search queries like</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">jaguar speed -car</span><br><span class="line"></span><br><span class="line">ipad OR iphone</span><br><span class="line"></span><br><span class="line">"chocolate chip" recipe</span><br></pre></td></tr></table></figure>
+
+<p>You can also try other query functions like “plainto_tsquery” or “phraseto_tsquery” which have their own way of parsing the search queries.</p>
+<p>The <code>@@</code> operator matches the above search query with text from column. You can also use the <code>||</code> operator to concatenate multiple columns together and search on them.</p>
+<p>The function ts_rank is used for sorting the search results by relevancy. The way it determines relevancy is by looking at how frequent the search terms appear, how close together they appear, in what position they appear etc.</p>
+<p>By now you should have a good idea about how this is different from normal LIKE or pattern matching.</p>
+<h2 id="Making-it-faster"><a href="#Making-it-faster" class="headerlink" title="Making it faster"></a>Making it faster</h2><p>Instead of building tsvectors everytime we query using to_tsvector, we can store it in a separate column when the record is created/updated. For this, we create the following trigger:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">REPLACE</span> <span class="keyword">FUNCTION</span> fn_on_product_insert_store_tsv() <span class="keyword">RETURNS</span> <span class="keyword">trigger</span> <span class="keyword">AS</span></span><br><span class="line">$$</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  NEW.tsv := to_tsvector(NEW.description);</span><br><span class="line">  return NEW;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line">$$</span><br><span class="line">LANGUAGE 'plpgsql';</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trg_on_product_insert_store_tsv</span><br><span class="line"><span class="keyword">BEFORE</span> <span class="keyword">INSERT</span> <span class="keyword">OR</span> <span class="keyword">UPDATE</span> <span class="keyword">ON</span> products</span><br><span class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="keyword">ROW</span></span><br><span class="line"><span class="keyword">EXECUTE</span> <span class="keyword">PROCEDURE</span> fn_on_product_insert_create_tsv();</span><br></pre></td></tr></table></figure>
+
+<p>Let’s also add an index on this column to make the queries faster:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> tsv_idx <span class="keyword">ON</span> products <span class="keyword">USING</span> gin(tsv);</span><br></pre></td></tr></table></figure>
+
+<p>This should greatly speed up your seach queries.</p>
+<h2 id="Comparison-to-ElasticSearch"><a href="#Comparison-to-ElasticSearch" class="headerlink" title="Comparison to ElasticSearch"></a>Comparison to ElasticSearch</h2><p>ElasticSearch is synonymous with product search these days so you need to be aware of the tradeoffs:</p>
+<p>When Postgres is better than ElasticSearch:</p>
+<ul>
+<li>One less dependency to manage or get approval for</li>
+<li>Faster time to market - can see how your users are using search and decide if you need to use ElasticSearch for more sophisticated search features</li>
+<li>There’s a single source of truth for the data - no need to keep multiple datastores in sync</li>
+</ul>
+<p>When ElasticSearch is better than Postgres:</p>
+<ul>
+<li>If your team already has expertise in ElasticSearch</li>
+<li>Scale search queries seperately from normal database queries</li>
+<li>You need support for <a href="https://stackoverflow.com/questions/5321595/what-is-faceted-search" target="_blank" rel="noopener">facets</a>. Here’s a <a href="https://roamanalytics.com/2019/04/16/faceted-search-with-postgres-using-tsvector/" target="_blank" rel="noopener">simple implementation</a> of facets in Postgres</li>
+<li>More flexible and sophisticated search features</li>
+</ul>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/Postgres/">Postgres</a><span>, </span><a href="/tags/Search/">Search</a></div><div class="date-published">Published on: <time datetime="2019-12-01T11:40:19.000Z" itemprop="datePublished">01 Dec 2019</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

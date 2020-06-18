@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Organizing HTTP requests using the API module pattern</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Improve readability and testability by abstracting the HTTP code from the UI or business code"><meta name="keywords" content="HTTP, Frontend, API, Axios, Fetch, Clean Code, Organization, Design Patterns"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Organizing HTTP requests using the API module pattern"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image" content="/images/2019-api/image-2.png"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry img,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  padding: 0 5px;
+  margin: 0 2px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+figure.highlight {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+figure.highlight figcaption {
+  margin-bottom: 5px;
+}
+
+figure.highlight figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+figure.highlight pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+figure.highlight table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+figure.highlight .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+figure.highlight .code {
+  color: #666;
+}
+
+figure.highlight .line {
+  height: 25px;
+}
+
+figure.highlight .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .addition,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Organizing HTTP requests using the API module pattern</h1></header><div class="entry"><p>Let’s say you’re writing a frontend for an online store. You would have to make requests to get the shopping cart, add items to the cart, get product details, search for a product, list all products, etc.</p>
+<p>If you’re directly calling <code>fetch</code> or <code>axios</code> in your code, they would look something like this.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HomePage.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getAllProducts</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123; <span class="string">"x-secret-header"</span>: <span class="string">"ssshhh!"</span> &#125;;</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">"/api/products"</span>, &#123; headers &#125;);</span><br><span class="line">  <span class="keyword">const</span> body = <span class="keyword">await</span> response.json();</span><br><span class="line">  <span class="keyword">return</span> body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CartPage.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">addToCart</span>(<span class="params">itemId, qty</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123; <span class="string">"x-secret-header"</span>: <span class="string">"ssshhh!"</span> &#125;;</span><br><span class="line">  <span class="keyword">const</span> payload = <span class="built_in">JSON</span>.stringify(&#123; itemId, qty &#125;);</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">"/api/cart"</span>, &#123;</span><br><span class="line">    method: <span class="string">"POST"</span>,</span><br><span class="line">    headers,</span><br><span class="line">    body: payload</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">const</span> body = <span class="keyword">await</span> response.json();</span><br><span class="line">  <span class="keyword">return</span> body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019-api/image-1.png" alt></p>
+<p>This is totally fine if you’re only making a handful of requests, but if your codebase makes a lot of HTTP requests, it might be better to abstract them into their own modules instead of calling them directly.</p>
+<h2 id="What-is-an-API-module"><a href="#What-is-an-API-module" class="headerlink" title="What is an API module?"></a>What is an API module?</h2><p>An API module is just a <a href="https://v8.dev/features/modules" target="_blank" rel="noopener">JS module</a> that contains HTTP logic organized by business domain. For the online store example, the business domains would be <code>Cart</code>, <code>Search</code>, <code>Inventory</code>, <code>Product Catalog</code>, <code>Order</code>, etc. The respective API modules would be <code>CartApi</code>, <code>SearchApi</code>, <code>InventoryApi</code>, <code>CatalogApi</code> and <code>OrderApi</code>.</p>
+<p>Let’s rewrite the above code using the API module pattern by creating <code>CartApi</code> and <code>CatalogApi</code> modules.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CatalogApi.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getAllProducts</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123; <span class="string">"x-secret-header"</span>: <span class="string">"ssshhh!"</span> &#125;;</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">"/api/products"</span>, &#123; headers &#125;);</span><br><span class="line">  <span class="keyword">const</span> body = <span class="keyword">await</span> response.json();</span><br><span class="line">  <span class="keyword">return</span> body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CartApi.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">addToCart</span>(<span class="params">itemId, qty</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123; <span class="string">"x-secret-header"</span>: <span class="string">"ssshhh!"</span> &#125;;</span><br><span class="line">  <span class="keyword">const</span> payload = <span class="built_in">JSON</span>.stringify(&#123; itemId, qty &#125;);</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">"/api/cart"</span>, &#123;</span><br><span class="line">    method: <span class="string">"POST"</span>,</span><br><span class="line">    headers,</span><br><span class="line">    body: payload</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">const</span> body = <span class="keyword">await</span> response.json();</span><br><span class="line">  <span class="keyword">return</span> body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Now we can import these into the UI modules:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HomePage.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> CatalogApi <span class="keyword">from</span> <span class="string">"../api/CatalogApi"</span>;</span><br><span class="line"></span><br><span class="line">CatalogApi.getAllProducts();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CartPage.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> CartApi <span class="keyword">from</span> <span class="string">"../api/CartApi"</span>;</span><br><span class="line"></span><br><span class="line">CartApi.addToCart(itemId, qty);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019-api/image-3.png" alt></p>
+<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
+<li>Improve readability and testability by abstracting the HTTP code away from the UI or business code</li>
+<li>One place to make modifications like renaming payload structure, query param names etc</li>
+<li>One place to massage response into something that’s useful for the other parts of the codebase</li>
+<li>Organizing HTTP code by business domain thereby improving code discoverability by new members of the team</li>
+<li>Colocate custom app status codes sent by the server</li>
+</ul>
+<h2 id="HttpClient"><a href="#HttpClient" class="headerlink" title="HttpClient"></a>HttpClient</h2><p>If we see that there’s a lot of common code used in API modules, we can add one more layer called <code>HttpClient</code> or <code>ApiClient</code> to keep them <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself" target="_blank" rel="noopener">DRY</a>. The common code can be things like:</p>
+<ul>
+<li>Adding extra headers</li>
+<li>Logging</li>
+<li>Using right config for production, development etc — hostnames, headers, etc</li>
+<li>Session handling etc</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HttpClient</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">request</span>(<span class="params">path, method, body</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123;&#125;; <span class="comment">// add custom headers here</span></span><br><span class="line">  <span class="keyword">const</span> url = <span class="string">""</span>; <span class="comment">// add logic to get correct url for the environment</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(url, &#123; method, body, headers &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// add response handling</span></span><br><span class="line">  <span class="comment">// - session management</span></span><br><span class="line">  <span class="comment">// - convert to correct data type - response.json(), etc</span></span><br><span class="line">  <span class="comment">// - handle common errors like 401, 403 etc</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> response;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We can now update our API modules to use HttpClient:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CatalogApi.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> HttpClient <span class="keyword">from</span> <span class="string">"./HttpClient"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">getAllProducts</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> HttpClient.request(<span class="string">"/api/products"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CartApi.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> HttpClient <span class="keyword">from</span> <span class="string">"./HttpClient"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">addToCart</span>(<span class="params">itemId, qty</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> HttpClient.request(<span class="string">"/api/cart"</span>, <span class="string">"POST"</span>, &#123; itemId, qty &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2019-api/image-2.png" alt></p>
+<p>Thanks for reading! :)</p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Maintainability/">Maintainability</a></div><div class="date-published">Published on: <time datetime="2019-08-17T08:47:02.000Z" itemprop="datePublished">17 Aug 2019</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

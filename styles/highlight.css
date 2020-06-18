@@ -1,0 +1,133 @@
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+figure.highlight {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+figure.highlight figcaption {
+  margin-bottom: 5px;
+}
+
+figure.highlight figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+figure.highlight pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+figure.highlight table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+figure.highlight .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+figure.highlight .code {
+  color: #666;
+}
+
+figure.highlight .line {
+  height: 25px;
+}
+
+figure.highlight .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .addition,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deletion {
+  color: #dc322f;
+}

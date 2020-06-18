@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>How to prevent code reviews from slowing down your team</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="How to prevent code reviews from slowing down your team"><meta name="keywords" content="Code Review, Self Review, Development Velocity, Coding Guidelines, Style Guide"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="How to prevent code reviews from slowing down your team"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image" content="/images/2020-code-review-slow/image-1.png"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry img,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  padding: 0 5px;
+  margin: 0 2px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+figure.highlight {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+figure.highlight figcaption {
+  margin-bottom: 5px;
+}
+
+figure.highlight figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+figure.highlight pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+figure.highlight table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+figure.highlight .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+figure.highlight .code {
+  color: #666;
+}
+
+figure.highlight .line {
+  height: 25px;
+}
+
+figure.highlight .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .addition,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>How to prevent code reviews from slowing down your team</h1></header><div class="entry"><p>Code reviews when not implemented properly can seriously slow down your team’s ability to ship - with many changes stuck in review for multiple days (or weeks!) hurting your product’s time to market. Here are a few reasons why your code reviews might be taking a long time:</p>
+<ul>
+<li>Not having coding guidelines</li>
+<li>Not using automated checks</li>
+<li>Not doing self reviews</li>
+<li>Raising huge PRs</li>
+<li>Raising vague PRs</li>
+<li>Not having deadlines for finishing reviews</li>
+</ul>
+<h2 id="Not-having-coding-guidelines"><a href="#Not-having-coding-guidelines" class="headerlink" title="Not having coding guidelines"></a>Not having coding guidelines</h2><p>Every team should have a set of coding guidelines which everyone in the team agrees to. This should contain things like naming conventions, folder structure, code formatting and best practices like unit testing, validations etc.</p>
+<p>Not having clear guidelines and conventions would have every developer writing code the way they like, resulting in a lot of arguments during code review. If you notice a lot of comments about formatting, naming conventions etc, you need to start a discussion regarding coding guidelines.</p>
+<p>Your team can either come up with your own set of guidelines or you can start with established guidelines from other companies. Here’s an example from <a href="http://google.github.io/styleguide/" target="_blank" rel="noopener">Google</a></p>
+<h2 id="Not-using-automated-checks"><a href="#Not-using-automated-checks" class="headerlink" title="Not using automated checks"></a>Not using automated checks</h2><p>Once you have the coding guidelines documented, explore ways you can use tools to check for compliance. Almost all languages have formatters, linters etc that you can use in pre-commit hooks and CI/CD.</p>
+<p>These tools would go through the code, check for coding guideline violations and notify the author about them. The author gets to fix these issues before raising the PR which greatly reduces the noise in the PR. The more checks your team offloads to automation the more time you get as a reviewer to focus on bigger issues like design flaws, implementation gaps etc</p>
+<h2 id="Not-doing-self-reviews"><a href="#Not-doing-self-reviews" class="headerlink" title="Not doing self reviews"></a>Not doing self reviews</h2><p>Before asking others to review, the author needs to review their own changes. This is called “self review” and it’s similar to proofreading your email for typos and mistakes before sending it to others.</p>
+<p>In practice, reviewing your own code is challenging as you’re mentally blind to its shortcomings. Here are some ways you can do better self reviews:</p>
+<ul>
+<li>Raise the PR without assigning any reviewers and come back to it after a couple of hours so you can see your changes with a fresh set of eyes</li>
+<li>Fight the natural tendency to skim through your changes instead, go over your changes line-by-line deliberately</li>
+<li>Follow a checklist for self reviews - “Is the code following the coding guidelines?”, “Have I covered all the business requirements by these changes?”, “Have I written tests for all the possible use cases?” etc</li>
+</ul>
+<h2 id="Raising-huge-PRs"><a href="#Raising-huge-PRs" class="headerlink" title="Raising huge PRs"></a>Raising huge PRs</h2><p>The number of review comments a PR gets is inversely proportional to the number of changes it contains. That is, large PRs =&gt; few comments, small PRs =&gt; many comments</p>
+<blockquote>
+<p>The number of review comments a PR gets is inversely proportional to the number of changes it contains</p>
+</blockquote>
+<p>This because reviewers get overwhelmed with large PRs and they might skim through the changes to wrap it up quickly. This defeats the purpose of code reviews. Sometimes, the opposite happens where a PR sits without any comments for many days because the reviewers are intimidated to start reviewing it.</p>
+<p>Break down the PR into smaller chunks that make sense in isolation. You would get the reviewers to review it properly and promptly.</p>
+<h2 id="Raising-vague-PRs"><a href="#Raising-vague-PRs" class="headerlink" title="Raising vague PRs"></a>Raising vague PRs</h2><p>It’s common to get asked to review PRs that have vague or no description about what it does. The reviewer then has to make sense of the changes by trying to remember the task from standups or issue tracker etc. Add details such as:</p>
+<ul>
+<li>What changes does this PR contain?</li>
+<li>Which files should the reviewer start from?</li>
+<li>Link to the task in the issue tracker</li>
+<li>Screenshots if it’s a visual change</li>
+</ul>
+<p>Adding these would give more context to the reviewer and thereby helping them to review your PRs faster.</p>
+<h2 id="Not-having-deadlines-for-finishing-reviews"><a href="#Not-having-deadlines-for-finishing-reviews" class="headerlink" title="Not having deadlines for finishing reviews"></a>Not having deadlines for finishing reviews</h2><p>One way for PRs to take forever to merge is to not have any deadlines for the reviewers to finish reviewing. Have reasonable deadlines such as:</p>
+<ul>
+<li>Reviews should be done within 48hrs from the time of raising the PR</li>
+<li>Reviews for hotfixes need to be done within 30mins</li>
+</ul>
+<p>Thanks for reading! :)</p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/Development/">Development</a><span>, </span><a href="/tags/Code-Reviews/">Code Reviews</a></div><div class="date-published">Published on: <time datetime="2020-05-03T10:36:12.000Z" itemprop="datePublished">03 May 2020</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

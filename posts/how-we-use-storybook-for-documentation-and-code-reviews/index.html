@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>How we use Storybook for documentation and code reviews</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="How we use Storybook for documentation and code reviews"><meta name="keywords" content="Storybook, Component Libraries, Code Review, React, Documentation"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="How we use Storybook for documentation and code reviews"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry img,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  padding: 0 5px;
+  margin: 0 2px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+figure.highlight {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+figure.highlight figcaption {
+  margin-bottom: 5px;
+}
+
+figure.highlight figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+figure.highlight pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+figure.highlight table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+figure.highlight .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+figure.highlight .code {
+  color: #666;
+}
+
+figure.highlight .line {
+  height: 25px;
+}
+
+figure.highlight .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .addition,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>How we use Storybook for documentation and code reviews</h1></header><div class="entry"><h2 id="What-are-components"><a href="#What-are-components" class="headerlink" title="What are components?"></a>What are components?</h2><p>Thinking in terms of components has made frontend development a lot easier to reason about and codebases much more maintainable compared to traditional architectures like MVC etc.</p>
+<p>Components are like lego blocks — they’re self-contained UI elements which can be combined with other components to create bigger UI elements. A screen is actually a big component composed of multiple smaller components. It’s components all the way down!</p>
+<p>To illustrate the above point, let’s take the <em>ProductListItem</em> component. This component is composed of multiple smaller components like <em>ProductItemPills, ProductItemBadge, ProductItemLabel, ProductPrice, AtcButton</em> etc (Sorry, naming is hard 😉). This component is used by the ProductList component to display a list of products which is again used by screen-level components like <em>Cart, MyList, OrderDetail</em> etc.</p>
+<p><img src="/images/2018-storybook/image-1.png" alt></p>
+<p>The property of components to be self-contained makes decoupling them from the host frontend application trivial. They can be easily extracted to a component library repo and shared with all the different frontend applications inside an organisation or even open sourced to be used by others.</p>
+<p><a href="https://storybook.js.org/" target="_blank" rel="noopener">Storybook</a> is a tool for organising such a component library. We also use it for other purposes like documenting component states and communicating changes in PRs.</p>
+<p><img src="/images/2018-storybook/image-5.png" alt></p>
+<h2 id="Documenting-states"><a href="#Documenting-states" class="headerlink" title="Documenting states"></a>Documenting states</h2><p>In UI design, component “states” are the different ways a component visually varies. A classic example is a Button component with states like <em>Default, Hover, Disabled, Loading</em> etc</p>
+<p><img src="/images/2018-storybook/image-4.png" alt></p>
+<p>Now, while documenting these Button states are useful, this is not a strong value proposition for introducing a new tool like Storybook to your dev/design workflow. Let’s take a more useful example — <em>ProductListItem</em> and <em>ProductGridItem</em>. These components are very congested visually since they pack a lot of information into a tiny space.</p>
+<p><img src="/images/2018-storybook/image-3.png" alt></p>
+<p>Depending on the product attributes, the above components can have any of the below states and they can also have states depending on the screen they’re used in (You can’t remove a product from your <em>OrderDetail</em> screen etc). Few states of <em>ProductListItem</em> component:</p>
+<p><img src="/images/2018-storybook/image-2.png" alt></p>
+<p>While designing UIs, the less space you have the more challenging it is to add more information or elements to it. The <em>ProductListItem</em> and <em>ProductGridItem</em> components are also frequently changing. Before making a change, you’d want to first see the different states of these components so you can better understand the constraints and edge cases. For this, you can create a static image with different component states in Sketch or Photoshop as documentation, but this not 100% what customers see — There might be some differences between design and actual implementation. Or you can go through the millions of products and different screens in your frontend to see the different states. The <em>ProductListItem</em> is also responsive, so you might need to do this exercise in different form factors!</p>
+<p>With Storybook, the above becomes simple. You just create an entry for the component and its different states. It also plugins that let you see the component in different form factors.</p>
+<p>This is also useful for components that are visually simple but just have so many states as edge cases.</p>
+<h2 id="Communicating-changes-in-PRs"><a href="#Communicating-changes-in-PRs" class="headerlink" title="Communicating changes in PRs"></a>Communicating changes in PRs</h2><p>Storybook is a webapp that needs no api backend and can be built into a bunch of html/css/js files that can be statically hosted in S3, Github Pages, Netlify, Firebase etc. Everytime someone merges their changes to master branch, we build Storybook and deploy it. The master branch is what we use for documentation.</p>
+<p>We internally use the <a href="http://blog.ramanshalupau.com/multifeature-staging-environments" target="_blank" rel="noopener">multi-feature staging environment</a> with great success at RedMart (Thanks Raman!). For example, if you’re working a feature to implement dark mode in the git branch named “feature/darkmode”, when you push this to origin, the CI scripts automatically create a url “darkmode.alpha.redmart.com” for you to share it with your team. This is incredibly useful and it’s hard to image developing without this. The way it works is simple yet genius — every git branch is deployed to a separate directory which gets resolved to by the webserver when accessed via <em>&lt;git-branch-name&gt;.alpha.redmart.com</em></p>
+<p><img src="/images/2018-storybook/image-6.png" alt></p>
+<p>We’ve extended this concept by having a Storybook for every git branch that’s accessible by an unique url. For every PR, the reviewers can go through the Storybook for that feature branch to understand the changes made. This has also made demoing the new/updated component states to the team easier.</p>
+<p>This idea can be extended even further by running visual regression tests for the feature branch against master branch’s Storybook to validate the build. Component testing libraries like Enzyme let you assert the DOM changes or event handling based on different inputs passed to a component. But there’s no way (that I know of) to assert the visual changes happening to a component for different inputs. Visual regression testing for Storybooks could help fill that void. Storybook acts as test suites/specs and visual regression tests are the assertions.</p>
+<p>Thanks for reading! :)</p>
+<p>Originally published in <a href="http://geeks.redmart.com/2018/11/14/how-we-use-storybook-for-documentation-and-code-reviews/" target="_blank" rel="noopener">geeks.redmart.com</a></p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/Development/">Development</a><span>, </span><a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/React/">React</a><span>, </span><a href="/tags/Maintainability/">Maintainability</a><span>, </span><a href="/tags/Code-Reviews/">Code Reviews</a></div><div class="date-published">Published on: <time datetime="2018-11-14T04:03:54.000Z" itemprop="datePublished">14 Nov 2018</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
