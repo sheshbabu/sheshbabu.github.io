@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/running-express-over-https-in-localhost/</loc>
+    
+    <lastmod>2020-06-19T12:16:48.339Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/visual-explanation-of-saml-authentication/</loc>
     
     <lastmod>2020-06-18T23:49:55.858Z</lastmod>
@@ -58,14 +65,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
+    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
+    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
@@ -86,6 +93,13 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
@@ -94,13 +108,6 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
