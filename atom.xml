@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sheshbabu.com/"/>
-  <updated>2020-06-19T12:16:48.339Z</updated>
+  <updated>2020-06-20T04:44:43.771Z</updated>
   <id>http://www.sheshbabu.com/</id>
   
   <author>
@@ -17,11 +17,31 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Publishing an npx command to npm</title>
+    <link href="http://www.sheshbabu.com/posts/publishing-npx-command-to-npm/"/>
+    <id>http://www.sheshbabu.com/posts/publishing-npx-command-to-npm/</id>
+    <published>2020-06-19T14:13:45.000Z</published>
+    <updated>2020-06-20T04:44:43.771Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://blog.npmjs.org/post/162869356040/introducing-npx-an-npm-package-runner" target="_blank" rel="noopener">npx</a> is an useful tool to run one-off commands like <code>create-react-app</code>, <code>http-server</code> etc.</p><p>In this post I’ll go through the steps needed to create a command line tool that can be invoked using npx.</p><p>Let’s start with a simple hello world script</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">"hello world"</span>);</span><br></pre></td></tr></table></figure><p>This prints “hello world” when you run it</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> node index.js</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure><p>To make this runnable by npx, we need to convert this into an executable file by adding the node <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)" target="_blank" rel="noopener">shebang</a> line</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"hello world"</span>);</span><br></pre></td></tr></table></figure><p>Let’s then create a npm package so this file can be published to npm</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> npm init -y</span><br></pre></td></tr></table></figure><p>This will create the package.json file.</p><p>If you publish this package now, it can be installed by others but they won’t be able to execute it using npx. For this we need to reference this file in the <a href="https://docs.npmjs.com/files/package.json#bin" target="_blank" rel="noopener">bin</a> field of package.json</p><figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"npx-example"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="attr">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="attr">"bin"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"start"</span>: <span class="string">"node ."</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"license"</span>: <span class="string">"MIT"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>You can now publish this package</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> npm publish</span><br></pre></td></tr></table></figure><p>You can find a complete example in <a href="https://github.com/sheshbabu/gitrmbr" target="_blank" rel="noopener">this repo</a>.</p>]]></content>
+    
+    <summary type="html">
+    
+      Publishing an npx command to npm
+    
+    </summary>
+    
+    
+      <category term="Node.js" scheme="http://www.sheshbabu.com/tags/Node-js/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Running Express over HTTPS in localhost</title>
     <link href="http://www.sheshbabu.com/posts/running-express-over-https-in-localhost/"/>
     <id>http://www.sheshbabu.com/posts/running-express-over-https-in-localhost/</id>
     <published>2020-06-19T11:29:14.000Z</published>
-    <updated>2020-06-19T12:16:48.339Z</updated>
+    <updated>2020-06-20T04:43:38.612Z</updated>
     
     <content type="html"><![CDATA[<p>There are times when you want to expose your Express server via HTTPS for local development.</p><p>Let’s take a super simple Express code:</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">"/"</span>, (req, res, next) =&gt; &#123;</span><br><span class="line">  res.send(<span class="string">"Hello World\n"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3001</span>);</span><br></pre></td></tr></table></figure><p>This will return “Hello World” when you hit <a href="http://localhost:3001" target="_blank" rel="noopener">http://localhost:3001</a></p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> curl http://localhost:3001</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure><p>To run this in HTTPS, we need to install a tool called <a href="https://github.com/FiloSottile/mkcert" target="_blank" rel="noopener">mkcert</a>. Follow the <a href="https://github.com/FiloSottile/mkcert/blob/v1.4.1/README.md#installation" target="_blank" rel="noopener">installation instructions</a> or if you’re using macOS and Homebrew, run this command:</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> brew install mkcert</span><br></pre></td></tr></table></figure><p>Create a local <a href="https://en.wikipedia.org/wiki/Certificate_authority" target="_blank" rel="noopener">CA</a> and create certificate for localhost:</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> mkcert -install</span><br><span class="line"><span class="meta">$</span> mkcert localhost</span><br></pre></td></tr></table></figure><p>This will create a certificate file <code>localhost.pem</code> and key file <code>localhost-key.pem</code> in the current directory.</p><p>Update the Express code as follows:</p><figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="addition">+ const fs = require("fs");</span></span><br><span class="line"><span class="addition">+ const https = require("https");</span></span><br><span class="line"></span><br><span class="line">const express = require("express");</span><br><span class="line"></span><br><span class="line"><span class="addition">+ const key = fs.readFileSync("localhost-key.pem", "utf-8");</span></span><br><span class="line"><span class="addition">+ const cert = fs.readFileSync("localhost.pem", "utf-8");</span></span><br><span class="line"></span><br><span class="line">const app = express();</span><br><span class="line"></span><br><span class="line">app.get("/", (req, res, next) =&gt; &#123;</span><br><span class="line">  res.send("Hello World\n");</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="deletion">- app.listen(3001);</span></span><br><span class="line"><span class="addition">+ https.createServer(&#123; key, cert &#125;, app).listen(3001);</span></span><br></pre></td></tr></table></figure><p>And you’re done!</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> curl https://localhost:3001</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure><p>You can find the full codebase in <a href="https://github.com/sheshbabu/express-https-localhost" target="_blank" rel="noopener">this repo</a>.</p>]]></content>
     
@@ -31,8 +51,6 @@
     
     </summary>
     
-    
-      <category term="JavaScript" scheme="http://www.sheshbabu.com/tags/JavaScript/"/>
     
       <category term="Node.js" scheme="http://www.sheshbabu.com/tags/Node-js/"/>
     
@@ -78,11 +96,11 @@
     </summary>
     
     
+      <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
+    
       <category term="TypeScript" scheme="http://www.sheshbabu.com/tags/TypeScript/"/>
     
       <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
-    
-      <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
     
   </entry>
   
@@ -278,11 +296,11 @@
     </summary>
     
     
-      <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
-    
       <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
     
       <category term="JavaScript" scheme="http://www.sheshbabu.com/tags/JavaScript/"/>
+    
+      <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
     
   </entry>
   
@@ -326,11 +344,11 @@
     </summary>
     
     
-      <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
-    
       <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
     
       <category term="JavaScript" scheme="http://www.sheshbabu.com/tags/JavaScript/"/>
+    
+      <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
     
       <category term="Code Reviews" scheme="http://www.sheshbabu.com/tags/Code-Reviews/"/>
     
