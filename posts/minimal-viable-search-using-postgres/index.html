@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -273,8 +273,12 @@ pre .deletion {
 ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Minimal Viable Search using Postgres</h1></header><div class="entry"><p>If you’re building a product, you might have deprioritized building the search feature thinking that it might take a long time to build. If you happen to be using Postgres, let me show you a quick and easy way to implement the search functionality.</p>
 <h2 id="Test-drive"><a href="#Test-drive" class="headerlink" title="Test drive"></a>Test drive</h2><p>Let’s say you’re building an ecommerce app and you want to be able to search on the product descriptions. This can be done using the following query:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  *</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">  products</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">  to_tsvector(description) @@ websearch_to_tsquery(<span class="string">'chocolate milk'</span>) = <span class="literal">TRUE</span></span><br></pre></td></tr></table></figure>
-
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>
+  <span class="token operator">*</span>
+<span class="token keyword">FROM</span>
+  products
+<span class="token keyword">WHERE</span>
+  to_tsvector<span class="token punctuation">(</span>description<span class="token punctuation">)</span> @@ websearch_to_tsquery<span class="token punctuation">(</span><span class="token string">'chocolate milk'</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token boolean">TRUE</span></code></pre>
 <p>If you have a test database lying around, you can quickly try this out by replacing the table name, column name and search query. If you’re using Postgres 10 or below, “websearch_to_tsquery” won’t work. use “plainto_tsquery” instead.</p>
 <p>Now, you might be having a lot of questions like:</p>
 <ul>
@@ -293,25 +297,36 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
 </ul>
 <p>In simple terms, <code>to_tsvector</code> breaks down text into list of keywords and their positions.</p>
 <p>Running:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> to_tsvector(<span class="string">'A journey of a thousand miles begins with a single step'</span>);</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> to_tsvector<span class="token punctuation">(</span><span class="token string">'A journey of a thousand miles begins with a single step'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>gives</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">'<span class="keyword">begin</span><span class="string">':7 '</span>journey<span class="string">':2 '</span>mile<span class="string">':6 '</span>singl<span class="string">':10 '</span>step<span class="string">':11 '</span>thousand<span class="string">':5</span></span><br></pre></td></tr></table></figure>
-
+<pre class=" language-sql"><code class="language-sql"><span class="token string">'begin'</span>:<span class="token number">7</span> <span class="token string">'journey'</span>:<span class="token number">2</span> <span class="token string">'mile'</span>:<span class="token number">6</span> <span class="token string">'singl'</span>:<span class="token number">10</span> <span class="token string">'step'</span>:<span class="token number">11</span> <span class="token string">'thousand'</span>:<span class="token number">5</span></code></pre>
 <p>Notice that the <a href="https://en.wikipedia.org/wiki/Stop_words" target="_blank" rel="noopener">words</a> “A”, “of” and “with” are removed as they’re not useful in searching, the word “single” is normalized to its root form “singl” so it appears in more searches, the word “miles” is reduced to its singular form. This also takes care of normalizing the text to lowercase and removing special characters.</p>
 <p>The function <code>websearch_to_tsquery</code> converts the user submitted search term into something that Postgres can understand. You can use Google style search queries like</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">jaguar speed -car</span><br><span class="line"></span><br><span class="line">ipad OR iphone</span><br><span class="line"></span><br><span class="line">"chocolate chip" recipe</span><br></pre></td></tr></table></figure>
+<pre class=" language-sql"><code class="language-sql">jaguar speed <span class="token operator">-</span>car
 
+ipad <span class="token operator">OR</span> iphone
+
+<span class="token string">"chocolate chip"</span> recipe</code></pre>
 <p>You can also try other query functions like “plainto_tsquery” or “phraseto_tsquery” which have their own way of parsing the search queries.</p>
 <p>The <code>@@</code> operator matches the above search query with text from column. You can also use the <code>||</code> operator to concatenate multiple columns together and search on them.</p>
 <p>The function ts_rank is used for sorting the search results by relevancy. The way it determines relevancy is by looking at how frequent the search terms appear, how close together they appear, in what position they appear etc.</p>
 <p>By now you should have a good idea about how this is different from normal LIKE or pattern matching.</p>
 <h2 id="Making-it-faster"><a href="#Making-it-faster" class="headerlink" title="Making it faster"></a>Making it faster</h2><p>Instead of building tsvectors everytime we query using to_tsvector, we can store it in a separate column when the record is created/updated. For this, we create the following trigger:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">REPLACE</span> <span class="keyword">FUNCTION</span> fn_on_product_insert_store_tsv() <span class="keyword">RETURNS</span> <span class="keyword">trigger</span> <span class="keyword">AS</span></span><br><span class="line">$$</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  NEW.tsv := to_tsvector(NEW.description);</span><br><span class="line">  return NEW;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line">$$</span><br><span class="line">LANGUAGE 'plpgsql';</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trg_on_product_insert_store_tsv</span><br><span class="line"><span class="keyword">BEFORE</span> <span class="keyword">INSERT</span> <span class="keyword">OR</span> <span class="keyword">UPDATE</span> <span class="keyword">ON</span> products</span><br><span class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="keyword">ROW</span></span><br><span class="line"><span class="keyword">EXECUTE</span> <span class="keyword">PROCEDURE</span> fn_on_product_insert_create_tsv();</span><br></pre></td></tr></table></figure>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token operator">OR</span> REPLACE <span class="token keyword">FUNCTION</span> fn_on_product_insert_store_tsv<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> <span class="token keyword">trigger</span> <span class="token keyword">AS</span>
+$$
+<span class="token keyword">BEGIN</span>
+  NEW<span class="token punctuation">.</span>tsv :<span class="token operator">=</span> to_tsvector<span class="token punctuation">(</span>NEW<span class="token punctuation">.</span>description<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> NEW<span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+$$
+LANGUAGE <span class="token string">'plpgsql'</span><span class="token punctuation">;</span>
 
+<span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> trg_on_product_insert_store_tsv
+BEFORE <span class="token keyword">INSERT</span> <span class="token operator">OR</span> <span class="token keyword">UPDATE</span> <span class="token keyword">ON</span> products
+<span class="token keyword">FOR EACH ROW</span>
+<span class="token keyword">EXECUTE</span> <span class="token keyword">PROCEDURE</span> fn_on_product_insert_create_tsv<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>Let’s also add an index on this column to make the queries faster:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> tsv_idx <span class="keyword">ON</span> products <span class="keyword">USING</span> gin(tsv);</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> tsv_idx <span class="token keyword">ON</span> products <span class="token keyword">USING</span> gin<span class="token punctuation">(</span>tsv<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>This should greatly speed up your seach queries.</p>
 <h2 id="Comparison-to-ElasticSearch"><a href="#Comparison-to-ElasticSearch" class="headerlink" title="Comparison to ElasticSearch"></a>Comparison to ElasticSearch</h2><p>ElasticSearch is synonymous with product search these days so you need to be aware of the tradeoffs:</p>
 <p>When Postgres is better than ElasticSearch:</p>

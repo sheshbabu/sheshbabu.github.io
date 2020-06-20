@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -274,17 +274,81 @@ ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Writing maintainable tests using the data driven approach</h1></header><div class="entry"><p>One of the main considerations while writing automated tests is to make them more mainatainable. Tests shouldn’t get in the way of refactoring the source. This can be achieved by making the tests <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself" target="_blank" rel="noopener">DRY</a> and abstracting out repeating logic.</p>
 <p>Certain logic like form validation, url parsing etc make tests unmaintainable by repeating the same tests again and again with different inputs and outputs.</p>
 <p>Consider a simple example of validating username:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// validation.js</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isValidUserName</span> (<span class="params">userName</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (userName.isBlank ||</span><br><span class="line">    userName.isLessThanTwoCharacters ||</span><br><span class="line">    userName.hasSpecialCharacters ||</span><br><span class="line">    userName.hasNumbers) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// validation.js</span>
 
+<span class="token keyword">function</span> isValidUserName <span class="token punctuation">(</span>userName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>userName<span class="token punctuation">.</span>isBlank <span class="token operator">||</span>
+        userName<span class="token punctuation">.</span>isLessThanTwoCharacters <span class="token operator">||</span>
+        userName<span class="token punctuation">.</span>hasSpecialCharacters <span class="token operator">||</span>
+        userName<span class="token punctuation">.</span>hasNumbers<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
 <p>The tests for the above function would be something like this:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// validation.test.js</span></span><br><span class="line"></span><br><span class="line">it(<span class="string">'should reject blank input'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> isValid = isValidUserName(<span class="string">''</span>);</span><br><span class="line">  expect(isValid).to.be.false;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">it(<span class="string">'should reject input with less than two characters'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> isValid = isValidUserName(<span class="string">'a'</span>);</span><br><span class="line">  expect(isValid).to.be.false;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">it(<span class="string">'should reject input with special characters'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> isValid = isValidUserName(<span class="string">'abc#'</span>);</span><br><span class="line">  expect(isValid).to.be.false;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">it(<span class="string">'should reject input with numbers'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> isValid = isValidUserName(<span class="string">'ab3c'</span>);</span><br><span class="line">  expect(isValid).to.be.false;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// validation.test.js</span>
 
+<span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'should reject blank input'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> isValid <span class="token operator">=</span> <span class="token function">isValidUserName</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">expect</span><span class="token punctuation">(</span>isValid<span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>be<span class="token punctuation">.</span><span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'should reject input with less than two characters'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> isValid <span class="token operator">=</span> <span class="token function">isValidUserName</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">expect</span><span class="token punctuation">(</span>isValid<span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>be<span class="token punctuation">.</span><span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'should reject input with special characters'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> isValid <span class="token operator">=</span> <span class="token function">isValidUserName</span><span class="token punctuation">(</span><span class="token string">'abc#'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">expect</span><span class="token punctuation">(</span>isValid<span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>be<span class="token punctuation">.</span><span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'should reject input with numbers'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> isValid <span class="token operator">=</span> <span class="token function">isValidUserName</span><span class="token punctuation">(</span><span class="token string">'ab3c'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">expect</span><span class="token punctuation">(</span>isValid<span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>be<span class="token punctuation">.</span><span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
 <p>These kind of tests would be tedious to maintain for certain kind of logic.</p>
 <p>A better way would be to use the <a href="https://en.wikipedia.org/wiki/Data-driven_testing" target="_blank" rel="noopener">data driven approach</a>. In this approach, we decouple the data and the actual testing code.</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// validation.data.json</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"username"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"title"</span>: <span class="string">"should reject blank input"</span>,</span><br><span class="line">      <span class="string">"input"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="string">"isValid"</span>: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"title"</span>: <span class="string">"should reject input with less than two characters"</span>,</span><br><span class="line">      <span class="string">"input"</span>: <span class="string">"a"</span>,</span><br><span class="line">      <span class="string">"isValid"</span>: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"title"</span>: <span class="string">"should reject input with special characters"</span>,</span><br><span class="line">      <span class="string">"input"</span>: <span class="string">"abc#"</span>,</span><br><span class="line">      <span class="string">"isValid"</span>: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"title"</span>: <span class="string">"should reject input with numbers"</span>,</span><br><span class="line">      <span class="string">"input"</span>: <span class="string">"ab3c"</span>,</span><br><span class="line">      <span class="string">"isValid"</span>: <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"> <span class="token comment" spellcheck="true">// validation.data.json</span>
 
+ <span class="token punctuation">{</span>
+     <span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+         <span class="token punctuation">{</span>
+             <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"should reject blank input"</span><span class="token punctuation">,</span>
+             <span class="token string">"input"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+             <span class="token string">"isValid"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+         <span class="token punctuation">}</span><span class="token punctuation">,</span>
+         <span class="token punctuation">{</span>
+             <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"should reject input with less than two characters"</span><span class="token punctuation">,</span>
+             <span class="token string">"input"</span><span class="token punctuation">:</span> <span class="token string">"a"</span><span class="token punctuation">,</span>
+             <span class="token string">"isValid"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+         <span class="token punctuation">}</span><span class="token punctuation">,</span>
+         <span class="token punctuation">{</span>
+             <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"should reject input with special characters"</span><span class="token punctuation">,</span>
+             <span class="token string">"input"</span><span class="token punctuation">:</span> <span class="token string">"abc#"</span><span class="token punctuation">,</span>
+             <span class="token string">"isValid"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+         <span class="token punctuation">}</span><span class="token punctuation">,</span>
+         <span class="token punctuation">{</span>
+             <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"should reject input with numbers"</span><span class="token punctuation">,</span>
+             <span class="token string">"input"</span><span class="token punctuation">:</span> <span class="token string">"ab3c"</span><span class="token punctuation">,</span>
+             <span class="token string">"isValid"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+         <span class="token punctuation">}</span>
+     <span class="token punctuation">]</span>
+ <span class="token punctuation">}</span></code></pre>
 <p>And modify our test file as</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// validation.test.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> data = <span class="built_in">require</span>(<span class="string">'validation.data'</span>);</span><br><span class="line"></span><br><span class="line">data.username.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">test</span>) </span>&#123;</span><br><span class="line">  it(test.title, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> isValid = isValidUserName(test.input);</span><br><span class="line">    expect(isValid).to.equal(test.isValid);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// validation.test.js</span>
 
+<span class="token keyword">var</span> data <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'validation.data'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+data<span class="token punctuation">.</span>username<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>test<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">it</span><span class="token punctuation">(</span>test<span class="token punctuation">.</span>title<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> isValid <span class="token operator">=</span> <span class="token function">isValidUserName</span><span class="token punctuation">(</span>test<span class="token punctuation">.</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">expect</span><span class="token punctuation">(</span>isValid<span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span>test<span class="token punctuation">.</span>isValid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
 <p>This test can now be quickly refactored if needed. A nice bonus of using this approach is that by extracting the test data from actual test cases, the test scenarios can be understood in a glance.</p>
 </div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/Testing/">Testing</a><span>, </span><a href="/tags/Maintainability/">Maintainability</a></div><div class="date-published">Published on: <time datetime="2016-06-06T22:49:08.000Z" itemprop="datePublished">07 Jun 2016</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

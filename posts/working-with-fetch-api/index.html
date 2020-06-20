@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,32 +265,107 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
 </style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Working with Fetch api</h1></header><div class="entry"><p>Fetch is a much needed improvement over XHR, it simplifies making network requests by exposing an easy to use api and having promise support out of the box.</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">fetch(url).then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> response.json();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-javascript"><code class="language-javascript"><span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
 <h3 id="Wrapping-fetch"><a href="#Wrapping-fetch" class="headerlink" title="Wrapping fetch"></a>Wrapping fetch</h3><p>While the above example is good enough for most cases, sometimes you might need to send the same headers in all the requests or handle all the  responses in the same way. Doing so in each and every <code>fetch</code> call would be duplicating a lot of code. This can solved by creating a wrapper around the fetch method and using that wrapper throughout the application instead of fetch.</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// fetch-wrapper.js</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetchWrapper</span>(<span class="params">url, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> options = options || &#123;&#125;;</span><br><span class="line">  options.headers[<span class="string">'Custom-Header'</span>] = <span class="string">'Your custom header value here'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> fetch(url, options);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// fetch-wrapper.js</span>
 
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// books.js</span></span><br><span class="line"></span><br><span class="line">fetchWrapper(<span class="string">'/api/books'</span>)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<span class="token keyword">function</span> <span class="token function">fetchWrapper</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> options <span class="token operator">=</span> options <span class="token operator">||</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    options<span class="token punctuation">.</span>headers<span class="token punctuation">[</span><span class="token string">'Custom-Header'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'Your custom header value here'</span><span class="token punctuation">;</span>
 
+    <span class="token keyword">return</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// books.js</span>
+
+<span class="token function">fetchWrapper</span><span class="token punctuation">(</span><span class="token string">'/api/books'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <h3 id="Rejecting-on-HTTP-errors"><a href="#Rejecting-on-HTTP-errors" class="headerlink" title="Rejecting on HTTP errors"></a>Rejecting on HTTP errors</h3><p>Coming from jQuery.ajax, one of the main gotcha’s about fetch is that it does not reject on HTTP errors - It only rejects on network failures. While this makes sense because any response (whether 2xx or 4xx etc) is still a response and thereby a ‘success’, you might want fetch to reject on http errors so that the <code>catch</code> part of your promise chain can handle them appropriately.</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// fetch-wrapper.js</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetchWrapper</span>(<span class="params">url, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> fetch(url, options)</span><br><span class="line">    .then(handleResponse);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleResponse</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (response.ok) &#123;</span><br><span class="line">    <span class="keyword">return</span> response.json();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(response.statusText);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// fetch-wrapper.js</span>
 
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// books.js</span></span><br><span class="line"></span><br><span class="line">fetchWrapper(<span class="string">'/api/books'</span>)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(error);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<span class="token keyword">function</span> <span class="token function">fetchWrapper</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> options<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>handleResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
+<span class="token keyword">function</span> handleResponse <span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>response<span class="token punctuation">.</span>ok<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span>statusText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// books.js</span>
+
+<span class="token function">fetchWrapper</span><span class="token punctuation">(</span><span class="token string">'/api/books'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <h3 id="Handling-JSON-responses"><a href="#Handling-JSON-responses" class="headerlink" title="Handling JSON responses"></a>Handling JSON responses</h3><p>If all the responses are guaranteed to be JSON, then we can parse them before passing them down the promise chain. Since fetch throws TypeError on network errors, we can handle it in <code>handleNetworkError</code> to throw a JSON object similar to ones we get from our backend.</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// fetch-wrapper.js</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetchWrapper</span>(<span class="params">url, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> fetch(url, options)</span><br><span class="line">    .then(handleResponse, handleNetworkError);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleResponse</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (response.ok) &#123;</span><br><span class="line">    <span class="keyword">return</span> response.json();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> response.json().then(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">throw</span> error;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleNetworkError</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">throw</span> &#123;</span><br><span class="line">    msg: error.message</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// fetch-wrapper.js</span>
 
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// books.js</span></span><br><span class="line"></span><br><span class="line">fetchWrapper(<span class="string">'/api/books'</span>)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(error.msg);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<span class="token keyword">function</span> <span class="token function">fetchWrapper</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> options<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>handleResponse<span class="token punctuation">,</span> handleNetworkError<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
+<span class="token keyword">function</span> handleResponse <span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>response<span class="token punctuation">.</span>ok<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> error<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> handleNetworkError <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">throw</span> <span class="token punctuation">{</span>
+        msg<span class="token punctuation">:</span> error<span class="token punctuation">.</span>message
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// books.js</span>
+
+<span class="token function">fetchWrapper</span><span class="token punctuation">(</span><span class="token string">'/api/books'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">.</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <h3 id="Timeouts"><a href="#Timeouts" class="headerlink" title="Timeouts"></a>Timeouts</h3><p>There’s no support for timeouts in the fetch api, though this can be achieved by creating a promise that rejects on timeout and using it with the Promise.race api.</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">timeout</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Sorry, request timed out.'</span>));</span><br><span class="line">    &#125;, value);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.race([timeout(<span class="number">1000</span>), fetch(url)])</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(response);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(error);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span> timeout <span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">reject</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'Sorry, request timed out.'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
+Promise<span class="token punctuation">.</span><span class="token function">race</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token function">timeout</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
 <p>But keep in mind that since fetch has no support for aborting the request, the above example only rejects the promise but the request itself is still alive. This behavior is different from XHR based libraries which abort the request when it takes longer than the timeout value.</p>
 <h3 id="Browser-support"><a href="#Browser-support" class="headerlink" title="Browser support"></a>Browser support</h3><p>Fetch is <a href="http://caniuse.com/#feat=fetch" target="_blank" rel="noopener">supported in most browsers</a> and has a <a href="https://github.com/github/fetch" target="_blank" rel="noopener">polyfill</a> for those who don’t support it.</p>
 <h3 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h3><p>Fetch is being developed iteratively and there are certain things that it does not support like <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress" target="_blank" rel="noopener">monitoring progress</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/abort" target="_blank" rel="noopener">aborting</a> a request etc. If these are absolutely necessary to your application, then your should use XHR or its abstractions like jQuery.ajax, axios etc instead of fetch.</p>

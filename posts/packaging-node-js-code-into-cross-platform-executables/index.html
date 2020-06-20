@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -274,17 +274,23 @@ ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Packaging Node.js code into cross platform executables</h1></header><div class="entry"><p>If you’re writing command line tools in Node.js, it can be hard to distribute them since users need to install Node.js in their machines before being able to use your tool. It would be a lot easier for users if we can package our app into a single executable file that they can download and run without installing anything extra.</p>
 <p>We can use <a href="https://github.com/zeit/pkg" target="_blank" rel="noopener">pkg</a> to compile our code into a single executable file for multiple target platforms (Windows, Linux, Mac etc). </p>
 <p>Let’s start with a simple example:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"hello world"</span>);</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// index.js</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>This file prints “hello world” and exits. We can package this by running:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> npx pkg index.js</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-shell"><code class="language-shell">$ npx pkg index.js</code></pre>
 <p>This by default builds executables for three platforms - Windows, Linux and Mac:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> ls -1</span><br><span class="line">index-linux</span><br><span class="line">index-macos</span><br><span class="line">index-win.exe</span><br><span class="line">index.js</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-shell"><code class="language-shell">$ ls -1
+index-linux
+index-macos
+index-win.exe
+index.js</code></pre>
 <p>The target platforms can be customized by using the <code>--targets</code> <a href="https://github.com/zeit/pkg#targets" target="_blank" rel="noopener">flag</a>.</p>
 <p>I was curious how much space these take up:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> ls -lh</span><br><span class="line">total 183496</span><br><span class="line">-rwxr-xr-x  1 sheshbabu  staff    33M Mar 31 01:40 index-linux</span><br><span class="line">-rwxr-xr-x  1 sheshbabu  staff    34M Mar 31 01:40 index-macos</span><br><span class="line">-rw-r--r--  1 sheshbabu  staff    22M Mar 31 01:40 index-win.exe</span><br><span class="line">-rw-r--r--  1 sheshbabu  staff    28B Mar 31 00:46 index.js</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-shell"><code class="language-shell">$ ls -lh
+total 183496
+-rwxr-xr-x  1 sheshbabu  staff    33M Mar 31 01:40 index-linux
+-rwxr-xr-x  1 sheshbabu  staff    34M Mar 31 01:40 index-macos
+-rw-r--r--  1 sheshbabu  staff    22M Mar 31 01:40 index-win.exe
+-rw-r--r--  1 sheshbabu  staff    28B Mar 31 00:46 index.js</code></pre>
 <p>22-34MB feels like a bit too much for something that just prints “hello world”. Looking around the internet, it seems we can use tools like <a href="https://upx.github.io/" target="_blank" rel="noopener">upx</a> to reduce the file size.</p>
 </div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Node-js/">Node.js</a></div><div class="date-published">Published on: <time datetime="2018-03-30T18:54:23.000Z" itemprop="datePublished">31 Mar 2018</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

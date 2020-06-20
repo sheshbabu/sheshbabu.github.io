@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -297,29 +297,113 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
 <h2 id="Runtime-resolution"><a href="#Runtime-resolution" class="headerlink" title="Runtime resolution"></a>Runtime resolution</h2><p>Alternatively, we can store the configs for all environments in the source code and dynamically load the appropriate config for each environment. Usually, different environments would have different urls and we can use this to load the correct config.</p>
 <p>Let’s say we have 3 environments - development, staging and production, which have the following urls - <code>dev.myapp.com</code>, <code>staging.myapp.com</code> and <code>www.myapp.com</code> respectively.</p>
 <p>The configs for these 3 environments can be stored in <code>dev.config.json</code>, <code>staging.config.json</code> and <code>prod.config.json</code></p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">// dev.config.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"API_URL"</span>: <span class="string">"dev.myapp.com/api"</span>,</span><br><span class="line">  <span class="attr">"ANALYTICS_KEY"</span>: <span class="string">"xxxaaa"</span>,</span><br><span class="line">  <span class="attr">"ERROR_REPORTING_KEY"</span>: <span class="string">"xxxeee"</span>,</span><br><span class="line">  <span class="attr">"IS_LOGGING_ENABLED"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-json"><code class="language-json">// dev.config.json
 
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">// staging.config.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"API_URL"</span>: <span class="string">"staging.myapp.com/api"</span>,</span><br><span class="line">  <span class="attr">"ANALYTICS_KEY"</span>: <span class="string">"xxxaaa"</span>,</span><br><span class="line">  <span class="attr">"ERROR_REPORTING_KEY"</span>: <span class="string">"xxxeee"</span>,</span><br><span class="line">  <span class="attr">"IS_LOGGING_ENABLED"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span class="token punctuation">{</span>
+  <span class="token property">"API_URL"</span><span class="token operator">:</span> <span class="token string">"dev.myapp.com/api"</span><span class="token punctuation">,</span>
+  <span class="token property">"ANALYTICS_KEY"</span><span class="token operator">:</span> <span class="token string">"xxxaaa"</span><span class="token punctuation">,</span>
+  <span class="token property">"ERROR_REPORTING_KEY"</span><span class="token operator">:</span> <span class="token string">"xxxeee"</span><span class="token punctuation">,</span>
+  <span class="token property">"IS_LOGGING_ENABLED"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-json"><code class="language-json">// staging.config.json
 
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">// prod.config.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"API_URL"</span>: <span class="string">"www.myapp.com/api"</span>,</span><br><span class="line">  <span class="attr">"ANALYTICS_KEY"</span>: <span class="string">"yyyaaa"</span>,</span><br><span class="line">  <span class="attr">"ERROR_REPORTING_KEY"</span>: <span class="string">"yyyeee"</span>,</span><br><span class="line">  <span class="attr">"IS_LOGGING_ENABLED"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span class="token punctuation">{</span>
+  <span class="token property">"API_URL"</span><span class="token operator">:</span> <span class="token string">"staging.myapp.com/api"</span><span class="token punctuation">,</span>
+  <span class="token property">"ANALYTICS_KEY"</span><span class="token operator">:</span> <span class="token string">"xxxaaa"</span><span class="token punctuation">,</span>
+  <span class="token property">"ERROR_REPORTING_KEY"</span><span class="token operator">:</span> <span class="token string">"xxxeee"</span><span class="token punctuation">,</span>
+  <span class="token property">"IS_LOGGING_ENABLED"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-json"><code class="language-json">// prod.config.json
 
+<span class="token punctuation">{</span>
+  <span class="token property">"API_URL"</span><span class="token operator">:</span> <span class="token string">"www.myapp.com/api"</span><span class="token punctuation">,</span>
+  <span class="token property">"ANALYTICS_KEY"</span><span class="token operator">:</span> <span class="token string">"yyyaaa"</span><span class="token punctuation">,</span>
+  <span class="token property">"ERROR_REPORTING_KEY"</span><span class="token operator">:</span> <span class="token string">"yyyeee"</span><span class="token punctuation">,</span>
+  <span class="token property">"IS_LOGGING_ENABLED"</span><span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span></code></pre>
 <p>We can use <code>window.location.hostname</code> to decide which config to load in runtime:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Config.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> prod <span class="keyword">from</span> <span class="string">"./prod.config.json"</span>;</span><br><span class="line"><span class="keyword">import</span> staging <span class="keyword">from</span> <span class="string">"./staging.config.json"</span>;</span><br><span class="line"><span class="keyword">import</span> dev <span class="keyword">from</span> <span class="string">"./dev.config.json"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> config = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> (<span class="built_in">window</span>.location.hostname) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">"www.myapp.com"</span>:</span><br><span class="line">    config = prod;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">"staging.myapp.com"</span>:</span><br><span class="line">    config = staging;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">"dev.myapp.com"</span>:</span><br><span class="line">    config = dev;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    config = dev;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> config;</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// Config.js</span>
 
+<span class="token keyword">import</span> prod <span class="token keyword">from</span> <span class="token string">"./prod.config.json"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> staging <span class="token keyword">from</span> <span class="token string">"./staging.config.json"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> dev <span class="token keyword">from</span> <span class="token string">"./dev.config.json"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> config <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">switch</span> <span class="token punctuation">(</span>window<span class="token punctuation">.</span>location<span class="token punctuation">.</span>hostname<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">case</span> <span class="token string">"www.myapp.com"</span><span class="token punctuation">:</span>
+    config <span class="token operator">=</span> prod<span class="token punctuation">;</span>
+    <span class="token keyword">break</span><span class="token punctuation">;</span>
+  <span class="token keyword">case</span> <span class="token string">"staging.myapp.com"</span><span class="token punctuation">:</span>
+    config <span class="token operator">=</span> staging<span class="token punctuation">;</span>
+    <span class="token keyword">break</span><span class="token punctuation">;</span>
+  <span class="token keyword">case</span> <span class="token string">"dev.myapp.com"</span><span class="token punctuation">:</span>
+    config <span class="token operator">=</span> dev<span class="token punctuation">;</span>
+    <span class="token keyword">break</span><span class="token punctuation">;</span>
+  <span class="token keyword">default</span><span class="token punctuation">:</span>
+    config <span class="token operator">=</span> dev<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> config<span class="token punctuation">;</span></code></pre>
 <p>This can be consumed in the application as</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ApiClient.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">"axios"</span>;</span><br><span class="line"><span class="keyword">import</span> Config <span class="keyword">from</span> <span class="string">"../Config"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ApiClient = axios.create(&#123; <span class="attr">baseURL</span>: Config.API_URL &#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ApiClient;</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// ApiClient.js</span>
 
+<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">"axios"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Config <span class="token keyword">from</span> <span class="token string">"../Config"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> ApiClient <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span> baseURL<span class="token punctuation">:</span> Config<span class="token punctuation">.</span>API_URL <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> ApiClient<span class="token punctuation">;</span></code></pre>
 <p>Usually some config values would be repeated for different environments. For example, you might decide to use the same analytics api key for all non-production environments. We can make the configs <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself" target="_blank" rel="noopener">DRY</a> by extracting these common config values to common.config.json and merging the configs in Config.js</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">// common.config.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"ANALYTICS_KEY"</span>: <span class="string">"xxxaaa"</span>,</span><br><span class="line">  <span class="attr">"ERROR_REPORTING_KEY"</span>: <span class="string">"xxxeee"</span>,</span><br><span class="line">  <span class="attr">"IS_LOGGING_ENABLED"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-json"><code class="language-json">// common.config.json
 
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">// dev.config.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"API_URL"</span>: <span class="string">"dev.myapp.com/api"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span class="token punctuation">{</span>
+  <span class="token property">"ANALYTICS_KEY"</span><span class="token operator">:</span> <span class="token string">"xxxaaa"</span><span class="token punctuation">,</span>
+  <span class="token property">"ERROR_REPORTING_KEY"</span><span class="token operator">:</span> <span class="token string">"xxxeee"</span><span class="token punctuation">,</span>
+  <span class="token property">"IS_LOGGING_ENABLED"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-json"><code class="language-json">// dev.config.json
 
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">// staging.config.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"API_URL"</span>: <span class="string">"staging.myapp.com/api"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span class="token punctuation">{</span>
+  <span class="token property">"API_URL"</span><span class="token operator">:</span> <span class="token string">"dev.myapp.com/api"</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-json"><code class="language-json">// staging.config.json
 
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">// prod.config.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"API_URL"</span>: <span class="string">"www.myapp.com/api"</span>,</span><br><span class="line">  <span class="attr">"ANALYTICS_KEY"</span>: <span class="string">"yyyaaa"</span>,</span><br><span class="line">  <span class="attr">"ERROR_REPORTING_KEY"</span>: <span class="string">"yyyeee"</span>,</span><br><span class="line">  <span class="attr">"IS_LOGGING_ENABLED"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span class="token punctuation">{</span>
+  <span class="token property">"API_URL"</span><span class="token operator">:</span> <span class="token string">"staging.myapp.com/api"</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-json"><code class="language-json">// prod.config.json
 
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Config.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> common <span class="keyword">from</span> <span class="string">"./common.config.json"</span>;</span><br><span class="line"><span class="keyword">import</span> prod <span class="keyword">from</span> <span class="string">"./prod.config.json"</span>;</span><br><span class="line"><span class="keyword">import</span> staging <span class="keyword">from</span> <span class="string">"./staging.config.json"</span>;</span><br><span class="line"><span class="keyword">import</span> dev <span class="keyword">from</span> <span class="string">"./dev.config.json"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> config = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> (<span class="built_in">window</span>.location.hostname) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">"www.myapp.com"</span>:</span><br><span class="line">    config = &#123; ...common, ...prod &#125;;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">"staging.myapp.com"</span>:</span><br><span class="line">    config = &#123; ...common, ...staging &#125;;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">"dev.myapp.com"</span>:</span><br><span class="line">    config = &#123; ...common, ...dev &#125;;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    config = &#123; ...common, ...dev &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> config;</span><br></pre></td></tr></table></figure>
+<span class="token punctuation">{</span>
+  <span class="token property">"API_URL"</span><span class="token operator">:</span> <span class="token string">"www.myapp.com/api"</span><span class="token punctuation">,</span>
+  <span class="token property">"ANALYTICS_KEY"</span><span class="token operator">:</span> <span class="token string">"yyyaaa"</span><span class="token punctuation">,</span>
+  <span class="token property">"ERROR_REPORTING_KEY"</span><span class="token operator">:</span> <span class="token string">"yyyeee"</span><span class="token punctuation">,</span>
+  <span class="token property">"IS_LOGGING_ENABLED"</span><span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// Config.js</span>
 
+<span class="token keyword">import</span> common <span class="token keyword">from</span> <span class="token string">"./common.config.json"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> prod <span class="token keyword">from</span> <span class="token string">"./prod.config.json"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> staging <span class="token keyword">from</span> <span class="token string">"./staging.config.json"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> dev <span class="token keyword">from</span> <span class="token string">"./dev.config.json"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> config <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">switch</span> <span class="token punctuation">(</span>window<span class="token punctuation">.</span>location<span class="token punctuation">.</span>hostname<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">case</span> <span class="token string">"www.myapp.com"</span><span class="token punctuation">:</span>
+    config <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token operator">...</span>common<span class="token punctuation">,</span> <span class="token operator">...</span>prod <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">break</span><span class="token punctuation">;</span>
+  <span class="token keyword">case</span> <span class="token string">"staging.myapp.com"</span><span class="token punctuation">:</span>
+    config <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token operator">...</span>common<span class="token punctuation">,</span> <span class="token operator">...</span>staging <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">break</span><span class="token punctuation">;</span>
+  <span class="token keyword">case</span> <span class="token string">"dev.myapp.com"</span><span class="token punctuation">:</span>
+    config <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token operator">...</span>common<span class="token punctuation">,</span> <span class="token operator">...</span>dev <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">break</span><span class="token punctuation">;</span>
+  <span class="token keyword">default</span><span class="token punctuation">:</span>
+    config <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token operator">...</span>common<span class="token punctuation">,</span> <span class="token operator">...</span>dev <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> config<span class="token punctuation">;</span></code></pre>
 <p>Advantages</p>
 <ul>
 <li>Same bundle (or docker image) can be used for all environments</li>

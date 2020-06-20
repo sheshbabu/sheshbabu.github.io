@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -294,4 +294,4 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
 <p>This idea can be extended even further by running visual regression tests for the feature branch against master branch’s Storybook to validate the build. Component testing libraries like Enzyme let you assert the DOM changes or event handling based on different inputs passed to a component. But there’s no way (that I know of) to assert the visual changes happening to a component for different inputs. Visual regression testing for Storybooks could help fill that void. Storybook acts as test suites/specs and visual regression tests are the assertions.</p>
 <p>Thanks for reading! :)</p>
 <p>Originally published in <a href="http://geeks.redmart.com/2018/11/14/how-we-use-storybook-for-documentation-and-code-reviews/" target="_blank" rel="noopener">geeks.redmart.com</a></p>
-</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/Development/">Development</a><span>, </span><a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Code-Reviews/">Code Reviews</a><span>, </span><a href="/tags/React/">React</a><span>, </span><a href="/tags/Maintainability/">Maintainability</a></div><div class="date-published">Published on: <time datetime="2018-11-14T04:03:54.000Z" itemprop="datePublished">14 Nov 2018</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/React/">React</a><span>, </span><a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Development/">Development</a><span>, </span><a href="/tags/Maintainability/">Maintainability</a><span>, </span><a href="/tags/Code-Reviews/">Code Reviews</a></div><div class="date-published">Published on: <time datetime="2018-11-14T04:03:54.000Z" itemprop="datePublished">14 Nov 2018</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

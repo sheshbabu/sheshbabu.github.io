@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -273,15 +273,45 @@ pre .deletion {
 ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Unit testing Express route handlers</h1></header><div class="entry"><p>We can unit test <a href="https://expressjs.com/" target="_blank" rel="noopener">Express.js</a> route handler functions using a mocking library called <a href="https://github.com/howardabrams/node-mocks-http" target="_blank" rel="noopener">node-mocks-http</a></p>
 <p>Let’s say we’ve a simple express app</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>);</span><br><span class="line"><span class="keyword">const</span> exampleRouter = <span class="built_in">require</span>(<span class="string">"./example-router"</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"></span><br><span class="line">app.use(<span class="string">"/example"</span>, exampleRouter);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// index.js</span>
+<span class="token keyword">const</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"express"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> exampleRouter <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./example-router"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token string">"/example"</span><span class="token punctuation">,</span> exampleRouter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>With route handler defined separately as</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// example-router.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">exampleRouteHandler</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.send(<span class="string">"hello world!"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = exampleRouteHandler;</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// example-router.js</span>
+<span class="token keyword">function</span> <span class="token function">exampleRouteHandler</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">"hello world!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> exampleRouteHandler<span class="token punctuation">;</span></code></pre>
 <p>For unit testing, we should be able to pass various inputs and see if we get correct outputs. Here, we should be able to pass valid request (<code>req</code>) and response (<code>res</code>) objects as inputs and since this function doesn’t return anything, we should be able to make assertions on the response object (<code>res</code>).</p>
 <p>We can do this by using node-mocks-http’s <a href="https://github.com/howardabrams/node-mocks-http#createrequest" target="_blank" rel="noopener">createRequest</a> and <a href="https://github.com/howardabrams/node-mocks-http#createresponse" target="_blank" rel="noopener">createResponse</a> apis.</p>
 <p>Let’s write a simple test for this using <a href="https://github.com/mochajs/mocha" target="_blank" rel="noopener">mocha</a></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// example-router.test.js</span></span><br><span class="line"><span class="keyword">const</span> assert = <span class="built_in">require</span>(<span class="string">"assert"</span>);</span><br><span class="line"><span class="keyword">const</span> httpMocks = <span class="built_in">require</span>(<span class="string">"node-mocks-http"</span>);</span><br><span class="line"><span class="keyword">const</span> exampleRouteHandler = <span class="built_in">require</span>(<span class="string">"./example-router"</span>);</span><br><span class="line"></span><br><span class="line">describe(<span class="string">"Example Router"</span>, () =&gt; &#123;</span><br><span class="line"></span><br><span class="line">  it(<span class="string">"should return 'hello world' for GET /example"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> mockRequest = httpMocks.createRequest(&#123;</span><br><span class="line">      method: <span class="string">"GET"</span>,</span><br><span class="line">      url: <span class="string">"/example"</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">const</span> mockResponse = httpMocks.createResponse();</span><br><span class="line"></span><br><span class="line">    exampleRouteHandler(mockRequest, mockResponse);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> actualResponseBody = mockResponse._getData();</span><br><span class="line">    <span class="keyword">const</span> expectedResponseBody = <span class="string">"hello world!"</span>;</span><br><span class="line">    assert(actualResponseBody, expectedResponseBody);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// example-router.test.js</span>
+<span class="token keyword">const</span> assert <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"assert"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> httpMocks <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"node-mocks-http"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> exampleRouteHandler <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./example-router"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+<span class="token function">describe</span><span class="token punctuation">(</span><span class="token string">"Example Router"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+
+  <span class="token function">it</span><span class="token punctuation">(</span><span class="token string">"should return 'hello world' for GET /example"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> mockRequest <span class="token operator">=</span> httpMocks<span class="token punctuation">.</span><span class="token function">createRequest</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      method<span class="token punctuation">:</span> <span class="token string">"GET"</span><span class="token punctuation">,</span>
+      url<span class="token punctuation">:</span> <span class="token string">"/example"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> mockResponse <span class="token operator">=</span> httpMocks<span class="token punctuation">.</span><span class="token function">createResponse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">exampleRouteHandler</span><span class="token punctuation">(</span>mockRequest<span class="token punctuation">,</span> mockResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">const</span> actualResponseBody <span class="token operator">=</span> mockResponse<span class="token punctuation">.</span><span class="token function">_getData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> expectedResponseBody <span class="token operator">=</span> <span class="token string">"hello world!"</span><span class="token punctuation">;</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>actualResponseBody<span class="token punctuation">,</span> expectedResponseBody<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>Checkout the <a href="https://github.com/howardabrams/node-mocks-http" target="_blank" rel="noopener">node-mocks-http repo</a> for more info.</p>
 </div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Testing/">Testing</a><span>, </span><a href="/tags/Node-js/">Node.js</a><span>, </span><a href="/tags/Express-js/">Express.js</a></div><div class="date-published">Published on: <time datetime="2017-07-08T02:22:49.000Z" itemprop="datePublished">08 Jul 2017</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

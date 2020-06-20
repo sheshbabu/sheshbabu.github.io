@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -273,23 +273,43 @@ pre .deletion {
 ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Running Express over HTTPS in localhost</h1></header><div class="entry"><p>There are times when you want to expose your Express server via HTTPS for local development.</p>
 <p>Let’s take a super simple Express code:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">"/"</span>, (req, res, next) =&gt; &#123;</span><br><span class="line">  res.send(<span class="string">"Hello World\n"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3001</span>);</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">const</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"express"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">,</span> next<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">"Hello World\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">3001</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>This will return “Hello World” when you hit <a href="http://localhost:3001" target="_blank" rel="noopener">http://localhost:3001</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> curl http://localhost:3001</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-shell"><code class="language-shell">$ curl http://localhost:3001
+Hello World</code></pre>
 <p>To run this in HTTPS, we need to install a tool called <a href="https://github.com/FiloSottile/mkcert" target="_blank" rel="noopener">mkcert</a>. Follow the <a href="https://github.com/FiloSottile/mkcert/blob/v1.4.1/README.md#installation" target="_blank" rel="noopener">installation instructions</a> or if you’re using macOS and Homebrew, run this command:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> brew install mkcert</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-shell"><code class="language-shell">$ brew install mkcert</code></pre>
 <p>Create a local <a href="https://en.wikipedia.org/wiki/Certificate_authority" target="_blank" rel="noopener">CA</a> and create certificate for localhost:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> mkcert -install</span><br><span class="line"><span class="meta">$</span> mkcert localhost</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-shell"><code class="language-shell">$ mkcert -install
+$ mkcert localhost</code></pre>
 <p>This will create a certificate file <code>localhost.pem</code> and key file <code>localhost-key.pem</code> in the current directory.</p>
 <p>Update the Express code as follows:</p>
-<figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="addition">+ const fs = require("fs");</span></span><br><span class="line"><span class="addition">+ const https = require("https");</span></span><br><span class="line"></span><br><span class="line">const express = require("express");</span><br><span class="line"></span><br><span class="line"><span class="addition">+ const key = fs.readFileSync("localhost-key.pem", "utf-8");</span></span><br><span class="line"><span class="addition">+ const cert = fs.readFileSync("localhost.pem", "utf-8");</span></span><br><span class="line"></span><br><span class="line">const app = express();</span><br><span class="line"></span><br><span class="line">app.get("/", (req, res, next) =&gt; &#123;</span><br><span class="line">  res.send("Hello World\n");</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="deletion">- app.listen(3001);</span></span><br><span class="line"><span class="addition">+ https.createServer(&#123; key, cert &#125;, app).listen(3001);</span></span><br></pre></td></tr></table></figure>
+<pre class=" language-diff"><code class="language-diff"><span class="token inserted">+ const fs = require("fs");</span>
+<span class="token inserted">+ const https = require("https");</span>
 
+const express = require("express");
+
+<span class="token inserted">+ const key = fs.readFileSync("localhost-key.pem", "utf-8");</span>
+<span class="token inserted">+ const cert = fs.readFileSync("localhost.pem", "utf-8");</span>
+
+const app = express();
+
+app.get("/", (req, res, next) => {
+  res.send("Hello World\n");
+});
+
+<span class="token deleted">- app.listen(3001);</span>
+<span class="token inserted">+ https.createServer({ key, cert }, app).listen(3001);</span></code></pre>
 <p>And you’re done!</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> curl https://localhost:3001</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-shell"><code class="language-shell">$ curl https://localhost:3001
+Hello World</code></pre>
 <p>You can find the full codebase in <a href="https://github.com/sheshbabu/express-https-localhost" target="_blank" rel="noopener">this repo</a>.</p>
 </div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/Node-js/">Node.js</a><span>, </span><a href="/tags/Express-js/">Express.js</a></div><div class="date-published">Published on: <time datetime="2020-06-19T11:29:14.000Z" itemprop="datePublished">19 Jun 2020</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

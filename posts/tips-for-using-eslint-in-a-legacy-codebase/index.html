@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -273,25 +273,35 @@ pre .deletion {
 ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Tips for using ESLint in a legacy codebase</h1></header><div class="entry"><p>ESLint is a fantastic tool that helps in detecting problematic patterns in codebase and enforcing coding conventions. It’s a must-have tool for any team trying to maintain high quality JavaScript codebases. </p>
 <p>However, when you’re introducing ESLint to a legacy codebase for the first time, it’s hard not to feel overwhelmed by the bajillion errors it throws. </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> eslint .</span><br><span class="line"></span><br><span class="line">✖ 20983 problems (20983 errors, 0 warnings)</span><br><span class="line">  19032 errors, 0 warnings potentially fixable with the `--fix` option.</span><br></pre></td></tr></table></figure>
+<pre class=" language-shell"><code class="language-shell">$ eslint .
 
+✖ 20983 problems (20983 errors, 0 warnings)
+  19032 errors, 0 warnings potentially fixable with the `--fix` option.</code></pre>
 <p>It’s understandable that the old code was written without the ESLint rules in mind but it becomes a problem when errors in any new code written gets drowned in all that noise. In this blog post, I’ll go through some techniques that can help you significantly reduce the amount of errors you see.</p>
 <h2 id="Autofix"><a href="#Autofix" class="headerlink" title="Autofix"></a>Autofix</h2><p>ESLint has this very useful <a href="https://eslint.org/docs/user-guide/command-line-interface#--fix" target="_blank" rel="noopener">utility</a> that automatically fixes most of the errors. What can be and cannot be fixed depends on the rules themselves. The impact of this on reducing the number of errors depends on the codebase and the config used. If you notice in the above shell snippet, out of <code>20983</code> errors, <code>19032</code> can be automatically fixed! Let’s do that:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> eslint --fix .</span><br><span class="line"></span><br><span class="line">✖ 1700 problems (1700 errors, 0 warnings)</span><br></pre></td></tr></table></figure>
+<pre class=" language-shell"><code class="language-shell">$ eslint --fix .
 
+✖ 1700 problems (1700 errors, 0 warnings)</code></pre>
 <p><code>1700</code> errors sounds a lot more manageable than <code>20983</code>!</p>
 <h2 id="Specifying-environments-and-globals"><a href="#Specifying-environments-and-globals" class="headerlink" title="Specifying environments and globals"></a>Specifying environments and globals</h2><p>Each JS environment (Browser, Nodejs, etc) has it’s own set of host/global objects (window, process, setTimeout etc) in addition to native JS objects (Date, parseInt etc). ESLint doesn’t assume an environment, so you might see errors like <code>&#39;window&#39; is not defined</code> or <code>&#39;setTimeout&#39; is not defined</code>. By <a href="https://eslint.org/docs/user-guide/configuring#specifying-environments" target="_blank" rel="noopener">specifying environments</a>, these errors can be fixed.</p>
 <p>Up until a few years back, the most common way of adding dependencies to a web codebase was to use <code>&lt;script&gt;</code> tags and they expose their apis using global variables like <code>$</code> for jQuery, <code>_</code> for underscore etc. You might see errors like <code>&#39;$&#39; is not defined</code> or <code>&#39;moment&#39; is not defined</code>. These errors can be fixed by <a href="https://eslint.org/docs/user-guide/configuring#specifying-globals" target="_blank" rel="noopener">specifying globals</a>.</p>
 <h2 id="Disabling-rules"><a href="#Disabling-rules" class="headerlink" title="Disabling rules"></a>Disabling rules</h2><p>This should be the last resort and before we start disabling rules left and right, let’s go through the different levels in which we can disable rules:</p>
 <h4 id="Line-level"><a href="#Line-level" class="headerlink" title="Line level"></a>Line level</h4><p>This disables rules for a line</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">alert(<span class="string">'foo'</span>); <span class="comment">// eslint-disable-line no-alert, quotes, semi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// eslint-disable-next-line no-alert, quotes, semi</span></span><br><span class="line">alert(<span class="string">'foo'</span>);</span><br></pre></td></tr></table></figure>
+<pre class=" language-js"><code class="language-js"><span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// eslint-disable-line no-alert, quotes, semi</span>
 
+<span class="token comment" spellcheck="true">// eslint-disable-next-line no-alert, quotes, semi</span>
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <h4 id="Block-level"><a href="#Block-level" class="headerlink" title="Block level"></a>Block level</h4><p>This disables rules for multiple lines</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* eslint-disable no-alert, no-console */</span></span><br><span class="line"></span><br><span class="line">alert(<span class="string">'foo'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'bar'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* eslint-enable no-alert, no-console */</span></span><br></pre></td></tr></table></figure>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">/* eslint-disable no-alert, no-console */</span>
 
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'bar'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/* eslint-enable no-alert, no-console */</span></code></pre>
 <h4 id="File-level"><a href="#File-level" class="headerlink" title="File level"></a>File level</h4><p>This disables rules for the whole file</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* eslint-disable no-alert */</span></span><br><span class="line"></span><br><span class="line">alert(<span class="string">'foo'</span>);</span><br></pre></td></tr></table></figure>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">/* eslint-disable no-alert */</span>
 
+<span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <h4 id="Directory-level"><a href="#Directory-level" class="headerlink" title="Directory level"></a>Directory level</h4><p>This disables rules for a directory. This is done by creating a new config file inside that directory. There can be multiple ESLint config files inside a project. The closest config file would override the config files defined in outer directories.</p>
 <p>This feature can be useful in situations where you need to disable some rules only a particular directory but still need those rules to be enabled for the rest of the codebase. For example, if you have <a href="https://eslint.org/docs/rules/no-magic-numbers" target="_blank" rel="noopener">no-magic-numbers</a> rule enabled and see a lot of errors from <code>tests/</code> directory because you’re using magic numbers in assertions, you can just disable this rule in a config file created inside the <code>tests/</code> directory.</p>
 <p>Learn more about this feature <a href="https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy" target="_blank" rel="noopener">here</a>.</p>
@@ -302,4 +312,4 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
 <p>It would be nice to have a tool that goes through the codebase and adds the <code>eslint-disable-line</code> comment for the affected lines, but I don’t know if such tool exists. </p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Using the steps above, all the errors in the codebase can be fixed or disabled. Any new errors would be only because of new code written and they can be fixed as soon as we see them. We can allocate some time depending on the bandwidth available to go through the disabled errors and fix them incrementally.</p>
 <p>Thanks for reading! If you liked this, you might also like: <a href="http://www.sheshbabu.com/posts/speed-up-your-code-reviews-using-eslint-and-prettier/">Speed up your code reviews using ESLint and Prettier</a></p>
-</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/Development/">Development</a><span>, </span><a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/ESLint/">ESLint</a></div><div class="date-published">Published on: <time datetime="2018-02-24T18:28:07.000Z" itemprop="datePublished">25 Feb 2018</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/ESLint/">ESLint</a><span>, </span><a href="/tags/Development/">Development</a></div><div class="date-published">Published on: <time datetime="2018-02-24T18:28:07.000Z" itemprop="datePublished">25 Feb 2018</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

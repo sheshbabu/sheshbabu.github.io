@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -274,10 +274,23 @@ ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Disabling Bunyan in tests</h1></header><div class="entry"><p>Bunyan (as of v1.8.10) doesn’t provide an explicit api to mute logging. This is especially useful when you’re running unit tests and don’t want logs and test reports to be mixed. </p>
 <p>One workaround <a href="https://github.com/trentm/node-bunyan/issues/456#issuecomment-259052991" target="_blank" rel="noopener">suggested</a> by the author is to set the log level to a value above <code>FATAL</code>.</p>
 <p>Set an environment variable when running tests:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"NODE_ENV=test mocha"</span></span><br><span class="line">  &#125;</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// package.json</span>
+<span class="token operator">...</span>
+<span class="token operator">...</span>
+  <span class="token string">"scripts"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"test"</span><span class="token punctuation">:</span> <span class="token string">"NODE_ENV=test mocha"</span>
+  <span class="token punctuation">}</span>
+<span class="token operator">...</span>
+<span class="token operator">...</span></code></pre>
 <p>Check for it in the logger module and if it matches, set the log level above <code>FATAL</code>.</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// logger.js</span></span><br><span class="line"><span class="keyword">const</span> bunyan = <span class="built_in">require</span>(<span class="string">"bunyan"</span>);</span><br><span class="line"><span class="keyword">const</span> logger = bunyan.createLogger(&#123;<span class="attr">name</span>: <span class="string">"myapp"</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (process.env.NODE_ENV === <span class="string">"test"</span>) &#123;</span><br><span class="line">  logger.level(bunyan.FATAL + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = logger;</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// logger.js</span>
+<span class="token keyword">const</span> bunyan <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"bunyan"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> logger <span class="token operator">=</span> bunyan<span class="token punctuation">.</span><span class="token function">createLogger</span><span class="token punctuation">(</span><span class="token punctuation">{</span>name<span class="token punctuation">:</span> <span class="token string">"myapp"</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+<span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">===</span> <span class="token string">"test"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  logger<span class="token punctuation">.</span><span class="token function">level</span><span class="token punctuation">(</span>bunyan<span class="token punctuation">.</span>FATAL <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> logger<span class="token punctuation">;</span></code></pre>
 <p> This disables logging when running tests.</p>
 </div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Testing/">Testing</a><span>, </span><a href="/tags/Node-js/">Node.js</a><span>, </span><a href="/tags/Bunyan/">Bunyan</a><span>, </span><a href="/tags/Logging/">Logging</a></div><div class="date-published">Published on: <time datetime="2017-07-25T14:03:33.000Z" itemprop="datePublished">25 Jul 2017</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

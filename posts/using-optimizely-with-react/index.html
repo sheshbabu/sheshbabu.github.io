@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -276,10 +276,62 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
 <p>In Optimizely, the above is called an “Experiment” and both “Control” and “Variation” are the experiment’s “Variations”. Once you create an experiment and its variations, you’ll be shown an visual editor where you can customise the appearance of each variation by modifying/rearranging the elements in the page. The visual editor then translates those cutomisations into jQuery code called <code>Variation Code</code>. Depending on which variation an user is grouped into, the Optimizely library loads the appropriate <code>Variation Code</code> and thus displaying different UIs.</p>
 <p>This workflow works well for static websites, but if the website is dynamic and uses React, then letting the <code>Variation Code</code> do arbitrary DOM manipulations doesn’t look like a good idea.</p>
 <p>One solution is to create different components for each variation and using a container component to render the correct variation. But before that we need to know which variation the user belongs to and if the experiment is running (active) or not. Fortunately, Optimizely exposes <a href="http://developers.optimizely.com/javascript/reference/#the-data-object" target="_blank" rel="noopener">Data Object</a> which can be used to get the above data. We can use <code>window.optimizely.data.state.activeExperiments</code> to get the list of all running experiments and <code>window.optimizely.data.state.variationIdsMap[&lt;experimentId&gt;][0]</code> to get the variation the user belongs to.</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// abtest-container.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> AbTestContainer = React.createClass(&#123;</span><br><span class="line"></span><br><span class="line">  propTypes: &#123;</span><br><span class="line">    experimentId: React.PropTypes.string.isRequired,</span><br><span class="line">    defaultVariationId: React.PropTypes.string.isRequired,</span><br><span class="line">    variations: React.PropTypes.arrayOf(React.PropTypes.shape(&#123;</span><br><span class="line">      variationId: React.PropTypes.string.isRequired,</span><br><span class="line">      component: React.PropTypes.element.isRequired</span><br><span class="line">    &#125;))</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  getVariation: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Make sure you perform appropriate guard checks before using this in production!</span></span><br><span class="line">    <span class="keyword">var</span> activeExperiments = <span class="built_in">window</span>.optimizely.data.state.activeExperiments;</span><br><span class="line">    <span class="keyword">var</span> isExperimentActive = _.contains(activeExperiments, <span class="keyword">this</span>.props.experimentId);</span><br><span class="line">    <span class="keyword">var</span> variation, variationId;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isExperimentActive) &#123;</span><br><span class="line">      variationId = <span class="built_in">window</span>.optimizely.data.state.variationIdsMap[experimentId][<span class="number">0</span>];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      variationId = <span class="keyword">this</span>.props.defaultVariationId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    variation = _.findWhere(<span class="keyword">this</span>.props.variations, &#123; <span class="attr">variationId</span>: variationId &#125;);</span><br><span class="line">    <span class="keyword">return</span> variation;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  render: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.getVariation();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// abtest-container.js</span>
 
+<span class="token keyword">var</span> AbTestContainer <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">createClass</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+
+    propTypes<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        experimentId<span class="token punctuation">:</span> React<span class="token punctuation">.</span>PropTypes<span class="token punctuation">.</span>string<span class="token punctuation">.</span>isRequired<span class="token punctuation">,</span>
+        defaultVariationId<span class="token punctuation">:</span> React<span class="token punctuation">.</span>PropTypes<span class="token punctuation">.</span>string<span class="token punctuation">.</span>isRequired<span class="token punctuation">,</span>
+        variations<span class="token punctuation">:</span> React<span class="token punctuation">.</span>PropTypes<span class="token punctuation">.</span><span class="token function">arrayOf</span><span class="token punctuation">(</span>React<span class="token punctuation">.</span>PropTypes<span class="token punctuation">.</span><span class="token function">shape</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            variationId<span class="token punctuation">:</span> React<span class="token punctuation">.</span>PropTypes<span class="token punctuation">.</span>string<span class="token punctuation">.</span>isRequired<span class="token punctuation">,</span>
+            component<span class="token punctuation">:</span> React<span class="token punctuation">.</span>PropTypes<span class="token punctuation">.</span>element<span class="token punctuation">.</span>isRequired
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    getVariation<span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// Make sure you perform appropriate guard checks before using this in production!</span>
+        <span class="token keyword">var</span> activeExperiments <span class="token operator">=</span> window<span class="token punctuation">.</span>optimizely<span class="token punctuation">.</span>data<span class="token punctuation">.</span>state<span class="token punctuation">.</span>activeExperiments<span class="token punctuation">;</span>
+        <span class="token keyword">var</span> isExperimentActive <span class="token operator">=</span> _<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>activeExperiments<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>experimentId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> variation<span class="token punctuation">,</span> variationId<span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>isExperimentActive<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            variationId <span class="token operator">=</span> window<span class="token punctuation">.</span>optimizely<span class="token punctuation">.</span>data<span class="token punctuation">.</span>state<span class="token punctuation">.</span>variationIdsMap<span class="token punctuation">[</span>experimentId<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            variationId <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>defaultVariationId<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        variation <span class="token operator">=</span> _<span class="token punctuation">.</span><span class="token function">findWhere</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>variations<span class="token punctuation">,</span> <span class="token punctuation">{</span> variationId<span class="token punctuation">:</span> variationId <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> variation<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    render<span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getVariation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
 <p>And this can be used as follows</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// products-page.js</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">render: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> variations = [</span><br><span class="line">    &#123; <span class="attr">variationId</span>: <span class="string">'111'</span>, <span class="attr">component</span>: &lt;ProductGrid/&gt; &#125;,</span><br><span class="line">    &#123; <span class="attr">variationId</span>: <span class="string">'222'</span>, <span class="attr">component</span>: &lt;ProductGridWithAdditionalDetails/&gt; &#125;</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;AbTestContainer</span><br><span class="line">      experimentId=<span class="string">'000'</span></span><br><span class="line">      defaultVariationId=<span class="string">'111'</span></span><br><span class="line">      variations=&#123;variations&#125;</span><br><span class="line">    /&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// products-page.js</span>
 
+<span class="token operator">...</span>
+
+render<span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> variations <span class="token operator">=</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span> variationId<span class="token punctuation">:</span> <span class="token string">'111'</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> <span class="token operator">&lt;</span>ProductGrid<span class="token operator">/</span><span class="token operator">></span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> variationId<span class="token punctuation">:</span> <span class="token string">'222'</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> <span class="token operator">&lt;</span>ProductGridWithAdditionalDetails<span class="token operator">/</span><span class="token operator">></span> <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+        <span class="token operator">&lt;</span>AbTestContainer
+            experimentId<span class="token operator">=</span><span class="token string">'000'</span>
+            defaultVariationId<span class="token operator">=</span><span class="token string">'111'</span>
+            variations<span class="token operator">=</span><span class="token punctuation">{</span>variations<span class="token punctuation">}</span>
+        <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token operator">...</span>
+</code></pre>
 <p>The IDs for experiment and variations would be present in the visual editor page under “Options -&gt; Diagnostic Report”.</p>
-</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/React/">React</a><span>, </span><a href="/tags/Optimizely/">Optimizely</a></div><div class="date-published">Published on: <time datetime="2016-07-31T08:34:00.000Z" itemprop="datePublished">31 Jul 2016</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/React/">React</a><span>, </span><a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Optimizely/">Optimizely</a></div><div class="date-published">Published on: <time datetime="2016-07-31T08:34:00.000Z" itemprop="datePublished">31 Jul 2016</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

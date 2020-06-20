@@ -1,0 +1,466 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Automatic PageView Tracking using React Router</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Automatic PageView Tracking using React Router"><meta name="keywords" content="Google Analytics, Amplitude, React, PageView"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Automatic PageView Tracking using React Router"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry img,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+pre[class*="language"] {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+pre[class*="language"] figcaption {
+  margin-bottom: 5px;
+}
+
+pre[class*="language"] figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+pre[class*="language"] pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+pre[class*="language"] table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+pre[class*="language"] .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+pre[class*="language"] .code {
+  color: #666;
+}
+
+pre[class*="language"] .line {
+  height: 25px;
+}
+
+pre[class*="language"] .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .addition,
+pre .inserted,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deleted,
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Automatic PageView Tracking using React Router</h1></header><div class="entry"><p>Analytics providers like Google Analytics, Amplitude etc work really well with server rendered pages for tracking pageviews but fall short when you want to use them in Single Page Applications (SPA).</p>
+<p>You would need to manually call their pageview tracking apis on every navigation.</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// Google Analytics</span>
+<span class="token function">ga</span><span class="token punctuation">(</span><span class="token string">"set"</span><span class="token punctuation">,</span> <span class="token string">"page"</span><span class="token punctuation">,</span> <span class="token string">"/account"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">ga</span><span class="token punctuation">(</span><span class="token string">"send"</span><span class="token punctuation">,</span> <span class="token string">"pageview"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// Amplitude</span>
+amplitude<span class="token punctuation">.</span><span class="token function">logEvent</span><span class="token punctuation">(</span><span class="token string">"PageView"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> path<span class="token punctuation">:</span> <span class="token string">"/account"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// Freshlytics</span>
+window<span class="token punctuation">.</span>__freshlytics__<span class="token punctuation">.</span><span class="token function">sendPageView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>For example, let’s take a simple React app that has 3 routes:</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> BrowserRouter<span class="token punctuation">,</span> Switch<span class="token punctuation">,</span> Route<span class="token punctuation">,</span> Link <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"react-router-dom"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token function">App</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>BrowserRouter<span class="token operator">></span>
+      <span class="token operator">&lt;</span>NavBar <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>Routes <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>BrowserRouter<span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">NavBar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>nav<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token string">"/"</span><span class="token operator">></span>Home<span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token string">"/users"</span><span class="token operator">></span>Users<span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token string">"/about"</span><span class="token operator">></span>About<span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>nav<span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">Routes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>Switch<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Route exact path<span class="token operator">=</span><span class="token string">"/"</span> component<span class="token operator">=</span><span class="token punctuation">{</span>HomePage<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>Route exact path<span class="token operator">=</span><span class="token string">"/users"</span> component<span class="token operator">=</span><span class="token punctuation">{</span>UsersPage<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>Route exact path<span class="token operator">=</span><span class="token string">"/about"</span> component<span class="token operator">=</span><span class="token punctuation">{</span>AboutPage<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>Switch<span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">HomePage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>h2<span class="token operator">></span>Home<span class="token operator">&lt;</span><span class="token operator">/</span>h2<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">UsersPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>h2<span class="token operator">></span>Users<span class="token operator">&lt;</span><span class="token operator">/</span>h2<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">AboutPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>h2<span class="token operator">></span>About<span class="token operator">&lt;</span><span class="token operator">/</span>h2<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>To track the pageviews, we need to call the tracking api during <a href="https://reactjs.org/docs/react-component.html#mounting" target="_blank" rel="noopener">mount</a> in each of these pages</p>
+<pre class=" language-diff"><code class="language-diff">function HomePage() {
+<span class="token inserted">+ React.useEffect(() => {</span>
+<span class="token inserted">+   ga("set", "page", "/");</span>
+<span class="token inserted">+   ga("send", "pageview");</span>
+<span class="token inserted">+ }, []);</span>
+
+  return &lt;h2>Home&lt;/h2>;
+}
+
+function UsersPage() {
+<span class="token inserted">+ React.useEffect(() => {</span>
+<span class="token inserted">+   ga("set", "page", "/users");</span>
+<span class="token inserted">+   ga("send", "pageview");</span>
+<span class="token inserted">+ }, []);</span>
+
+  return &lt;h2>Users&lt;/h2>;
+}
+
+function AboutPage() {
+<span class="token inserted">+ React.useEffect(() => {</span>
+<span class="token inserted">+   ga("set", "page", "/about");</span>
+<span class="token inserted">+   ga("send", "pageview");</span>
+<span class="token inserted">+ }, []);</span>
+
+  return &lt;h2>About&lt;/h2>;
+}</code></pre>
+<p>Not terrible, but there are some problems:</p>
+<ul>
+<li>The url paths (“/“, “/users”, “/about”) should be kept in sync with the router</li>
+<li>The same code is repeated in multiple page components</li>
+<li>Developers might forget to add this when creating new pages</li>
+</ul>
+<p>To avoid hardcoding the url paths, we can use the <code>window.location.pathname</code> api</p>
+<pre class=" language-diff"><code class="language-diff">function HomePage() {
+  React.useEffect(() => {
+<span class="token deleted">-   ga("set", "page", "/");</span>
+<span class="token inserted">+   ga("set", "page", window.location.pathname);</span>
+    ga("send", "pageview");
+  }, []);
+
+  return &lt;h2>Home&lt;/h2>;
+}
+
+function UsersPage() {
+  React.useEffect(() => {
+<span class="token deleted">-   ga("set", "page", "/users");</span>
+<span class="token inserted">+   ga("set", "page", window.location.pathname);</span>
+    ga("send", "pageview");
+  }, []);
+
+  return &lt;h2>Users&lt;/h2>;
+}
+
+function AboutPage() {
+  React.useEffect(() => {
+<span class="token deleted">-   ga("set", "page", "/about");</span>
+<span class="token inserted">+   ga("set", "page", window.location.pathname);</span>
+    ga("send", "pageview");
+  }, []);
+
+  return &lt;h2>About&lt;/h2>;
+}</code></pre>
+<p>To fix code duplication and centralize the pageview tracking, we can use the <code>history</code> object and listen to it for navigation events. When navigation occurs, we can send the pageview event.</p>
+<pre class=" language-diff"><code class="language-diff">import React from "react";
+<span class="token deleted">- import { BrowserRouter, Switch, Route, Link } from "react-router-dom";</span>
+<span class="token inserted">+ import { BrowserRouter, Switch, Route, Link, useHistory } from "react-router-dom";</span>
+
+export default function App() {
+  return (
+    &lt;BrowserRouter>
+      &lt;NavBar />
+      &lt;Routes />
+    &lt;/BrowserRouter>
+  );
+}
+
+function NavBar() {
+  return (
+    &lt;nav>
+      &lt;Link to="/">Home&lt;/Link>
+      &lt;Link to="/users">Users&lt;/Link>
+      &lt;Link to="/about">About&lt;/Link>
+    &lt;/nav>
+  );
+}
+
+function Routes() {
+<span class="token inserted">+  const history = useHistory();</span>
+<span class="token inserted">+</span>
+<span class="token inserted">+  React.useEffect(() => {</span>
+<span class="token inserted">+    trackPageView(); // To track the first pageview upon load</span>
+<span class="token inserted">+    history.listen(trackPageView); // To track the subsequent pageviews</span>
+<span class="token inserted">+  }, [history]);</span>
+<span class="token inserted">+</span>
+<span class="token inserted">+  function trackPageView() {</span>
+<span class="token inserted">+    ga("set", "page", window.location.pathname);</span>
+<span class="token inserted">+    ga("send", "pageview");</span>
+<span class="token inserted">+  }</span>
+
+  return (
+    &lt;Switch>
+      &lt;Route exact path="/" component={HomePage} />
+      &lt;Route exact path="/users" component={UsersPage} />
+      &lt;Route exact path="/about" component={AboutPage} />
+    &lt;/Switch>
+  );
+}
+
+function HomePage() {
+<span class="token deleted">-  React.useEffect(() => {</span>
+<span class="token deleted">-    ga("set", "page", window.location.pathname);</span>
+<span class="token deleted">-    ga("send", "pageview");</span>
+<span class="token deleted">-  }, []);</span>
+
+  return &lt;h2>Home&lt;/h2>;
+}
+
+function UsersPage() {
+<span class="token deleted">-  React.useEffect(() => {</span>
+<span class="token deleted">-    ga("set", "page", window.location.pathname);</span>
+<span class="token deleted">-    ga("send", "pageview");</span>
+<span class="token deleted">-  }, []);</span>
+
+  return &lt;h2>Users&lt;/h2>;
+}
+
+function AboutPage() {
+<span class="token deleted">-  React.useEffect(() => {</span>
+<span class="token deleted">-    ga("set", "page", window.location.pathname);</span>
+<span class="token deleted">-    ga("send", "pageview");</span>
+<span class="token deleted">-  }, []);</span>
+
+  return &lt;h2>About&lt;/h2>;
+}</code></pre>
+<p>Now the pageviews for all routes can be tracked automatically without adding any tracking code in the page components! We can refine this further and extract the tracking logic in <code>Routes</code> component to a <a href="https://reactjs.org/docs/hooks-custom.html" target="_blank" rel="noopener">custom hook</a>.</p>
+<p>You can find a complete example in <a href="https://github.com/sheshbabu/react-pageview-tracking-demo" target="_blank" rel="noopener">this repo</a> and play with the <a href="https://react-pageview-tracking-demo.netlify.app" target="_blank" rel="noopener">demo here</a>.</p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/React/">React</a><span>, </span><a href="/tags/Analytics/">Analytics</a></div><div class="date-published">Published on: <time datetime="2020-06-20T06:27:51.000Z" itemprop="datePublished">20 Jun 2020</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

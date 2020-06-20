@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,6 +265,7 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
@@ -273,23 +273,63 @@ pre .deletion {
 ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Organizing HTTP requests using the API module pattern</h1></header><div class="entry"><p>Let’s say you’re writing a frontend for an online store. You would have to make requests to get the shopping cart, add items to the cart, get product details, search for a product, list all products, etc.</p>
 <p>If you’re directly calling <code>fetch</code> or <code>axios</code> in your code, they would look something like this.</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HomePage.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getAllProducts</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123; <span class="string">"x-secret-header"</span>: <span class="string">"ssshhh!"</span> &#125;;</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">"/api/products"</span>, &#123; headers &#125;);</span><br><span class="line">  <span class="keyword">const</span> body = <span class="keyword">await</span> response.json();</span><br><span class="line">  <span class="keyword">return</span> body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// HomePage.js</span>
 
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CartPage.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">addToCart</span>(<span class="params">itemId, qty</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123; <span class="string">"x-secret-header"</span>: <span class="string">"ssshhh!"</span> &#125;;</span><br><span class="line">  <span class="keyword">const</span> payload = <span class="built_in">JSON</span>.stringify(&#123; itemId, qty &#125;);</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">"/api/cart"</span>, &#123;</span><br><span class="line">    method: <span class="string">"POST"</span>,</span><br><span class="line">    headers,</span><br><span class="line">    body: payload</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">const</span> body = <span class="keyword">await</span> response.json();</span><br><span class="line">  <span class="keyword">return</span> body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">getAllProducts</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"x-secret-header"</span><span class="token punctuation">:</span> <span class="token string">"ssshhh!"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"/api/products"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> headers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> body <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> body<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// CartPage.js</span>
 
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">addToCart</span><span class="token punctuation">(</span>itemId<span class="token punctuation">,</span> qty<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"x-secret-header"</span><span class="token punctuation">:</span> <span class="token string">"ssshhh!"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> payload <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token punctuation">{</span> itemId<span class="token punctuation">,</span> qty <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"/api/cart"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    method<span class="token punctuation">:</span> <span class="token string">"POST"</span><span class="token punctuation">,</span>
+    headers<span class="token punctuation">,</span>
+    body<span class="token punctuation">:</span> payload
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> body <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> body<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
 <p><img src="/images/2019-api/image-1.png" alt></p>
 <p>This is totally fine if you’re only making a handful of requests, but if your codebase makes a lot of HTTP requests, it might be better to abstract them into their own modules instead of calling them directly.</p>
 <h2 id="What-is-an-API-module"><a href="#What-is-an-API-module" class="headerlink" title="What is an API module?"></a>What is an API module?</h2><p>An API module is just a <a href="https://v8.dev/features/modules" target="_blank" rel="noopener">JS module</a> that contains HTTP logic organized by business domain. For the online store example, the business domains would be <code>Cart</code>, <code>Search</code>, <code>Inventory</code>, <code>Product Catalog</code>, <code>Order</code>, etc. The respective API modules would be <code>CartApi</code>, <code>SearchApi</code>, <code>InventoryApi</code>, <code>CatalogApi</code> and <code>OrderApi</code>.</p>
 <p>Let’s rewrite the above code using the API module pattern by creating <code>CartApi</code> and <code>CatalogApi</code> modules.</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CatalogApi.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getAllProducts</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123; <span class="string">"x-secret-header"</span>: <span class="string">"ssshhh!"</span> &#125;;</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">"/api/products"</span>, &#123; headers &#125;);</span><br><span class="line">  <span class="keyword">const</span> body = <span class="keyword">await</span> response.json();</span><br><span class="line">  <span class="keyword">return</span> body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// CatalogApi.js</span>
 
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CartApi.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">addToCart</span>(<span class="params">itemId, qty</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123; <span class="string">"x-secret-header"</span>: <span class="string">"ssshhh!"</span> &#125;;</span><br><span class="line">  <span class="keyword">const</span> payload = <span class="built_in">JSON</span>.stringify(&#123; itemId, qty &#125;);</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">"/api/cart"</span>, &#123;</span><br><span class="line">    method: <span class="string">"POST"</span>,</span><br><span class="line">    headers,</span><br><span class="line">    body: payload</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">const</span> body = <span class="keyword">await</span> response.json();</span><br><span class="line">  <span class="keyword">return</span> body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">getAllProducts</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"x-secret-header"</span><span class="token punctuation">:</span> <span class="token string">"ssshhh!"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"/api/products"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> headers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> body <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> body<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// CartApi.js</span>
 
+<span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">addToCart</span><span class="token punctuation">(</span>itemId<span class="token punctuation">,</span> qty<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"x-secret-header"</span><span class="token punctuation">:</span> <span class="token string">"ssshhh!"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> payload <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token punctuation">{</span> itemId<span class="token punctuation">,</span> qty <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"/api/cart"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    method<span class="token punctuation">:</span> <span class="token string">"POST"</span><span class="token punctuation">,</span>
+    headers<span class="token punctuation">,</span>
+    body<span class="token punctuation">:</span> payload
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> body <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> body<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
 <p>Now we can import these into the UI modules:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HomePage.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> CatalogApi <span class="keyword">from</span> <span class="string">"../api/CatalogApi"</span>;</span><br><span class="line"></span><br><span class="line">CatalogApi.getAllProducts();</span><br></pre></td></tr></table></figure>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// HomePage.js</span>
 
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CartPage.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> CartApi <span class="keyword">from</span> <span class="string">"../api/CartApi"</span>;</span><br><span class="line"></span><br><span class="line">CartApi.addToCart(itemId, qty);</span><br></pre></td></tr></table></figure>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> CatalogApi <span class="token keyword">from</span> <span class="token string">"../api/CatalogApi"</span><span class="token punctuation">;</span>
 
+CatalogApi<span class="token punctuation">.</span><span class="token function">getAllProducts</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// CartPage.js</span>
+
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> CartApi <span class="token keyword">from</span> <span class="token string">"../api/CartApi"</span><span class="token punctuation">;</span>
+
+CartApi<span class="token punctuation">.</span><span class="token function">addToCart</span><span class="token punctuation">(</span>itemId<span class="token punctuation">,</span> qty<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p><img src="/images/2019-api/image-3.png" alt></p>
 <h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
 <li>Improve readability and testability by abstracting the HTTP code away from the UI or business code</li>
@@ -305,13 +345,36 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
 <li>Using right config for production, development etc — hostnames, headers, etc</li>
 <li>Session handling etc</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HttpClient</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">request</span>(<span class="params">path, method, body</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> headers = &#123;&#125;; <span class="comment">// add custom headers here</span></span><br><span class="line">  <span class="keyword">const</span> url = <span class="string">""</span>; <span class="comment">// add logic to get correct url for the environment</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(url, &#123; method, body, headers &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// add response handling</span></span><br><span class="line">  <span class="comment">// - session management</span></span><br><span class="line">  <span class="comment">// - convert to correct data type - response.json(), etc</span></span><br><span class="line">  <span class="comment">// - handle common errors like 401, 403 etc</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> response;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// HttpClient</span>
 
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">request</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> method<span class="token punctuation">,</span> body<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// add custom headers here</span>
+  <span class="token keyword">const</span> url <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// add logic to get correct url for the environment</span>
+
+  <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">{</span> method<span class="token punctuation">,</span> body<span class="token punctuation">,</span> headers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// add response handling</span>
+  <span class="token comment" spellcheck="true">// - session management</span>
+  <span class="token comment" spellcheck="true">// - convert to correct data type - response.json(), etc</span>
+  <span class="token comment" spellcheck="true">// - handle common errors like 401, 403 etc</span>
+
+  <span class="token keyword">return</span> response<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
 <p>We can now update our API modules to use HttpClient:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CatalogApi.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> HttpClient <span class="keyword">from</span> <span class="string">"./HttpClient"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">getAllProducts</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> HttpClient.request(<span class="string">"/api/products"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// CatalogApi.js</span>
 
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CartApi.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> HttpClient <span class="keyword">from</span> <span class="string">"./HttpClient"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">addToCart</span>(<span class="params">itemId, qty</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> HttpClient.request(<span class="string">"/api/cart"</span>, <span class="string">"POST"</span>, &#123; itemId, qty &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> HttpClient <span class="token keyword">from</span> <span class="token string">"./HttpClient"</span><span class="token punctuation">;</span>
 
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">getAllProducts</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> HttpClient<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token string">"/api/products"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// CartApi.js</span>
+
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> HttpClient <span class="token keyword">from</span> <span class="token string">"./HttpClient"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">addToCart</span><span class="token punctuation">(</span>itemId<span class="token punctuation">,</span> qty<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> HttpClient<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token string">"/api/cart"</span><span class="token punctuation">,</span> <span class="token string">"POST"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> itemId<span class="token punctuation">,</span> qty <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
 <p><img src="/images/2019-api/image-2.png" alt></p>
 <p>Thanks for reading! :)</p>
 </div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Maintainability/">Maintainability</a></div><div class="date-published">Published on: <time datetime="2019-08-17T08:47:02.000Z" itemprop="datePublished">17 Aug 2019</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

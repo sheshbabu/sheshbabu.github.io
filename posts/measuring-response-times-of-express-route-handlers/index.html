@@ -116,8 +116,6 @@ img {
 .post-content .entry code {
   background: #fafafa;
   color: #666;
-  padding: 0 5px;
-  margin: 0 2px;
   border-radius: 3px;
   word-break: break-all;
 }
@@ -141,7 +139,7 @@ pre {
   font-family: var(--mono-font);
 }
 
-figure.highlight {
+pre[class*="language"] {
   background: hsl(230, 1%, 98%);
   margin-top: 15px;
   padding: 7px 15px;
@@ -151,41 +149,41 @@ figure.highlight {
   border-radius: 4px;
 }
 
-figure.highlight figcaption {
+pre[class*="language"] figcaption {
   margin-bottom: 5px;
 }
 
-figure.highlight figcaption a {
+pre[class*="language"] figcaption a {
   position: absolute;
   right: 15px;
 }
 
-figure.highlight pre {
+pre[class*="language"] pre {
   border: none;
   padding: 0;
   margin: 0;
   overflow-y: hidden;
 }
 
-figure.highlight table {
+pre[class*="language"] table {
   margin-top: 0;
   border-spacing: 0;
 }
 
-figure.highlight .gutter {
+pre[class*="language"] .gutter {
   padding-right: 15px;
   text-align: right;
 }
 
-figure.highlight .code {
+pre[class*="language"] .code {
   color: #666;
 }
 
-figure.highlight .line {
+pre[class*="language"] .line {
   height: 25px;
 }
 
-figure.highlight .line.marked {
+pre[class*="language"] .line.marked {
   background: #d6d6d6;
 }
 
@@ -221,6 +219,7 @@ pre .command,
 pre .string,
 pre .tag .value,
 pre .addition,
+pre .inserted,
 pre .phpdoc,
 pre .tex .formula,
 pre .regexp,
@@ -266,18 +265,45 @@ pre .clojure .title {
   color: hsl(41, 99%, 38%);
 }
 
+pre .deleted,
 pre .deletion {
   color: #dc322f;
 }
 </style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 ga('create', 'UA-78846816-1', 'auto');
 ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Measuring response times of Express route handlers</h1></header><div class="entry"><p>If we want to measure the total time taken for each route in an Express server, we can do so by adding a common middleware that tracks the time elapsed between the moment a request comes and before the response is sent back.</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>);</span><br><span class="line"><span class="keyword">const</span> logResponseTime = <span class="built_in">require</span>(<span class="string">"./response-time-logger"</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"></span><br><span class="line">app.use(logResponseTime);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">"/"</span>, (req, res) =&gt; &#123;</span><br><span class="line">  res.send(<span class="string">"hello"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">"/slow"</span>, (req, res) =&gt; &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">1e10</span>; i++) &#123;&#125;</span><br><span class="line">  res.send(<span class="string">"hello"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// index.js</span>
+<span class="token keyword">const</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"express"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> logResponseTime <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./response-time-logger"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// response-time-logger.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logResponseTime</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> startHrTime = process.hrtime();</span><br><span class="line"></span><br><span class="line">  res.on(<span class="string">"finish"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> elapsedHrTime = process.hrtime(startHrTime);</span><br><span class="line">    <span class="keyword">const</span> elapsedTimeInMs = elapsedHrTime[<span class="number">0</span>] * <span class="number">1000</span> + elapsedHrTime[<span class="number">1</span>] / <span class="number">1e6</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"%s : %fms"</span>, req.path, elapsedTimeInMs);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  next();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = logResponseTime;</span><br></pre></td></tr></table></figure>
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>logResponseTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">"/slow"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1e10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// response-time-logger.js</span>
+<span class="token keyword">function</span> <span class="token function">logResponseTime</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">,</span> next<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> startHrTime <span class="token operator">=</span> process<span class="token punctuation">.</span><span class="token function">hrtime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  res<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"finish"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> elapsedHrTime <span class="token operator">=</span> process<span class="token punctuation">.</span><span class="token function">hrtime</span><span class="token punctuation">(</span>startHrTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> elapsedTimeInMs <span class="token operator">=</span> elapsedHrTime<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">1000</span> <span class="token operator">+</span> elapsedHrTime<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">/</span> <span class="token number">1e6</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"%s : %fms"</span><span class="token punctuation">,</span> req<span class="token punctuation">.</span>path<span class="token punctuation">,</span> elapsedTimeInMs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> logResponseTime<span class="token punctuation">;</span></code></pre>
 <p>Calling the above two endpoints would log</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/ : 1.791791ms</span><br><span class="line">/slow : 18541.045675ms</span><br></pre></td></tr></table></figure>
-
-<p>The <code>index.js</code> is the entrypoint to our server and that’s usually the place where all the common middlewares are added. The <code>logResponseTime</code> middleware needs to be at the top because we want to be as accurate as possible when we measure the time taken for each route in our Express server. The <a href="https://nodejs.org/api/process.html#process_process_hrtime_time" target="_blank" rel="noopener">process.hrtime</a> api is used to measure the elapsed time as it is more accurate than just using the <code>Date</code> api.</p>
+<pre><code>/ : 1.791791ms
+/slow : 18541.045675ms</code></pre><p>The <code>index.js</code> is the entrypoint to our server and that’s usually the place where all the common middlewares are added. The <code>logResponseTime</code> middleware needs to be at the top because we want to be as accurate as possible when we measure the time taken for each route in our Express server. The <a href="https://nodejs.org/api/process.html#process_process_hrtime_time" target="_blank" rel="noopener">process.hrtime</a> api is used to measure the elapsed time as it is more accurate than just using the <code>Date</code> api.</p>
 </div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Node-js/">Node.js</a><span>, </span><a href="/tags/Express-js/">Express.js</a></div><div class="date-published">Published on: <time datetime="2018-01-27T10:57:03.000Z" itemprop="datePublished">27 Jan 2018</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
