@@ -4,7 +4,7 @@
   <url>
     <loc>http://www.sheshbabu.com/posts/automatic-pageview-tracking-using-react-router/</loc>
     
-    <lastmod>2020-06-20T12:44:30.484Z</lastmod>
+    <lastmod>2020-06-21T03:54:18.158Z</lastmod>
     
   </url>
   
@@ -44,14 +44,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
+    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
+    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
@@ -72,13 +72,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
@@ -86,7 +79,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
+    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
@@ -94,6 +87,13 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/speed-up-your-code-reviews-using-eslint-and-prettier/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
@@ -114,13 +114,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
@@ -128,14 +121,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
-    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
+    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
+    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
@@ -157,6 +150,13 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
