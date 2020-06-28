@@ -67,3 +67,16 @@ a {
 img {
   width: 100%;
 }
+
+table {
+  width: 100%;
+  border-spacing: unset;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  border: 1px solid black;
+  padding: 8px;
+}

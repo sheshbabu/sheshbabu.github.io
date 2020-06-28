@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/</loc>
+    
+    <lastmod>2020-06-28T14:20:25.901Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/automatic-pageview-tracking-using-react-router/</loc>
     
     <lastmod>2020-06-21T03:54:18.158Z</lastmod>
@@ -86,13 +93,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/speed-up-your-code-reviews-using-eslint-and-prettier/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
@@ -103,6 +103,20 @@
     <loc>http://www.sheshbabu.com/posts/redmart-experience-with-pwa/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/speed-up-your-code-reviews-using-eslint-and-prettier/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
   </url>
   
@@ -121,14 +135,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
+    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
@@ -156,7 +163,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
+    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     

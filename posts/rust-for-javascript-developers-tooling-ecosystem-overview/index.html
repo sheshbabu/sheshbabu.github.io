@@ -1,0 +1,391 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Rust for JavaScript Developers - Tooling Ecosystem Overview</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Rust for JavaScript Developers - Tooling Ecosystem Overview"><meta name="keywords" content="Rust, JavaScript, Cargo, NPM"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Rust for JavaScript Developers - Tooling Ecosystem Overview"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-spacing: unset;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  border: 1px solid black;
+  padding: 8px;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry img,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+pre[class*="language"] {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+pre[class*="language"] figcaption {
+  margin-bottom: 5px;
+}
+
+pre[class*="language"] figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+pre[class*="language"] pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+pre[class*="language"] table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+pre[class*="language"] .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+pre[class*="language"] .code {
+  color: #666;
+}
+
+pre[class*="language"] .line {
+  height: 25px;
+}
+
+pre[class*="language"] .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .addition,
+pre .inserted,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deleted,
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Rust for JavaScript Developers - Tooling Ecosystem Overview</h1></header><div class="entry"><p>This is the first part in a series about introducing the Rust language to JavaScript developers.</p>
+<p>I find it easier to understand something new if it was explained in terms of something I already know - I thought there might be others like me :)</p>
+<p>Here’s the tl;dr version:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>JavaScript</th>
+<th>Rust</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Version Manager</td>
+<td>nvm</td>
+<td>rustup</td>
+</tr>
+<tr>
+<td>Package Manager</td>
+<td>npm</td>
+<td>Cargo</td>
+</tr>
+<tr>
+<td>Package Registry</td>
+<td>npmjs.com</td>
+<td>crates.io</td>
+</tr>
+<tr>
+<td>Package Manifest</td>
+<td>package.json</td>
+<td>Cargo.toml</td>
+</tr>
+<tr>
+<td>Dependency Lockfile</td>
+<td>package-lock.json</td>
+<td>Cargo.lock</td>
+</tr>
+<tr>
+<td>Task Runner</td>
+<td>npm scripts, gulp etc</td>
+<td>make, cargo-make</td>
+</tr>
+<tr>
+<td>Live Reload</td>
+<td>nodemon</td>
+<td>cargo-watch</td>
+</tr>
+<tr>
+<td>Linter</td>
+<td>ESLint, TSLint, JSLint</td>
+<td>Clippy</td>
+</tr>
+<tr>
+<td>Formatter</td>
+<td>Prettier</td>
+<td>rustfmt</td>
+</tr>
+<tr>
+<td>Dependency Vulnerability Checker</td>
+<td>npm audit</td>
+<td>cargo-audit</td>
+</tr>
+</tbody></table>
+<h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><p>Rust is installed using the <a href="https://rustup.rs" target="_blank" rel="noopener">rustup</a> command. rustup is similar to <a href="https://github.com/nvm-sh/nvm" target="_blank" rel="noopener">nvm</a> in Node.js. You can use it to install and manage multiple versions of Rust and more.</p>
+<h2 id="Cargo"><a href="#Cargo" class="headerlink" title="Cargo"></a>Cargo</h2><p>Installing Rust using rustup also installs Cargo similar to how installing Node.js also installs NPM. Cargo is Rust’s package manager and would feel very familiar if you’ve used NPM before.</p>
+<p>Rust’s packages are called “crates”, and they’re downloaded from the <a href="https://crates.io" target="_blank" rel="noopener">crates.io</a> registry similar to how NPM packages are downloaded from <a href="https://www.npmjs.com" target="_blank" rel="noopener">npmjs.com</a>.</p>
+<p>NPM while primarily a package manager, is also used as a task runner using the <a href="https://docs.npmjs.com/misc/scripts" target="_blank" rel="noopener">npm scripts</a> feature. Cargo has builtin support for common tasks like running code, building code etc. Cargo has features like <a href="https://doc.rust-lang.org/cargo/reference/workspaces.html" target="_blank" rel="noopener">workspaces</a> (similar to <a href="https://lerna.js.org" target="_blank" rel="noopener">lerna</a>), <a href="https://doc.rust-lang.org/cargo/reference/overriding-dependencies.html" target="_blank" rel="noopener">dependency overrides</a> (similar to <a href="https://www.npmjs.com/package/patch-package" target="_blank" rel="noopener">patch-package</a>) out of the box. It is also a test runner (similar to mocha, jest etc), benchmark runner etc.</p>
+<p>So basically, Cargo is NPM on steroids!</p>
+<h2 id="Project-Setup"><a href="#Project-Setup" class="headerlink" title="Project Setup"></a>Project Setup</h2><p>Creating a new project is done by running</p>
+<pre class=" language-shell"><code class="language-shell">$ cargo new hello_rust</code></pre>
+<p>This is somewhat similar to <code>npm init</code>. This creates a directory called “hello_rust” with the following files:</p>
+<pre class=" language-shell"><code class="language-shell">hello_rust
+├── .git
+├── .gitignore
+├── Cargo.toml
+└─┬ src
+  └── main.rs</code></pre>
+<h2 id="Cargo-toml"><a href="#Cargo-toml" class="headerlink" title="Cargo.toml"></a>Cargo.toml</h2><p>This is the package manifest file similar to package.json. The lock file (package-lock.json equivalent) is named Cargo.lock. Opening the Cargo.toml, you’ll see a familiar layout:</p>
+<pre class=" language-toml"><code class="language-toml">[package]
+name = "hello_rust"
+version = "0.1.0"
+authors = ["sheshbabu"]
+edition = "2018"
+
+[dependencies]</code></pre>
+<p>The <code>[package]</code> <a href="https://toml.io/en/v0.5.0#section-16" target="_blank" rel="noopener">table</a> contains metadata like the crate name, author, keywords etc. The <code>[dependencies]</code> table is similar to the <a href="https://docs.npmjs.com/files/package.json#dependencies" target="_blank" rel="noopener">dependencies object in package.json</a>. Cargo.toml also supports <code>[dev-dependencies]</code> similar to <a href="https://docs.npmjs.com/files/package.json#devdependencies" target="_blank" rel="noopener">devDependencies</a>.</p>
+<h2 id="Dependency-Management"><a href="#Dependency-Management" class="headerlink" title="Dependency Management"></a>Dependency Management</h2><p>Installing a new dependency is done by manually editing the Cargo.toml file, adding the dependency under <code>[dependencies]</code> and running <code>cargo build</code>. For example, if we want to install the “serde” crate, we need to edit the Cargo.toml file as follows:</p>
+<pre class=" language-diff"><code class="language-diff">[package]
+name = "hello_rust"
+version = "0.1.0"
+authors = ["sheshbabu"]
+edition = "2018"
+
+[dependencies]
+<span class="token inserted">+ serde = "1.0.106"</span></code></pre>
+<p>and run</p>
+<pre class=" language-shell"><code class="language-shell">$ cargo build</code></pre>
+<p>Similarly, to remove or update a dependency, we need to manually edit the Cargo.toml file and run <code>cargo build</code>. I was initially confused by the existence of the <code>cargo install</code> command but it turned out to be an equivalent of <code>npm install -g</code>.</p>
+<p>If you want something similar to <code>npm install</code>, <code>npm update</code> or <code>npm uninstall</code>, you can install <a href="https://crates.io/crates/cargo-edit" target="_blank" rel="noopener">cargo-edit</a> which enhances Cargo with <code>cargo add</code>, <code>cargo rm</code> and <code>cargo upgrade</code> subcommands.</p>
+<p>You can also specify the <a href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#caret-requirements" target="_blank" rel="noopener">dependency version using patterns</a> similar to NPM.</p>
+<h2 id="Development-tools"><a href="#Development-tools" class="headerlink" title="Development tools"></a>Development tools</h2><h3 id="Task-Runner"><a href="#Task-Runner" class="headerlink" title="Task Runner"></a>Task Runner</h3><p>Cargo supports running common tasks like build, run, test etc. But if you want something similar to NPM scripts, you can use make or <a href="https://crates.io/crates/cargo-make" target="_blank" rel="noopener">cargo-make</a></p>
+<h3 id="Live-Reload"><a href="#Live-Reload" class="headerlink" title="Live Reload"></a>Live Reload</h3><p>Nodemon is an essential tool for Node.js development - it watches for changes to files and automatically restarts the application. <a href="https://crates.io/crates/cargo-watch" target="_blank" rel="noopener">cargo-watch</a> is the equivalent in Rust world.</p>
+<h3 id="Linter-and-Formatter"><a href="#Linter-and-Formatter" class="headerlink" title="Linter and Formatter"></a>Linter and Formatter</h3><p>Rust has builtin linter called <a href="https://github.com/rust-lang/rust-clippy" target="_blank" rel="noopener">Clippy</a> and formatter called <a href="https://github.com/rust-lang/rustfmt" target="_blank" rel="noopener">rustfmt</a>. They’re equivalent to ESLint and Prettier in JS ecosystem. Precommit hooks can be managed using <a href="https://crates.io/crates/cargo-husky" target="_blank" rel="noopener">cargo-husky</a>.</p>
+<h3 id="Vulnerability-Checking"><a href="#Vulnerability-Checking" class="headerlink" title="Vulnerability Checking"></a>Vulnerability Checking</h3><p>Scanning for vulnerabilities in dependencies is done using <a href="https://crates.io/crates/cargo-audit" target="_blank" rel="noopener">cargo-audit</a> and is very similar to <a href="https://docs.npmjs.com/cli/audit" target="_blank" rel="noopener">npm audit</a>.</p>
+<p>Thanks for reading! :)</p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Rust/">Rust</a></div><div class="date-published">Published on: <time datetime="2020-06-28T13:35:17.000Z" itemprop="datePublished">28 Jun 2020</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
