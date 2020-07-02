@@ -1,0 +1,425 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Rust for JavaScript Developers - Variables and Data Types</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Rust for JavaScript Developers - Variables and Data Types"><meta name="keywords" content="Rust, JavaScript, String, &amp;str, Option, Vector"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Rust for JavaScript Developers - Variables and Data Types"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-spacing: unset;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  border: 1px solid black;
+  padding: 8px;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry img,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+pre[class*="language"] {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+pre[class*="language"] figcaption {
+  margin-bottom: 5px;
+}
+
+pre[class*="language"] figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+pre[class*="language"] pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+pre[class*="language"] table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+pre[class*="language"] .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+pre[class*="language"] .code {
+  color: #666;
+}
+
+pre[class*="language"] .line {
+  height: 25px;
+}
+
+pre[class*="language"] .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .addition,
+pre .inserted,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deleted,
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Rust for JavaScript Developers - Variables and Data Types</h1></header><div class="entry"><p>This is the second part in a series about introducing the Rust language to JavaScript developers. Here’s the previous chapter:</p>
+<ul>
+<li><a href="http://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/">Tooling Ecosystem Overview</a></li>
+</ul>
+<h2 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h2><p>JavaScript has three ways to declare variables - <code>var</code>, <code>const</code> and <code>let</code>. Rust also has <code>const</code> and <code>let</code> but they work very differently compared to JavaScript.</p>
+<h3 id="let"><a href="#let" class="headerlink" title="let"></a>let</h3><p>In Rust, we declare variables using <code>let</code>.</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span></code></pre>
+<p>As expected, this assigns the value <code>123</code> to the variable <code>a</code>. But Rust by default makes the variable immutable. You won’t be able to change the value after it’s assigned.</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span>
+a <span class="token operator">=</span> <span class="token number">456</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Error! :(</span></code></pre>
+<p>At first glance, this might look similar to JavaScript’s const but JavaScript’s const doesn’t make variables immutable, it just makes the <a href="https://ponyfoo.com/articles/const-variables-not-immutable" target="_blank" rel="noopener">binding immutable</a>.</p>
+<p>If you want to make variable mutable, you need to explicitly mention it using the <code>mut</code> keyword</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">let</span> <span class="token keyword">mut</span> a <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span>
+a <span class="token operator">=</span> <span class="token number">456</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// No Error :)</span></code></pre>
+<h3 id="const"><a href="#const" class="headerlink" title="const"></a>const</h3><p>Rust’s <code>const</code> is also very different from JavaScript’s const - it’s better to think of Rust’s const as a “label” to a constant value. During compile time they get replaced by their actual values in all the places they are used. It’s usually used for constants like port numbers, timeout values, error codes etc.</p>
+<p>You can also define const outside functions at global level which can’t be done using let.</p>
+<h2 id="Data-Types"><a href="#Data-Types" class="headerlink" title="Data Types"></a>Data Types</h2><h3 id="Numbers"><a href="#Numbers" class="headerlink" title="Numbers"></a>Numbers</h3><p>In JavaScript, we’ve the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank" rel="noopener">Number</a> type for both integers (numbers without decimal point) and floats (numbers with decimal point). In Rust, there’s a ton of options for <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html#integer-types" target="_blank" rel="noopener">integers</a> and <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html#floating-point-types" target="_blank" rel="noopener">floats</a> but by default we can use <code>i32</code> for integers and <code>f64</code> for floats.</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">let</span> x <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// i32</span>
+<span class="token keyword">let</span> y <span class="token operator">=</span> <span class="token number">4.5</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// f64</span></code></pre>
+<h3 id="Booleans"><a href="#Booleans" class="headerlink" title="Booleans"></a>Booleans</h3><p>Pretty straightforward - both JavaScript and Rust have booleans with true/false values</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">let</span> x <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// bool</span></code></pre>
+<h3 id="Strings"><a href="#Strings" class="headerlink" title="Strings"></a>Strings</h3><p>We usually don’t think much about strings when working with JavaScript - they “just work”. In Rust, there are many types of strings but let’s focus on the widely used ones - <code>String</code> and <code>&amp;str</code>.</p>
+<p><code>String</code> is growable whereas <code>&amp;str</code> is immutable and fixed size.</p>
+<p>When you create a string using a string literal, it creates a <code>&amp;str</code> type:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token string">"Saitama"</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// &amp;str</span></code></pre>
+<p>You need to use <code>String::from</code> or <code>to_string</code> methods to create a <code>String</code> type:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">let</span> name  <span class="token operator">=</span> String<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"Genos"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// String</span>
+<span class="token keyword">let</span> name2 <span class="token operator">=</span> <span class="token string">"King"</span><span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// String</span></code></pre>
+<p>You can convert from <code>String</code> to <code>&amp;str</code> using the <code>as_str</code> function</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">let</span> name2 <span class="token operator">=</span> <span class="token string">"King"</span><span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// String</span>
+<span class="token keyword">let</span> name3 <span class="token operator">=</span> name2<span class="token punctuation">.</span><span class="token function">as_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// &amp;str</span></code></pre>
+<p>We’ll learn more about strings in future posts.</p>
+<h3 id="Optionals"><a href="#Optionals" class="headerlink" title="Optionals"></a>Optionals</h3><p>JavaScript has two types for empty values - <code>undefined</code> and <code>null</code>. Undefined is used when a variable, property etc is not defined and null is used when something is intentionally empty.</p>
+<p>Rust has neither of these - it doesn’t even have a dedicated null data type. Instead it has something call <code>Option</code>. When we have a situation where a value can be empty or initially undefined, this <code>Option</code> type is used.</p>
+<p>People who have worked with TypeScript/Flow might see some similarities here but it’s quite different in terms of how the optionals are created and used.</p>
+<p>Say we want to write a function that takes in a file path and returns its contents. Let’s say for whatever reason, we want to return a “null” value when empty string is passed as file path.</p>
+<p>Here’s how we would write this in JavaScript/TypeScript:</p>
+<pre class=" language-typescript"><code class="language-typescript"><span class="token keyword">function</span> <span class="token function">read_file</span><span class="token punctuation">(</span>path<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">string</span> <span class="token operator">|</span> <span class="token keyword">null</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> contents <span class="token operator">=</span> <span class="token string">"hello"</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>path <span class="token operator">!==</span> <span class="token string">""</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> contents<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Implementing the same using Rust’s <code>Option</code>:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">read_file</span><span class="token punctuation">(</span>path<span class="token punctuation">:</span> <span class="token operator">&amp;</span>str<span class="token punctuation">)</span> <span class="token punctuation">-></span> Option<span class="token operator">&lt;</span><span class="token operator">&amp;</span>str<span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> contents <span class="token operator">=</span> <span class="token string">"hello"</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> path <span class="token operator">!=</span> <span class="token string">""</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">Some</span><span class="token punctuation">(</span>contents<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> None<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>You can see that we return <code>None</code> for null value but for non-null value, we don’t return the <code>contents</code> as it is, but rather we “wrap” it inside <code>Some</code> and return that. The return type is also not “string or null” as per the TypeScript example but “Option that contains &amp;str” type.</p>
+<p>Here’s how you would call this function in JavaScript/TypeScript:</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> file_contents <span class="token operator">=</span> <span class="token function">read_file</span><span class="token punctuation">(</span><span class="token string">"/path/to/file"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>file_contents <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>file_contents<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// file_contents is refined to string type</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Empty!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Calling the function in Rust:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> file <span class="token operator">=</span> <span class="token function">read_file</span><span class="token punctuation">(</span><span class="token string">"path/to/file"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> file<span class="token punctuation">.</span><span class="token function">is_some</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> contents <span class="token operator">=</span> file<span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{}"</span><span class="token punctuation">,</span> contents<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"Empty!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>As you can see, we need to manually “unwrap” the Option to get the contents inside.</p>
+<h3 id="Arrays"><a href="#Arrays" class="headerlink" title="Arrays"></a>Arrays</h3><p>Similar to strings, there are two types of arrays - one with fixed size (simply referred to as “Array”) and other that can grow/shrink in size (called “Vectors”).</p>
+<p>Arrays:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{:?}"</span><span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Vectors:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> <span class="token keyword">mut</span> list <span class="token operator">=</span> <span class="token function">vec!</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  list<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{:?}"</span><span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="Objects"><a href="#Objects" class="headerlink" title="Objects"></a>Objects</h3><p>Technically, all non-primitive types are “objects” in JavaScript but we commonly use the term “object” for two things - bag of data or hash map.</p>
+<p><strong>Bag of data:</strong><br>Unlike other languages, you need not go through a lot of ceremony to create an object and this is one of the coolest things about JavaScript.</p>
+<p>To create an employee object in JavaScript:</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> employee <span class="token operator">=</span> <span class="token punctuation">{</span>
+    name<span class="token punctuation">:</span> <span class="token string">"Saitama"</span><span class="token punctuation">,</span>
+    age<span class="token punctuation">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+    occupation<span class="token punctuation">:</span> <span class="token string">"Hero"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>To create the same object in Rust, we can use structs:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">struct</span> Employee <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> String<span class="token punctuation">,</span>
+  age<span class="token punctuation">:</span> i32<span class="token punctuation">,</span>
+  occupation<span class="token punctuation">:</span> String<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> employee <span class="token operator">=</span> Employee <span class="token punctuation">{</span>
+    name<span class="token punctuation">:</span> <span class="token string">"Saitama"</span><span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    age<span class="token punctuation">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+    occupation<span class="token punctuation">:</span> <span class="token string">"Hero"</span><span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>HashMap:</strong></p>
+<p>In JavaScript, to create an object with arbitrary key value pairs, we can either use normal object literals or the Map object:</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> colors <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Map</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  colors<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">"white"</span><span class="token punctuation">,</span> <span class="token string">"#fff"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  colors<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">"black"</span><span class="token punctuation">,</span> <span class="token string">"#000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>colors<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">"white"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// #fff</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In Rust, you can do the same using the HashMap type:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">use</span> std<span class="token punctuation">:</span><span class="token punctuation">:</span>collections<span class="token punctuation">:</span><span class="token punctuation">:</span>HashMap<span class="token punctuation">;</span>
+
+<span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> <span class="token keyword">mut</span> colors <span class="token operator">=</span> HashMap<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  colors<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token string">"white"</span><span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"#fff"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  colors<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token string">"black"</span><span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"#000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{:?}"</span><span class="token punctuation">,</span> colors<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"white"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// #fff</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Notice the usage of unwrap above. HashMap’s get method returns an Option type which we need to unwrap to get the value inside.</p>
+<p>Thanks for reading! :)</p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Rust/">Rust</a></div><div class="date-published">Published on: <time datetime="2020-07-02T14:39:59.000Z" itemprop="datePublished">02 Jul 2020</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
