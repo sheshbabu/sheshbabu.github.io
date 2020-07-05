@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-functions-and-control-flow/</loc>
+    
+    <lastmod>2020-07-05T13:21:00.488Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-variables-and-data-types/</loc>
     
     <lastmod>2020-07-02T15:47:00.422Z</lastmod>
@@ -58,13 +65,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.124Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
@@ -72,7 +72,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
+    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
@@ -86,7 +86,28 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.124Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
@@ -107,16 +128,9 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
-    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
+    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
   </url>
   
@@ -135,9 +149,9 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
+    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
     
-    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
+    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
   </url>
   
@@ -164,13 +178,6 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     

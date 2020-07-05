@@ -1,0 +1,446 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Rust for JavaScript Developers - Functions and Control Flow</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Part 3 covers functions, closures, if-else, while, for..in, range and iterators"><meta name="keywords" content="Rust, JavaScript, Function, Closure, Iterator"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Rust for JavaScript Developers - Functions and Control Flow"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image" content="/images/2020-rust-for-javascript-developers-3/image-1.png"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-spacing: unset;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  border: 1px solid black;
+  padding: 8px;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry img,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.post-content .entry li code,
+.post-content .entry p code {
+  padding: 2px 5px;
+  font-size: 15px;
+  color: black;
+  background-color: #efefef;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+pre[class*="language"] {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+pre[class*="language"] figcaption {
+  margin-bottom: 5px;
+}
+
+pre[class*="language"] figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+pre[class*="language"] pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+pre[class*="language"] table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+pre[class*="language"] .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+pre[class*="language"] .code {
+  color: #666;
+}
+
+pre[class*="language"] .line {
+  height: 25px;
+}
+
+pre[class*="language"] .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .addition,
+pre .inserted,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deleted,
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Rust for JavaScript Developers - Functions and Control Flow</h1></header><div class="entry"><p>This is the third part in a series about introducing the Rust language to JavaScript developers. Here are the past chapters:</p>
+<ol>
+<li><a href="http://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/">Tooling Ecosystem Overview</a></li>
+<li><a href="http://www.sheshbabu.com/posts/rust-for-javascript-developers-variables-and-data-types/">Variables and Data Types</a></li>
+</ol>
+<h2 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h2><p>Rust’s function syntax is pretty much similar to the one in JavaScript.</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> income <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> tax <span class="token operator">=</span> <span class="token function">calculate_tax</span><span class="token punctuation">(</span>income<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{}"</span><span class="token punctuation">,</span> tax<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">fn</span> <span class="token function">calculate_tax</span><span class="token punctuation">(</span>income<span class="token punctuation">:</span> i32<span class="token punctuation">)</span> <span class="token punctuation">-></span> i32 <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> income <span class="token operator">*</span> <span class="token number">90</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The only difference you might see above is the type annotations for arguments and return values.</p>
+<p>The <code>return</code> keyword can be skipped and it’s very common to see code without an explicit return. If you’re returning implicitly, make sure to remove the semicolon from that line. The above function can be refactored as:</p>
+<pre class=" language-diff"><code class="language-diff">fn main() {
+  let income = 100;
+  let tax = calculate_tax(income);
+  println!("{}", tax);
+}
+
+fn calculate_tax(income: i32) -> i32 {
+<span class="token deleted">- return income * 90 / 100;</span>
+<span class="token inserted">+ income * 90 / 100</span>
+}</code></pre>
+<h2 id="Arrow-Functions"><a href="#Arrow-Functions" class="headerlink" title="Arrow Functions"></a>Arrow Functions</h2><p>Arrow functions are a popular feature in modern JavaScript - they allow us to write functional code in a concise way.</p>
+<p>Rust has something similar and they are called “Closures”. The name might be a bit confusing and would require getting used to because in JavaScript, closures can be created using both normal and arrow functions.</p>
+<p>Rust’s closure syntax is very similar to JavaScript’s arrow functions:</p>
+<p><strong>Without arguments:</strong></p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// JavaScript</span>
+<span class="token keyword">let</span> greet <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">greet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// "hello"</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// Rust</span>
+<span class="token keyword">let</span> greet <span class="token operator">=</span> <span class="token operator">||</span> <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">greet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// "hello"</span></code></pre>
+<p><strong>With arguments:</strong></p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// JavaScript</span>
+<span class="token keyword">let</span> greet <span class="token operator">=</span> <span class="token punctuation">(</span>msg<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">greet</span><span class="token punctuation">(</span><span class="token string">"good morning!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// "good morning!"</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// Rust</span>
+<span class="token keyword">let</span> greet <span class="token operator">=</span> <span class="token operator">|</span>msg<span class="token punctuation">:</span> <span class="token operator">&amp;</span>str<span class="token operator">|</span> <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{}"</span><span class="token punctuation">,</span> msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">greet</span><span class="token punctuation">(</span><span class="token string">"good morning!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// "good morning!"</span></code></pre>
+<p><strong>Returning values:</strong></p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// JavaScript</span>
+<span class="token keyword">let</span> add <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+
+<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 3</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// Rust</span>
+<span class="token keyword">let</span> add <span class="token operator">=</span> <span class="token closure-params"><span class="token punctuation">|</span>a<span class="token punctuation">:</span> i32<span class="token punctuation">,</span> b<span class="token punctuation">:</span> i32<span class="token punctuation">|</span></span> <span class="token punctuation">-></span> i32 <span class="token punctuation">{</span> a <span class="token operator">+</span> b <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 3</span></code></pre>
+<p><strong>Multiline:</strong></p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// JavaScript</span>
+<span class="token keyword">let</span> add <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> sum <span class="token operator">=</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+  <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 3</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// Rust</span>
+<span class="token keyword">let</span> add <span class="token operator">=</span> <span class="token closure-params"><span class="token punctuation">|</span>a<span class="token punctuation">:</span> i32<span class="token punctuation">,</span> b<span class="token punctuation">:</span> i32<span class="token punctuation">|</span></span> <span class="token punctuation">-></span> i32 <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> sum <span class="token operator">=</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+  <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 3</span></code></pre>
+<p>Here’s a cheatsheet:<br><img src="/images/2020-rust-for-javascript-developers-3/image-2.png" alt></p>
+<p>Closures don’t need the type annotations most of the time, but I’ve added them here for clarity.</p>
+<h2 id="If-Else"><a href="#If-Else" class="headerlink" title="If Else"></a>If Else</h2><pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> income <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> tax <span class="token operator">=</span> <span class="token function">calculate_tax</span><span class="token punctuation">(</span>income<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{}"</span><span class="token punctuation">,</span> tax<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">fn</span> <span class="token function">calculate_tax</span><span class="token punctuation">(</span>income<span class="token punctuation">:</span> i32<span class="token punctuation">)</span> <span class="token punctuation">-></span> i32 <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> income <span class="token operator">&lt;</span> <span class="token number">10</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> income <span class="token operator">>=</span> <span class="token number">10</span> <span class="token operator">&amp;&amp;</span> income <span class="token operator">&lt;</span> <span class="token number">50</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token number">20</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token number">50</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="Loops"><a href="#Loops" class="headerlink" title="Loops"></a>Loops</h2><p>While loops:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> <span class="token keyword">mut</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">while</span> count <span class="token operator">&lt;</span> <span class="token number">10</span> <span class="token punctuation">{</span>
+    <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{}"</span><span class="token punctuation">,</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    count <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Normal <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for" target="_blank" rel="noopener">for loops</a> don’t exist in Rust, we need to use <code>while</code> or <code>for..in</code> loops. <code>for..in</code> loops are similar to the <code>for..of</code> loops in JavaScript and they loop over an iterator.</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">for</span> n <span class="token keyword">in</span> numbers<span class="token punctuation">.</span><span class="token function">iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{}"</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Notice that we’re not iterating directly over the array but instead using the <code>iter</code> method of the array.</p>
+<p>We can also loop over <a href="https://doc.rust-lang.org/reference/expressions/range-expr.html" target="_blank" rel="noopener">ranges</a>:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> n <span class="token keyword">in</span> <span class="token number">1</span><span class="token punctuation">..</span><span class="token number">5</span> <span class="token punctuation">{</span>
+    <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{}"</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="Iterators"><a href="#Iterators" class="headerlink" title="Iterators"></a>Iterators</h2><p>In JavaScript, we can use array methods like map/filter/reduce/etc instead of <code>for</code> loops to perform calculations or transformations on an array.</p>
+<p>For example, here we take an array of numbers, double them and filter out the elements that are less than 10:</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> double <span class="token operator">=</span> <span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> less_than_ten <span class="token operator">=</span> <span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> result <span class="token operator">=</span> numbers<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>double<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>less_than_ten<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// [2, 4, 6, 8]</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In Rust, we can’t directly use map/filter/etc over vectors, we need to follow these steps:</p>
+<ol>
+<li>Convert the vector into an iterator using <code>iter</code>, <code>into_iter</code> or <code>iter_mut</code> methods</li>
+<li>Chain <code>adapters</code> such as map/filter/etc on the iterator</li>
+<li>Finally convert the iterator back to a vector using <code>consumers</code> such as <code>collect</code>, <code>find</code>, <code>sum</code> etc</li>
+</ol>
+<p>Here’s the equivalent Rust code:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> numbers <span class="token operator">=</span> <span class="token function">vec!</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> double <span class="token operator">=</span> <span class="token closure-params"><span class="token punctuation">|</span>n<span class="token punctuation">:</span> <span class="token operator">&amp;</span>i32<span class="token punctuation">|</span></span> <span class="token punctuation">-></span> i32 <span class="token punctuation">{</span> n <span class="token operator">*</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> less_than_10 <span class="token operator">=</span> <span class="token closure-params"><span class="token punctuation">|</span>n<span class="token punctuation">:</span> <span class="token operator">&amp;</span>i32<span class="token punctuation">|</span></span> <span class="token punctuation">-></span> bool <span class="token punctuation">{</span> <span class="token operator">*</span>n <span class="token operator">&lt;</span> <span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> result<span class="token punctuation">:</span> Vec<span class="token operator">&lt;</span>i32<span class="token operator">></span> <span class="token operator">=</span> numbers<span class="token punctuation">.</span><span class="token function">iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>double<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>less_than_10<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{:?}"</span><span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// [2, 4, 6, 8]</span>
+<span class="token punctuation">}</span></code></pre>
+<p>You should be able to understand most of the code above but you might notice few things off here:</p>
+<ul>
+<li>The usage of <code>&amp;</code> and <code>*</code> in the closure</li>
+<li>The <code>Vec&lt;i32&gt;</code> type annotation for the <code>result</code> variable</li>
+</ul>
+<p>The <code>&amp;</code> is the reference operator and the <code>*</code> is the dereference operator. The <code>iter</code> method instead of copying the elements in the vector, it passes them as references to the next adapter in the chain. This is why we use <code>&amp;i32</code> in the map’s closure (double). This closure returns <code>i32</code> but <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter" target="_blank" rel="noopener">filter</a> calls its closure (less_than_10) with reference so that’s why we need to use <code>&amp;i32</code> again. To dereference the argument, we use the <code>*</code> operator. We’ll cover this in more detail in future chapters.</p>
+<p>Regarding <code>Vec&lt;i32&gt;</code>, so far we haven’t added type annotations to variables as Rust can infer the types automatically, but for <code>collect</code>, we need to be explicitly tell Rust that we expect a <code>Vec&lt;i32&gt;</code> output.</p>
+<p>Aside from map and filter, there are ton of other <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html" target="_blank" rel="noopener">useful adapters</a> that we can use in iterators.</p>
+<p>Thanks for reading! Feel free to follow me in <a href="https://twitter.com/sheshbabu" target="_blank" rel="noopener">Twitter</a> for updates :)</p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Rust/">Rust</a></div><div class="date-published">Published on: <time datetime="2020-07-05T13:18:00.000Z" itemprop="datePublished">05 Jul 2020</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
