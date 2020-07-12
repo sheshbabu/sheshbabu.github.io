@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-pattern-matching-and-enums/</loc>
+    
+    <lastmod>2020-07-12T09:35:09.506Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-functions-and-control-flow/</loc>
     
     <lastmod>2020-07-05T13:21:00.488Z</lastmod>
@@ -72,6 +79,13 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.124Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
@@ -82,20 +96,6 @@
     <loc>http://www.sheshbabu.com/posts/writing-maintainable-tests-using-the-data-driven-approach/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.124Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
   </url>
   
@@ -128,14 +128,21 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
+    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.123Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
@@ -156,13 +163,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/career-advice-for-new-developers/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
@@ -170,7 +170,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
+    <loc>http://www.sheshbabu.com/posts/career-advice-for-new-developers/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
@@ -178,6 +178,13 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
