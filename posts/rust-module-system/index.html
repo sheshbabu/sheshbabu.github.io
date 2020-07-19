@@ -298,11 +298,11 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
 <pre class=" language-shell"><code class="language-shell">my_project
 ├── Cargo.toml
 └─┬ src
-  └── main.rs
+  ├── main.rs
   ├── config.rs
-  └── routes
+  ├─┬ routes
   │ ├── health_route.rs
-  │ ├── user_route.rs
+  │ └── user_route.rs
   └─┬ models
     └── user_model.rs</code></pre>
 <p>These are the different ways we should be able to consume our modules:</p>
@@ -334,7 +334,7 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
 <pre class=" language-shell"><code class="language-shell">my_project
 ├── Cargo.toml
 └─┬ src
-  └── main.rs
+  ├── main.rs
   └── my_module.rs
 
 or
@@ -342,7 +342,7 @@ or
 my_project
 ├── Cargo.toml
 └─┬ src
-  └── main.rs
+  ├── main.rs
   └─┬ my_module
     └── mod.rs</code></pre>
 <p>Since <code>main.rs</code> and <code>config.rs</code> are in the same directory, let’s declare the config module as follows:</p>
@@ -399,12 +399,12 @@ fn main() {
 <pre class=" language-diff"><code class="language-diff">my_project
 ├── Cargo.toml
 └─┬ src
-  └── main.rs
+  ├── main.rs
   ├── config.rs
-  └── routes
+  ├─┬ routes
 <span class="token inserted">+ │ ├── mod.rs</span>
   │ ├── health_route.rs
-  │ ├── user_route.rs
+  │ └── user_route.rs
   └─┬ models
     └── user_model.rs</code></pre>
 <pre class=" language-diff"><code class="language-diff">// main.rs
@@ -449,12 +449,12 @@ fn main() {
 <pre class=" language-diff"><code class="language-diff">my_project
 ├── Cargo.toml
 └─┬ src
-  └── main.rs
+  ├── main.rs
   ├── config.rs
-  └── routes
+  ├─┬ routes
   │ ├── mod.rs
   │ ├── health_route.rs
-  │ ├── user_route.rs
+  │ └── user_route.rs
   └─┬ models
 <span class="token inserted">+   ├── mod.rs</span>
     └── user_model.rs</code></pre>

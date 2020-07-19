@@ -4,7 +4,7 @@
   <url>
     <loc>http://www.sheshbabu.com/posts/rust-module-system/</loc>
     
-    <lastmod>2020-07-19T12:07:28.191Z</lastmod>
+    <lastmod>2020-07-19T13:49:00.802Z</lastmod>
     
   </url>
   
@@ -142,7 +142,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
@@ -156,9 +156,16 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
+    <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
   </url>
   
@@ -170,7 +177,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
+    <loc>http://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
@@ -185,13 +192,6 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
