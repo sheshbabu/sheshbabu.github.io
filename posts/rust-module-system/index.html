@@ -1,0 +1,559 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Clear explanation of Rust’s module system</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Easy to understand explanation using visual aids and practical examples"><meta name="keywords" content="Rust, Module System, mod, use, pub, crate"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Clear explanation of Rust’s module system"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image" content="/images/2020-rust-module-system/rust-module-system-5.png"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-spacing: unset;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  border: 1px solid black;
+  padding: 8px;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  border-radius: 3px;
+  word-break: break-word;
+}
+
+.post-content .entry li code,
+.post-content .entry p code {
+  padding: 2px 5px;
+  font-size: 15px;
+  color: black;
+  background-color: #efefef;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+pre[class*="language"] {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+pre[class*="language"] figcaption {
+  margin-bottom: 5px;
+}
+
+pre[class*="language"] figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+pre[class*="language"] pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+pre[class*="language"] table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+pre[class*="language"] .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+pre[class*="language"] .code {
+  color: #666;
+}
+
+pre[class*="language"] .line {
+  height: 25px;
+}
+
+pre[class*="language"] .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .addition,
+pre .inserted,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deleted,
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Clear explanation of Rust’s module system</h1></header><div class="entry"><p>Rust’s module system is surprisingly confusing and causes a lot of frustration for beginners.</p>
+<p>In this post, I’ll explain the module system using practical examples so you get a clear understanding of how it works and can immediately start applying this in your projects.</p>
+<p>Since Rust’s module system is quite unique, I request the reader to read this post with an open mind and resist comparing it with how modules work in other languages.</p>
+<p>Let’s use this file structure to simulate a real world project:</p>
+<pre class=" language-shell"><code class="language-shell">my_project
+├── Cargo.toml
+└─┬ src
+  └── main.rs
+  ├── config.rs
+  └── routes
+  │ ├── health_route.rs
+  │ ├── user_route.rs
+  └─┬ models
+    └── user_model.rs</code></pre>
+<p>These are the different ways we should be able to consume our modules:</p>
+<p><img src="/images/2020-rust-module-system/rust-module-system-1.png" alt></p>
+<p>These 3 examples should be sufficient to explain how Rust’s module system works.</p>
+<h2 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h2><p>Let’s start with the first example - importing <code>config.rs</code> in <code>main.rs</code>.</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// main.rs</span>
+<span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"main"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// config.rs</span>
+<span class="token keyword">fn</span> <span class="token function">print_config</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"config"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The first mistake that everyone makes is just because we have files like <code>config.rs</code>, <code>health_route.rs</code> etc, we think that these files are <code>modules</code> and we can import them from other files.</p>
+<p>Here’s what we see (file system tree) and what the compiler sees (module tree):</p>
+<p><img src="/images/2020-rust-module-system/rust-module-system-2.png" alt></p>
+<p>Surprisingly, the compiler only sees the <code>crate</code> module which is our <code>main.rs</code> file. This is because we need to explicitly build the module tree in Rust - there’s no implicit mapping between file system tree to module tree.</p>
+<blockquote>
+<p>We need to explicitly build the module tree in Rust, there’s no implicit mapping to file system</p>
+</blockquote>
+<p>To add a file to the module tree, we need to declare that file as a submodule using the <code>mod</code> keyword. The next thing that confuses people is that you would assume we declare a file as module in the same file. But we need to declare this in a different file! Since we only have <code>main.rs</code> in the module tree, let’s declare <code>config.rs</code> as a submodule in <code>main.rs</code>.</p>
+<blockquote>
+<p>The mod keyword declares a submodule</p>
+</blockquote>
+<p>The <code>mod</code> keyword has this syntax:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">mod</span> my_module<span class="token punctuation">;</span></code></pre>
+<p>Here, the compiler looks for <code>my_module.rs</code> or <code>my_module/mod.rs</code> in the same directory.</p>
+<pre class=" language-shell"><code class="language-shell">my_project
+├── Cargo.toml
+└─┬ src
+  └── main.rs
+  └── my_module.rs
+
+or
+
+my_project
+├── Cargo.toml
+└─┬ src
+  └── main.rs
+  └─┬ my_module
+    └── mod.rs</code></pre>
+<p>Since <code>main.rs</code> and <code>config.rs</code> are in the same directory, let’s declare the config module as follows:</p>
+<pre class=" language-diff"><code class="language-diff">// main.rs
+<span class="token inserted">+ mod config;</span>
+
+fn main() {
+<span class="token inserted">+ config::print_config();</span>
+  println!("main");
+}</code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// config.rs</span>
+<span class="token keyword">fn</span> <span class="token function">print_config</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"config"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We’re accessing the <code>print_config</code> function using the <code>::</code> syntax.</p>
+<p>Here’s how the module tree looks like:</p>
+<p><img src="/images/2020-rust-module-system/rust-module-system-3.png" alt></p>
+<p>We’ve successfully declared the <code>config</code> module! But this is not sufficient to be able to call the <code>print_config</code> function inside <code>config.rs</code>. Almost everything in Rust is private by default, we need to make the function public using the <code>pub</code> keyword:</p>
+<blockquote>
+<p>The pub keyword makes things public</p>
+</blockquote>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// main.rs</span>
+<span class="token keyword">mod</span> config<span class="token punctuation">;</span>
+
+<span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  config<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">print_config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"main"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-diff"><code class="language-diff">// config.rs
+<span class="token deleted">- fn print_config() {</span>
+<span class="token inserted">+ pub fn print_config() {</span>
+  println!("config");
+}</code></pre>
+<p>Now, this works. We’ve successfully called a function defined in a different file!</p>
+<h2 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2"></a>Example 2</h2><p>Let’s try calling the <code>print_health_route</code> function defined in <code>routes/health_route.rs</code> from <code>main.rs</code>.</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// main.rs</span>
+<span class="token keyword">mod</span> config<span class="token punctuation">;</span>
+
+<span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  config<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">print_config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"main"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// routes/health_route.rs</span>
+<span class="token keyword">fn</span> <span class="token function">print_health_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"health_route"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>As we discussed earlier, we can use the <code>mod</code> keyword only for <code>my_module.rs</code> or <code>my_module/mod.rs</code> in the same directory.</p>
+<p>So in order to call functions inside <code>routes/health_route.rs</code> from <code>main.rs</code>, we need to do the following things:</p>
+<ul>
+<li>Create a file named <code>routes/mod.rs</code> and declare the <code>routes</code> submodule in <code>main.rs</code></li>
+<li>Declare the <code>health_route</code> submodule in <code>routes/mod.rs</code> and make it public</li>
+<li>Make the functions inside <code>health_route.rs</code> public</li>
+</ul>
+<pre class=" language-diff"><code class="language-diff">my_project
+├── Cargo.toml
+└─┬ src
+  └── main.rs
+  ├── config.rs
+  └── routes
+<span class="token inserted">+ │ ├── mod.rs</span>
+  │ ├── health_route.rs
+  │ ├── user_route.rs
+  └─┬ models
+    └── user_model.rs</code></pre>
+<pre class=" language-diff"><code class="language-diff">// main.rs
+mod config;
+<span class="token inserted">+ mod routes;</span>
+
+fn main() {
+<span class="token inserted">+ routes::health_route::print_health_route();</span>
+  config::print_config();
+  println!("main");
+}</code></pre>
+<pre class=" language-diff"><code class="language-diff">// routes/mod.rs
+<span class="token inserted">+ pub mod health_route;</span></code></pre>
+<pre class=" language-diff"><code class="language-diff">// routes/health_route.rs
+<span class="token deleted">- fn print_health_route() {</span>
+<span class="token inserted">+ pub fn print_health_route() {</span>
+  println!("health_route");
+}</code></pre>
+<p>Here’s how the module tree looks like:</p>
+<p><img src="/images/2020-rust-module-system/rust-module-system-4.png" alt></p>
+<p>We can now call a function defined in a file inside a folder.</p>
+<h2 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3"></a>Example 3</h2><p>Let’s try calling from <code>main.rs =&gt; routes/user_route.rs =&gt; models/user_model.rs</code></p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// main.rs</span>
+<span class="token keyword">mod</span> config<span class="token punctuation">;</span>
+<span class="token keyword">mod</span> routes<span class="token punctuation">;</span>
+
+<span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  routes<span class="token punctuation">:</span><span class="token punctuation">:</span>health_route<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">print_health_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  config<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">print_config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"main"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// routes/user_route.rs</span>
+<span class="token keyword">fn</span> <span class="token function">print_user_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"user_route"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// models/user_model.rs</span>
+<span class="token keyword">fn</span> <span class="token function">print_user_model</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"user_model"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We want to call the function <code>print_user_model</code> from <code>print_user_route</code> from <code>main</code>.</p>
+<p>Let’s make the same changes as before - declaring submodules, making functions public and adding the <code>mod.rs</code> file.</p>
+<pre class=" language-diff"><code class="language-diff">my_project
+├── Cargo.toml
+└─┬ src
+  └── main.rs
+  ├── config.rs
+  └── routes
+  │ ├── mod.rs
+  │ ├── health_route.rs
+  │ ├── user_route.rs
+  └─┬ models
+<span class="token inserted">+   ├── mod.rs</span>
+    └── user_model.rs</code></pre>
+<pre class=" language-diff"><code class="language-diff">// main.rs
+mod config;
+mod routes;
+<span class="token inserted">+ mod models;</span>
+
+fn main() {
+  routes::health_route::print_health_route();
+<span class="token inserted">+ routes::user_route::print_user_route();</span>
+  config::print_config();
+  println!("main");
+}</code></pre>
+<pre class=" language-diff"><code class="language-diff">// routes/mod.rs
+pub mod health_route;
+<span class="token inserted">+ pub mod user_route;</span></code></pre>
+<pre class=" language-diff"><code class="language-diff">// routes/user_route.rs
+<span class="token deleted">- fn print_user_route() {</span>
+<span class="token inserted">+ pub fn print_user_route() {</span>
+  println!("user_route");
+}</code></pre>
+<pre class=" language-diff"><code class="language-diff">// models/mod.rs
+<span class="token inserted">+ pub mod user_model;</span></code></pre>
+<pre class=" language-diff"><code class="language-diff">// models/user_model.rs
+<span class="token deleted">- fn print_user_model() {</span>
+<span class="token inserted">+ pub fn print_user_model() {</span>
+  println!("user_model");
+}</code></pre>
+<p>Here’s how the module tree looks like:</p>
+<p><img src="/images/2020-rust-module-system/rust-module-system-5.png" alt></p>
+<p>Wait, we haven’t actually called <code>print_user_model</code> from <code>print_user_route</code>! So far, we’ve only called the functions defined in other modules from <code>main.rs</code>, how do we do that from other files?</p>
+<p>If we look at our module tree, the <code>print_user_model</code> function sits in the <code>crate::models::user_model</code> path. So in order to use a module in files that are not <code>main.rs</code>, we should think in terms of the path necessary to reach that module in the module tree.</p>
+<pre class=" language-diff"><code class="language-diff">// routes/user_route.rs
+pub fn print_user_route() {
+<span class="token inserted">+ crate::models::user_model::print_user_model();</span>
+  println!("user_route");
+}</code></pre>
+<p>We’ve successfully called a function defined in a file from a file that’s not <code>main.rs</code>.</p>
+<h2 id="super"><a href="#super" class="headerlink" title="super"></a>super</h2><p>The fully qualified name gets too lengthy if our file organization is multiple directories deep. Let’s say for whatever reason, we want to call <code>print_health_route</code> from <code>print_user_route</code>. These are under the paths <code>crate::routes::health_route</code> and <code>crate::routes::user_route</code> respectively.</p>
+<p>We can call it by using the fully qualified name <code>crate::routes::health_route::print_health_route()</code> but we can also use a relative path <code>super::health_route::print_health_route();</code>. Notice that we’ve used <code>super</code> to refer to the parent scope.</p>
+<blockquote>
+<p>The super keyword in module path refers to the parent scope</p>
+</blockquote>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function">print_user_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>routes<span class="token punctuation">:</span><span class="token punctuation">:</span>health_route<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">print_health_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// can also be called using</span>
+  <span class="token keyword">super</span><span class="token punctuation">:</span><span class="token punctuation">:</span>health_route<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">print_health_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"user_route"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="use"><a href="#use" class="headerlink" title="use"></a>use</h2><p>It would be tedious to use the fully qualified name or even the relative name in the above examples. In order to shorten the names, we can use the <code>use</code> keyword to bind the path to a new name or alias.</p>
+<blockquote>
+<p>The use keyword is used to shorten the module path</p>
+</blockquote>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function">print_user_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>models<span class="token punctuation">:</span><span class="token punctuation">:</span>user_model<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">print_user_model</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"user_route"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The above code can be refactored as:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>models<span class="token punctuation">:</span><span class="token punctuation">:</span>user_model<span class="token punctuation">:</span><span class="token punctuation">:</span>print_user_model<span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function">print_user_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">print_user_model</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"user_route"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Instead of using the name <code>print_user_model</code>, we can also alias it to something else:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>models<span class="token punctuation">:</span><span class="token punctuation">:</span>user_model<span class="token punctuation">:</span><span class="token punctuation">:</span>print_user_model <span class="token keyword">as</span> log_user_model<span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function">print_user_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">log_user_model</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"user_route"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="External-modules"><a href="#External-modules" class="headerlink" title="External modules"></a>External modules</h2><p>Dependencies added to <code>Cargo.toml</code> are available globally to all modules inside the project. We don’t need to explicitly import or declare anything to use a dependency.</p>
+<blockquote>
+<p>External dependencies are globally available to all modules inside a project</p>
+</blockquote>
+<p>For example, let’s say we added the <a href="https://crates.io/crates/rand" target="_blank" rel="noopener">rand</a> crate to our project. We can use it in our code directly as:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function">print_health_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> random_number<span class="token punctuation">:</span> u8 <span class="token operator">=</span> rand<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{}"</span><span class="token punctuation">,</span> random_number<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"health_route"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We can also use <code>use</code> to shorten the path:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">use</span> rand<span class="token punctuation">:</span><span class="token punctuation">:</span>random<span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function">print_health_route</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> random_number<span class="token punctuation">:</span> u8 <span class="token operator">=</span> <span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{}"</span><span class="token punctuation">,</span> random_number<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"health_route"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><ul>
+<li>The module system is explicit - there’s no 1:1 mapping with file system</li>
+<li>We declare a file as module in its parent, not in itself</li>
+<li>The <code>mod</code> keyword is used to declare submodules</li>
+<li>We need to explicitly declare functions, structs etc as public so they can be consumed in other modules</li>
+<li>The <code>pub</code> keyword makes things public</li>
+<li>The <code>use</code> keyword is used to shorten the module path</li>
+<li>We don’t need to explicitly declare 3rd party modules</li>
+</ul>
+<p>Thanks for reading! Feel free to follow me in <a href="https://twitter.com/sheshbabu" target="_blank" rel="noopener">Twitter</a> for more posts like this :)</p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/Rust/">Rust</a></div><div class="date-published">Published on: <time datetime="2020-07-19T02:38:14.000Z" itemprop="datePublished">19 Jul 2020</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
