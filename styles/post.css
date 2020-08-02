@@ -39,6 +39,10 @@
   margin: 30px 0;
 }
 
+.post-content .entry pre code {
+  word-break: initial;
+}
+
 .post-content .entry code {
   background: #fafafa;
   color: #666;

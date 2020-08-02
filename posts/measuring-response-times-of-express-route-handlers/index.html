@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Measuring response times of Express route handlers</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Measuring response times of Express route handlers"><meta name="keywords" content="JavaScript, Nodejs, Expressjs"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Measuring response times of Express route handlers"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Measuring response times of Express route handlers</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Measuring response times of Express route handlers"><meta name="keywords" content="JavaScript, Nodejs, Expressjs"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:type" content="website"><meta name="og:title" content="Measuring response times of Express route handlers"><meta name="og:description" content="Measuring response times of Express route handlers"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Measuring response times of Express route handlers"><meta name="twitter:description" content="Measuring response times of Express route handlers"><meta name="twitter:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><script src="https://kit.fontawesome.com/f7954f6e2c.js" crossorigin="anonymous"></script><style>:root {
   --default-font: "Merriweather", serif;
   --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
 }
@@ -64,8 +64,14 @@ a {
 }
 
 #footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 100px;
   margin-bottom: 30px;
-  font-size: 14px;
+}
+
+#footer i {
+  margin: 4px;
 }
 
 img {
@@ -123,6 +129,10 @@ td {
   font-size: 20px;
   color: #333;
   margin: 30px 0;
+}
+
+.post-content .entry pre code {
+  word-break: initial;
 }
 
 .post-content .entry code {
@@ -326,4 +336,4 @@ module<span class="token punctuation">.</span>exports <span class="token operato
 <p>Calling the above two endpoints would log</p>
 <pre><code>/ : 1.791791ms
 /slow : 18541.045675ms</code></pre><p>The <code>index.js</code> is the entrypoint to our server and that’s usually the place where all the common middlewares are added. The <code>logResponseTime</code> middleware needs to be at the top because we want to be as accurate as possible when we measure the time taken for each route in our Express server. The <a href="https://nodejs.org/api/process.html#process_process_hrtime_time" target="_blank" rel="noopener">process.hrtime</a> api is used to measure the elapsed time as it is more accurate than just using the <code>Date</code> api.</p>
-</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Node-js/">Node.js</a><span>, </span><a href="/tags/Express-js/">Express.js</a></div><div class="date-published">Published on: <time datetime="2018-01-27T10:57:03.000Z" itemprop="datePublished">27 Jan 2018</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Node-js/">Node.js</a><span>, </span><a href="/tags/Express-js/">Express.js</a></div><div class="date-published">Published on: <time datetime="2018-01-27T10:57:03.000Z" itemprop="datePublished">27 Jan 2018</time></div></div></footer></div></article></div><footer id="footer"><div><a href="mailto:sheshbabu@gmail.com" target="_blank"><i class="fas fa-envelope-square fa-lg"></i></a><a href="https://github.com/sheshbabu" target="_blank"><i class="fab fa-github-square fa-lg"></i></a><a href="https://www.linkedin.com/in/sheshbabu/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a><a href="https://www.twitter.com/sheshbabu" target="_blank"><i class="fab fa-twitter-square fa-lg"></i></a><a href="/atom.xml"><i class="fas fa-rss-square fa-lg"></i></a></div><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

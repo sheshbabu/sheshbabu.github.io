@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Rust for JavaScript Developers - Tooling Ecosystem Overview</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Rust for JavaScript Developers - Tooling Ecosystem Overview"><meta name="keywords" content="Rust, JavaScript, Cargo, NPM"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Rust for JavaScript Developers - Tooling Ecosystem Overview"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Rust for JavaScript Developers - Tooling Ecosystem Overview</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Rust for JavaScript Developers - Tooling Ecosystem Overview"><meta name="keywords" content="Rust, JavaScript, Cargo, NPM"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:type" content="website"><meta name="og:title" content="Rust for JavaScript Developers - Tooling Ecosystem Overview"><meta name="og:description" content="Rust for JavaScript Developers - Tooling Ecosystem Overview"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Rust for JavaScript Developers - Tooling Ecosystem Overview"><meta name="twitter:description" content="Rust for JavaScript Developers - Tooling Ecosystem Overview"><meta name="twitter:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><script src="https://kit.fontawesome.com/f7954f6e2c.js" crossorigin="anonymous"></script><style>:root {
   --default-font: "Merriweather", serif;
   --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
 }
@@ -64,8 +64,14 @@ a {
 }
 
 #footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 100px;
   margin-bottom: 30px;
-  font-size: 14px;
+}
+
+#footer i {
+  margin: 4px;
 }
 
 img {
@@ -123,6 +129,10 @@ td {
   font-size: 20px;
   color: #333;
   margin: 30px 0;
+}
+
+.post-content .entry pre code {
+  word-break: initial;
 }
 
 .post-content .entry code {
@@ -395,4 +405,4 @@ edition = "2018"
 <h3 id="Linter-and-Formatter"><a href="#Linter-and-Formatter" class="headerlink" title="Linter and Formatter"></a>Linter and Formatter</h3><p>Rust has builtin linter called <a href="https://github.com/rust-lang/rust-clippy" target="_blank" rel="noopener">Clippy</a> and formatter called <a href="https://github.com/rust-lang/rustfmt" target="_blank" rel="noopener">rustfmt</a>. They’re equivalent to ESLint and Prettier in JS ecosystem. Precommit hooks can be managed using <a href="https://crates.io/crates/cargo-husky" target="_blank" rel="noopener">cargo-husky</a>.</p>
 <h3 id="Vulnerability-Checking"><a href="#Vulnerability-Checking" class="headerlink" title="Vulnerability Checking"></a>Vulnerability Checking</h3><p>Scanning for vulnerabilities in dependencies is done using <a href="https://crates.io/crates/cargo-audit" target="_blank" rel="noopener">cargo-audit</a> and is very similar to <a href="https://docs.npmjs.com/cli/audit" target="_blank" rel="noopener">npm audit</a>.</p>
 <p>Thanks for reading! :)</p>
-</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Rust/">Rust</a></div><div class="date-published">Published on: <time datetime="2020-06-28T13:35:17.000Z" itemprop="datePublished">28 Jun 2020</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Rust/">Rust</a></div><div class="date-published">Published on: <time datetime="2020-06-28T13:35:17.000Z" itemprop="datePublished">28 Jun 2020</time></div></div></footer></div></article></div><footer id="footer"><div><a href="mailto:sheshbabu@gmail.com" target="_blank"><i class="fas fa-envelope-square fa-lg"></i></a><a href="https://github.com/sheshbabu" target="_blank"><i class="fab fa-github-square fa-lg"></i></a><a href="https://www.linkedin.com/in/sheshbabu/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a><a href="https://www.twitter.com/sheshbabu" target="_blank"><i class="fab fa-twitter-square fa-lg"></i></a><a href="/atom.xml"><i class="fas fa-rss-square fa-lg"></i></a></div><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

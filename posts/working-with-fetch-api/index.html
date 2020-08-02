@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Working with Fetch api</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description"><meta name="keywords" content="JavaScript"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:title" content="Working with Fetch api"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><style>:root {
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Working with Fetch api</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description"><meta name="keywords" content="JavaScript"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:type" content="website"><meta name="og:title" content="Working with Fetch api"><meta name="og:description"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Working with Fetch api"><meta name="twitter:description"><meta name="twitter:image"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><script src="https://kit.fontawesome.com/f7954f6e2c.js" crossorigin="anonymous"></script><style>:root {
   --default-font: "Merriweather", serif;
   --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
 }
@@ -64,8 +64,14 @@ a {
 }
 
 #footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 100px;
   margin-bottom: 30px;
-  font-size: 14px;
+}
+
+#footer i {
+  margin: 4px;
 }
 
 img {
@@ -123,6 +129,10 @@ td {
   font-size: 20px;
   color: #333;
   margin: 30px 0;
+}
+
+.post-content .entry pre code {
+  word-break: initial;
 }
 
 .post-content .entry code {
@@ -390,4 +400,4 @@ Promise<span class="token punctuation">.</span><span class="token function">race
 <h3 id="Browser-support"><a href="#Browser-support" class="headerlink" title="Browser support"></a>Browser support</h3><p>Fetch is <a href="http://caniuse.com/#feat=fetch" target="_blank" rel="noopener">supported in most browsers</a> and has a <a href="https://github.com/github/fetch" target="_blank" rel="noopener">polyfill</a> for those who don’t support it.</p>
 <h3 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h3><p>Fetch is being developed iteratively and there are certain things that it does not support like <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress" target="_blank" rel="noopener">monitoring progress</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/abort" target="_blank" rel="noopener">aborting</a> a request etc. If these are absolutely necessary to your application, then your should use XHR or its abstractions like jQuery.ajax, axios etc instead of fetch.</p>
 <h3 id="Closing-thoughts"><a href="#Closing-thoughts" class="headerlink" title="Closing thoughts"></a>Closing thoughts</h3><p>Though it seems to be limited compared to XHR, I think the current feature set is good enough for most of the cases. The simple api makes it beginner friendly and (future) native support means one less dependency to load.</p>
-</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a></div><div class="date-published">Published on: <time datetime="2016-09-25T10:20:00.000Z" itemprop="datePublished">25 Sep 2016</time></div></div><div class="about-me"><h3>About Me</h3><div>Software developer • Problem solver</div><div>Find me in <a href="https://github.com/sheshbabu" target="_blank">Github</a><span>, </span><a href="https://twitter.com/sheshbabu" target="_blank">Twitter</a><span> or </span><a href="https://www.linkedin.com/in/sheshbabu" target="_blank">LinkedIn</a><span>. </span><span>Feel free to contact me at sheshbabu [at] gmail.com</span></div></div></footer></div></article></div><footer id="footer"><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a></div><div class="date-published">Published on: <time datetime="2016-09-25T10:20:00.000Z" itemprop="datePublished">25 Sep 2016</time></div></div></footer></div></article></div><footer id="footer"><div><a href="mailto:sheshbabu@gmail.com" target="_blank"><i class="fas fa-envelope-square fa-lg"></i></a><a href="https://github.com/sheshbabu" target="_blank"><i class="fab fa-github-square fa-lg"></i></a><a href="https://www.linkedin.com/in/sheshbabu/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a><a href="https://www.twitter.com/sheshbabu" target="_blank"><i class="fab fa-twitter-square fa-lg"></i></a><a href="/atom.xml"><i class="fas fa-rss-square fa-lg"></i></a></div><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
