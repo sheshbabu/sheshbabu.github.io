@@ -86,13 +86,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.124Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
@@ -100,7 +93,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/writing-maintainable-tests-using-the-data-driven-approach/</loc>
+    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
@@ -114,6 +107,13 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/writing-maintainable-tests-using-the-data-driven-approach/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.124Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
@@ -121,14 +121,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
+    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
+    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
@@ -184,13 +184,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
@@ -199,6 +192,13 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
