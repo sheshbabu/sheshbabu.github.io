@@ -312,10 +312,13 @@ pre .deletion {
 }
 </style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 ga('create', 'UA-78846816-1', 'auto');
-ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Rust for JavaScript Developers - Variables and Data Types</h1></header><div class="entry"><p>This is the second part in a series about introducing the Rust language to JavaScript developers. Here’s the previous chapter:</p>
-<ul>
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Rust for JavaScript Developers - Variables and Data Types</h1></header><div class="entry"><p>This is the second part in a series about introducing the Rust language to JavaScript developers. Here are all the chapters:</p>
+<ol>
 <li><a href="http://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/">Tooling Ecosystem Overview</a></li>
-</ul>
+<li><a href="http://www.sheshbabu.com/posts/rust-for-javascript-developers-variables-and-data-types/">Variables and Data Types</a></li>
+<li><a href="http://www.sheshbabu.com/posts/rust-for-javascript-developers-functions-and-control-flow/">Functions and Control Flow</a></li>
+<li><a href="http://www.sheshbabu.com/posts/rust-for-javascript-developers-pattern-matching-and-enums/">Pattern Matching and Enums</a></li>
+</ol>
 <h2 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h2><p>JavaScript has three ways to declare variables - <code>var</code>, <code>const</code> and <code>let</code>. Rust also has <code>const</code> and <code>let</code> but they work very differently compared to JavaScript.</p>
 <h3 id="let"><a href="#let" class="headerlink" title="let"></a>let</h3><p>In Rust, we declare variables using <code>let</code>.</p>
 <pre class=" language-rust"><code class="language-rust"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span></code></pre>
@@ -449,5 +452,5 @@ a <span class="token operator">=</span> <span class="token number">456</span><sp
   <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"{:?}"</span><span class="token punctuation">,</span> colors<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"white"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// #fff</span>
 <span class="token punctuation">}</span></code></pre>
 <p>Notice the usage of unwrap above. HashMap’s get method returns an Option type which we need to unwrap to get the value inside.</p>
-<p>Thanks for reading! :)</p>
+<p>Thanks for reading! Feel free to follow me in <a href="https://twitter.com/sheshbabu" target="_blank" rel="noopener">Twitter</a> for more posts like this :)</p>
 </div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/JavaScript/">JavaScript</a><span>, </span><a href="/tags/Rust/">Rust</a></div><div class="date-published">Published on: <time datetime="2020-07-02T14:39:59.000Z" itemprop="datePublished">02 Jul 2020</time></div></div></footer></div></article></div><footer id="footer"><div><a href="mailto:sheshbabu@gmail.com" target="_blank"><i class="fas fa-envelope-square fa-lg"></i></a><a href="https://github.com/sheshbabu" target="_blank"><i class="fab fa-github-square fa-lg"></i></a><a href="https://www.linkedin.com/in/sheshbabu/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a><a href="https://www.twitter.com/sheshbabu" target="_blank"><i class="fab fa-twitter-square fa-lg"></i></a><a href="/atom.xml"><i class="fas fa-rss-square fa-lg"></i></a></div><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>
