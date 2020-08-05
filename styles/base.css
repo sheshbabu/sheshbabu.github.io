@@ -66,6 +66,17 @@ a {
   margin-bottom: 30px;
 }
 
+@media screen and (max-width: 500px) {
+  footer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer p {
+    margin-top: 10px;
+  }
+}
+
 #footer i {
   margin: 4px;
 }
