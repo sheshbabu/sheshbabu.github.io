@@ -4,7 +4,7 @@
   <url>
     <loc>http://www.sheshbabu.com/posts/rust-error-handling/</loc>
     
-    <lastmod>2020-08-02T13:09:55.419Z</lastmod>
+    <lastmod>2020-08-05T01:13:31.772Z</lastmod>
     
   </url>
   
@@ -79,14 +79,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/tips-for-using-eslint-in-a-legacy-codebase/</loc>
+    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
+    <loc>http://www.sheshbabu.com/posts/tips-for-using-eslint-in-a-legacy-codebase/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
@@ -114,14 +114,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
+    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
+    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
@@ -156,14 +156,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
+    <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
@@ -184,13 +184,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
@@ -199,6 +192,13 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     

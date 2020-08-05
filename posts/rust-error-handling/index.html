@@ -400,7 +400,7 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
 <span class="token keyword">fn</span> <span class="token function">get_current_date</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Result<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> reqwest<span class="token punctuation">:</span><span class="token punctuation">:</span>Error<span class="token operator">></span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> url <span class="token operator">=</span> <span class="token string">"https://postman-echo.com/time/object"</span><span class="token punctuation">;</span>
   <span class="token keyword">let</span> res <span class="token operator">=</span> reqwest<span class="token punctuation">:</span><span class="token punctuation">:</span>blocking<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">get</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span>?<span class="token punctuation">.</span>json<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">&lt;</span>HashMap<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> i32<span class="token operator">>></span><span class="token punctuation">(</span><span class="token punctuation">)</span>?<span class="token punctuation">;</span>
-  <span class="token keyword">let</span> date <span class="token operator">=</span> response<span class="token punctuation">[</span><span class="token string">"years"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> date <span class="token operator">=</span> res<span class="token punctuation">[</span><span class="token string">"years"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
   <span class="token function">Ok</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span>
 <span class="token punctuation">}</span></code></pre>
@@ -421,7 +421,7 @@ ga('send', 'pageview');</script><script async src="https://www.google-analytics.
   fn get_current_date() -> Result&lt;String, reqwest::Error> {
     let url = "https://postman-echo.com/time/object";
     let res = reqwest::blocking::get(url)?.json::&lt;HashMap&lt;String, i32>>()?;
-<span class="token deleted">-   let date = response["years"].to_string();</span>
+<span class="token deleted">-   let date = res["years"].to_string();</span>
 <span class="token inserted">+   let formatted_date = format!("{}-{}-{}", res["years"], res["months"] + 1, res["date"]);</span>
 <span class="token inserted">+   let parsed_date = NaiveDate::parse_from_str(formatted_date.as_str(), "%Y-%m-%d")?;</span>
 <span class="token inserted">+   let date = parsed_date.format("%Y %B %d").to_string();</span>
