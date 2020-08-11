@@ -1,0 +1,1894 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><title>Single Page Applications using Rust</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description" content="Easy to follow guide to building SPAs using Rust, WebAssembly and Yew"><meta name="keywords" content="Rust, Wasm, WebAssembly, Yew, SPA, Single Page Applications, Wasm Pack, Wasm Bindgen"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:type" content="website"><meta name="og:title" content="Single Page Applications using Rust"><meta name="og:description" content="Easy to follow guide to building SPAs using Rust, WebAssembly and Yew"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image" content="http://www.sheshbabu.com/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-3.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Single Page Applications using Rust"><meta name="twitter:description" content="Easy to follow guide to building SPAs using Rust, WebAssembly and Yew"><meta name="twitter:image" content="http://www.sheshbabu.com/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-3.png"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link href="https://fonts.googleapis.com/css?family=Merriweather&amp;display=swap" rel="stylesheet"><script src="https://kit.fontawesome.com/f7954f6e2c.js" crossorigin="anonymous"></script><style>:root {
+  --default-font: "Merriweather", serif;
+  --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: var(--default-font);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 auto;
+  width: 750px;
+}
+
+@media screen and (max-width: 1260px) {
+  body {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+a {
+  color: inherit;
+}
+
+#header {
+  margin: 30px auto;
+}
+
+#header h1 {
+  font-size: 18px;
+}
+
+#header h1 a {
+  text-decoration: none;
+}
+
+#content {
+  margin-bottom: 50px;
+}
+
+#footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 100px;
+  margin-bottom: 30px;
+}
+
+@media screen and (max-width: 500px) {
+  footer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer p {
+    margin-top: 10px;
+  }
+}
+
+#footer i {
+  margin: 4px;
+}
+
+img {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-spacing: unset;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  border: 1px solid black;
+  padding: 8px;
+}
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ul,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  list-style-position: inside;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry pre code {
+  word-break: initial;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  border-radius: 3px;
+  word-break: break-word;
+}
+
+.post-content .entry li code,
+.post-content .entry p code {
+  padding: 2px 5px;
+  font-size: 15px;
+  color: black;
+  background-color: #efefef;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
+code,
+pre {
+  font-family: var(--mono-font);
+}
+
+pre[class*="language"] {
+  background: hsl(230, 1%, 98%);
+  margin-top: 15px;
+  padding: 7px 15px;
+  overflow: auto;
+  position: relative;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+pre[class*="language"] figcaption {
+  margin-bottom: 5px;
+}
+
+pre[class*="language"] figcaption a {
+  position: absolute;
+  right: 15px;
+}
+
+pre[class*="language"] pre {
+  border: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+pre[class*="language"] table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+
+pre[class*="language"] .gutter {
+  padding-right: 15px;
+  text-align: right;
+}
+
+pre[class*="language"] .code {
+  color: #666;
+}
+
+pre[class*="language"] .line {
+  height: 25px;
+}
+
+pre[class*="language"] .line.marked {
+  background: #d6d6d6;
+}
+
+/* Using colors from https://github.com/atom/one-light-syntax */
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .doctype,
+pre .pi,
+pre .lisp .string,
+pre .javadoc {
+  color: hsl(230, 4%, 64%);
+  font-style: italic;
+}
+
+pre .keyword,
+pre .winutils,
+pre .method,
+pre .css .tag,
+pre .request,
+pre .status,
+pre .nginx .title {
+  color: hsl(301, 63%, 40%);
+}
+
+pre .attr {
+  color: hsl(198, 99%, 37%);
+}
+
+pre .number,
+pre .command,
+pre .string,
+pre .tag .value,
+pre .addition,
+pre .inserted,
+pre .phpdoc,
+pre .tex .formula,
+pre .regexp,
+pre .hexcolor {
+  color: hsl(119, 34%, 47%);
+}
+
+pre .title,
+pre .localvars,
+pre .chunk,
+pre .decorator,
+pre .built_in,
+pre .identifier,
+pre .vhdl,
+pre .literal,
+pre .id {
+  color: hsl(221, 87%, 60%);
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body,
+pre .smalltalk .number,
+pre .constant,
+pre .class .title,
+pre .parent,
+pre .haskell .type {
+  color: hsl(41, 99%, 30%);
+}
+
+pre .preprocessor,
+pre .preprocessor .keyword,
+pre .shebang,
+pre .symbol,
+pre .symbol .string,
+pre .diff .change,
+pre .special,
+pre .attr_selector,
+pre .important,
+pre .subst,
+pre .cdata,
+pre .clojure .title {
+  color: hsl(41, 99%, 38%);
+}
+
+pre .deleted,
+pre .deletion {
+  color: #dc322f;
+}
+</style><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-78846816-1', 'auto');
+ga('send', 'pageview');</script><script async src="https://www.google-analytics.com/analytics.js"></script></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Single Page Applications using Rust</h1></header><div class="entry"><p>WebAssembly (wasm) allows code written in languages other than JavaScript to run on browsers. If you haven’t been paying attention, all the major browsers support wasm and <a href="https://caniuse.com/#feat=wasm" target="_blank" rel="noopener">globally more than 90% of users</a> have browsers that can run wasm.</p>
+<p>Since Rust compiles to wasm, is it possible to build SPAs (Single Page Applications) purely in Rust and without writing a single line of JavaScript? The short answer is YES! Read on to learn more or visit the <a href="https://rustmart-yew.netlify.app" target="_blank" rel="noopener">demo site</a> if you can’t contain your excitement!</p>
+<p>We’ll be building a simple ecommerce site called “RustMart” that will have 2 pages:</p>
+<ul>
+<li>HomePage - list all the products that the customer can add to cart</li>
+<li>ProductDetailPage - show the product details when a product card is clicked</li>
+</ul>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-1.png" alt></p>
+<p>I’m using this example as it tests the minimal set of capabilities required to build modern SPAs:</p>
+<ul>
+<li>Navigate between multiple pages without page reload</li>
+<li>Make network requests without page reload</li>
+<li>Ability to reuse UI components across multiple pages</li>
+<li>Update components in different layers of the UI hierarchy</li>
+</ul>
+<h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><p>Follow this <a href="https://www.rust-lang.org/tools/install" target="_blank" rel="noopener">link</a> to install Rust if you haven’t done so already.</p>
+<p>Install these Rust tools:</p>
+<pre class=" language-shell"><code class="language-shell">$ cargo install wasm-pack          # Compile Rust to Wasm and generate JS interop code
+$ cargo install cargo-make         # Task runner
+$ cargo install simple-http-server # Simple server to serve assets</code></pre>
+<p>Create a new project:</p>
+<pre class=" language-shell"><code class="language-shell">$ cargo new --lib rustmart && cd rustmart</code></pre>
+<p>We’ll be using the <a href="https://yew.rs" target="_blank" rel="noopener"><code>Yew</code></a> library to build UI components. Let’s add this and wasm dependencies to <code>Cargo.toml</code>:</p>
+<pre class=" language-toml"><code class="language-toml">[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+yew = "0.17"
+wasm-bindgen = "0.2"</code></pre>
+<p>Create a new file named <code>Makefile.toml</code> and add this:</p>
+<pre class=" language-toml"><code class="language-toml">[tasks.build]
+command = "wasm-pack"
+args = ["build", "--dev", "--target", "web", "--out-name", "wasm", "--out-dir", "./static"]
+watch = { ignore_pattern = "static/*" }
+
+[tasks.serve]
+command = "simple-http-server"
+args = ["-i", "./static/", "-p", "3000", "--nocache", "--try-file", "./static/index.html"]</code></pre>
+<p>Start the build task:</p>
+<pre class=" language-shell"><code class="language-shell">$ cargo make build</code></pre>
+<p>If you’re new to Rust, I’ve written some <a href="http://www.sheshbabu.com/tags/Rust-Beginners/">guides for beginners</a> which will help you follow this post better.</p>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>Let’s start with a simple “hello world” example:</p>
+<p>Create <code>static/index.html</code> and add this:</p>
+<pre class=" language-html"><code class="language-html"><span class="token doctype">&lt;!DOCTYPE html></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>RustMart<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript">
+      <span class="token keyword">import</span> init <span class="token keyword">from</span> <span class="token string">"/wasm.js"</span><span class="token punctuation">;</span>
+      <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>shortcut icon<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+<p>Add this to <code>src/lib.rs</code>:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/lib.rs</span>
+<span class="token keyword">use</span> wasm_bindgen<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">struct</span> Hello <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">impl</span> Component <span class="token keyword">for</span> Hello <span class="token punctuation">{</span>
+    <span class="token keyword">type</span> Message <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">type</span> Properties <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">fn</span> <span class="token function">create</span><span class="token punctuation">(</span>_<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">,</span> _<span class="token punctuation">:</span> ComponentLink<span class="token operator">&lt;</span>Self<span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Self <span class="token punctuation">{</span>
+        Self <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Message<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">change</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Html <span class="token punctuation">{</span>
+        <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span> <span class="token operator">&lt;</span>span<span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"Hello World!"</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token attribute attr-name">#[wasm_bindgen(start)]</span>
+<span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function">run_app</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    App<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">&lt;</span>Hello<span class="token operator">></span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">mount_to_body</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Lot of things going on but you can see that we’re creating a new component named “Hello” that renders <code>&lt;span&gt;Hello World!&lt;/span&gt;</code> into the DOM. We’ll learn more about Yew components later.</p>
+<p>Start the serve task in a new terminal and load <code>http://localhost:3000</code> in your browser</p>
+<pre class=" language-shell"><code class="language-shell">$ cargo make serve</code></pre>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/image-1.png" alt></p>
+<p>It works!! It’s only “hello world” but this is fully written in Rust.</p>
+<p>Let’s learn about components and other SPA concepts before proceeding further.</p>
+<h2 id="Thinking-in-Components"><a href="#Thinking-in-Components" class="headerlink" title="Thinking in Components"></a>Thinking in Components</h2><p>Building UIs by composing components and passing data in a unidirectional way is a paradigm shift in the frontend world. It’s a huge improvement in the way we reason about UI and it’s very hard to go back to imperative DOM manipulation once you get used to this.</p>
+<p>A <code>Component</code> in libraries like React, Vue, Yew, Flutter etc have these features:</p>
+<ul>
+<li>Ability to be composed into bigger components</li>
+<li><code>Props</code> - Pass data and callbacks from that component to its child components.</li>
+<li><code>State</code> - Manipulate state local to that component.</li>
+<li><code>AppState</code> - Manipulate global state.</li>
+<li>Listen to lifecycle events like “Instantiated”, “Mounted in DOM” etc</li>
+<li>Perform side effects like fetching remote data, manipulating localstorage etc</li>
+</ul>
+<p>A component gets updated (re-rendered) when one of the following happens:</p>
+<ul>
+<li>Parent component is re-rendered</li>
+<li><code>Props</code> changes</li>
+<li><code>State</code> changes</li>
+<li><code>AppState</code> changes</li>
+</ul>
+<p>So, instead of imperatively updating the UI when user interaction, network requests etc happen, we update the data (Props, State, AppState) and the UI is updated based on this data. This what someone means when they say “UI is a function of state”.</p>
+<p>The exact details differ across different libraries but this should give you a general idea. If you’re new to this, this way of thinking might take sometime to “click” and get used to.</p>
+<h2 id="HomePage"><a href="#HomePage" class="headerlink" title="HomePage"></a>HomePage</h2><p>Let’s build the HomePage first. We’ll be building the HomePage as a monolithic component and later decompose it into smaller reusable components.</p>
+<p>Let’s create the following files:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/pages/home.rs</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> Home <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">impl</span> Component <span class="token keyword">for</span> Home <span class="token punctuation">{</span>
+    <span class="token keyword">type</span> Message <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">type</span> Properties <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">fn</span> <span class="token function">create</span><span class="token punctuation">(</span>_<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">,</span> _<span class="token punctuation">:</span> ComponentLink<span class="token operator">&lt;</span>Self<span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Self <span class="token punctuation">{</span>
+        Self <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Message<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">change</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Html <span class="token punctuation">{</span>
+        <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span> <span class="token operator">&lt;</span>span<span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"Home Sweet Home!"</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/pages/mod.rs</span>
+<span class="token keyword">mod</span> home<span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">use</span> home<span class="token punctuation">:</span><span class="token punctuation">:</span>Home<span class="token punctuation">;</span></code></pre>
+<p>Let’s update the <code>src/lib.rs</code> to import the HomePage component:</p>
+<pre class=" language-diff"><code class="language-diff">  // src/lib.rs
+<span class="token inserted">+ mod pages;</span>
+
+<span class="token inserted">+ use pages::Home;</span>
+  use wasm_bindgen::prelude::*;
+  use yew::prelude::*;
+
+<span class="token deleted">- struct Hello {}</span>
+
+<span class="token deleted">- impl Component for Hello {</span>
+<span class="token deleted">-     type Message = ();</span>
+<span class="token deleted">-     type Properties = ();</span>
+
+<span class="token deleted">-     fn create(_: Self::Properties, _: ComponentLink&lt;Self>) -> Self {</span>
+<span class="token deleted">-         Self {}</span>
+<span class="token deleted">-     }</span>
+
+<span class="token deleted">-     fn update(&amp;mut self, _: Self::Message) -> ShouldRender {</span>
+<span class="token deleted">-         true</span>
+<span class="token deleted">-     }</span>
+
+<span class="token deleted">-     fn change(&amp;mut self, _: Self::Properties) -> ShouldRender {</span>
+<span class="token deleted">-         true</span>
+<span class="token deleted">-     }</span>
+
+<span class="token deleted">-     fn view(&amp;self) -> Html {</span>
+<span class="token deleted">-         html! { &lt;span>{"Hello World!"}&lt;/span> }</span>
+<span class="token deleted">-     }</span>
+<span class="token deleted">- }</span>
+
+  #[wasm_bindgen(start)]
+  pub fn run_app() {
+<span class="token deleted">-   App::&lt;Hello>::new().mount_to_body();</span>
+<span class="token inserted">+   App::&lt;Home>::new().mount_to_body();</span>
+  }</code></pre>
+<p>Now, you should see “Home Sweet Home!” instead of “Hello World!” rendered in your browser.</p>
+<p>Let’s start designing the <code>State</code> of this component:</p>
+<ul>
+<li>We need to store a list of products retrieved from server</li>
+<li>Store the products the user has added to cart</li>
+</ul>
+<p>We create a simple struct to hold the <code>Product</code> details:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">struct</span> Product <span class="token punctuation">{</span>
+    name<span class="token punctuation">:</span> String<span class="token punctuation">,</span>
+    description<span class="token punctuation">:</span> String<span class="token punctuation">,</span>
+    image<span class="token punctuation">:</span> String<span class="token punctuation">,</span>
+    price<span class="token punctuation">:</span> f64<span class="token punctuation">,</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We then create a new struct <code>State</code> with field called <code>products</code> to hold the products from server:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">struct</span> State <span class="token punctuation">{</span>
+    products<span class="token punctuation">:</span> Vec<span class="token operator">&lt;</span>Product<span class="token operator">></span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Here’s the full list of changes in the HomePage component:</p>
+<pre class=" language-diff"><code class="language-diff">  use yew::prelude::*;
+
+<span class="token inserted">+ struct Product {</span>
+<span class="token inserted">+     id: i32,</span>
+<span class="token inserted">+     name: String,</span>
+<span class="token inserted">+     description: String,</span>
+<span class="token inserted">+     image: String,</span>
+<span class="token inserted">+     price: f64,</span>
+<span class="token inserted">+ }</span>
+
+<span class="token inserted">+ struct State {</span>
+<span class="token inserted">+     products: Vec&lt;Product>,</span>
+<span class="token inserted">+ }</span>
+
+<span class="token deleted">- pub struct Home {}</span>
+<span class="token inserted">+ pub struct Home {</span>
+<span class="token inserted">+     state: State,</span>
+<span class="token inserted">+ }</span>
+
+  impl Component for Home {
+      type Message = ();
+      type Properties = ();
+
+      fn create(_: Self::Properties, _: ComponentLink&lt;Self>) -> Self {
+<span class="token inserted">+       let products: Vec&lt;Product> = vec![</span>
+<span class="token inserted">+           Product {</span>
+<span class="token inserted">+               id: 1,</span>
+<span class="token inserted">+               name: "Apple".to_string(),</span>
+<span class="token inserted">+               description: "An apple a day keeps the doctor away".to_string(),</span>
+<span class="token inserted">+               image: "/products/apple.png".to_string(),</span>
+<span class="token inserted">+               price: 3.65,</span>
+<span class="token inserted">+           },</span>
+<span class="token inserted">+           Product {</span>
+<span class="token inserted">+               id: 2,</span>
+<span class="token inserted">+               name: "Banana".to_string(),</span>
+<span class="token inserted">+               description: "An old banana leaf was once young and green".to_string(),</span>
+<span class="token inserted">+               image: "/products/banana.png".to_string(),</span>
+<span class="token inserted">+               price: 7.99,</span>
+<span class="token inserted">+           },</span>
+<span class="token inserted">+       ];</span>
+
+<span class="token deleted">-       Self {}</span>
+<span class="token inserted">+       Self {</span>
+<span class="token inserted">+           state: State {</span>
+<span class="token inserted">+               products,</span>
+<span class="token inserted">+           },</span>
+<span class="token inserted">+       }</span>
+      }
+
+      fn update(&amp;mut self, _: Self::Message) -> ShouldRender {
+          true
+      }
+
+      fn change(&amp;mut self, _: Self::Properties) -> ShouldRender {
+          true
+      }
+
+      fn view(&amp;self) -> Html {
+<span class="token inserted">+        let products: Vec&lt;Html> = self</span>
+<span class="token inserted">+            .state</span>
+<span class="token inserted">+            .products</span>
+<span class="token inserted">+            .iter()</span>
+<span class="token inserted">+            .map(|product: &amp;Product| {</span>
+<span class="token inserted">+                html! {</span>
+<span class="token inserted">+                  &lt;div></span>
+<span class="token inserted">+                    &lt;img src={&amp;product.image}/></span>
+<span class="token inserted">+                    &lt;div>{&amp;product.name}&lt;/div></span>
+<span class="token inserted">+                    &lt;div>{"$"}{&amp;product.price}&lt;/div></span>
+<span class="token inserted">+                  &lt;/div></span>
+<span class="token inserted">+                }</span>
+<span class="token inserted">+            })</span>
+<span class="token inserted">+            .collect();</span>
+<span class="token inserted">+</span>
+<span class="token inserted">+        html! { &lt;span>{products}&lt;/span> }</span>
+<span class="token deleted">-        html! { &lt;span>{"Home!"}&lt;/span> }</span>
+      }
+  }</code></pre>
+<p>The <code>create</code> lifecycle method is invoked when the component is created and this is where we set the initial state. For the time being, we’ve created a mock list of products and assigned it to the <code>products</code> inside the state as initial value. Later, we’ll fetch this list using network request.</p>
+<p>The <code>view</code> lifecycle method is invoked when the component is rendered. Here we’ve iterated over <code>products</code> inside state to generate product cards. If you’re familiar with React, this is same as the <code>render</code> method and the <code>html!</code> macro is similar to <code>JSX</code>.</p>
+<p>Save some random images as <code>static/products/apple.png</code> and <code>static/products/banana.png</code> and you’ll get this UI:</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/image-2.png" alt></p>
+<p>Let’s implement the “add to cart” functionality:</p>
+<ul>
+<li>We keep track of all products added to cart in a new state field called <code>cart_products</code></li>
+<li>We render a “add to cart” button for each product</li>
+<li>Add logic to update the <code>cart_products</code> state when “add to cart” button is clicked</li>
+</ul>
+<pre class=" language-diff"><code class="language-diff">  use yew::prelude::*;
+
+<span class="token inserted">+ #[derive(Clone)]</span>
+  struct Product {
+      id: i32,
+      name: String,
+      description: String,
+      image: String,
+      price: f64,
+  }
+
+<span class="token inserted">+ struct CartProduct {</span>
+<span class="token inserted">+     product: Product,</span>
+<span class="token inserted">+     quantity: i32,</span>
+<span class="token inserted">+ }</span>
+
+  struct State {
+      products: Vec&lt;Product>,
+<span class="token inserted">+     cart_products: Vec&lt;CartProduct>,</span>
+  }
+
+  pub struct Home {
+      state: State,
+<span class="token inserted">+     link: ComponentLink&lt;Self>,</span>
+  }
+
+<span class="token inserted">+ pub enum Msg {</span>
+<span class="token inserted">+     AddToCart(i32),</span>
+<span class="token inserted">+ }</span>
+
+  impl Component for Home {
+<span class="token deleted">-   type Message = ();</span>
+<span class="token inserted">+   type Message = Msg;</span>
+    type Properties = ();
+
+<span class="token deleted">-   fn create(_: Self::Properties, _: ComponentLink&lt;Self>) -> Self {</span>
+<span class="token inserted">+   fn create(_: Self::Properties, link: ComponentLink&lt;Self>) -> Self {</span>
+        let products: Vec&lt;Product> = vec![
+            Product {
+                id: 1,
+                name: "Apple".to_string(),
+                description: "An apple a day keeps the doctor away".to_string(),
+                image: "/products/apple.png".to_string(),
+                price: 3.65,
+            },
+            Product {
+                id: 2,
+                name: "Banana".to_string(),
+                description: "An old banana leaf was once young and green".to_string(),
+                image: "/products/banana.png".to_string(),
+                price: 7.99,
+            },
+        ];
+<span class="token inserted">+       let cart_products = vec![];</span>
+
+        Self {
+            state: State {
+                products,
+<span class="token inserted">+               cart_products,</span>
+            },
+<span class="token inserted">+           link,</span>
+        }
+    }
+
+<span class="token deleted">-   fn update(&amp;mut self, _: Self::Message) -> ShouldRender {</span>
+<span class="token inserted">+   fn update(&amp;mut self, message: Self::Message) -> ShouldRender {</span>
+<span class="token inserted">+       match message {</span>
+<span class="token inserted">+           Msg::AddToCart(product_id) => {</span>
+<span class="token inserted">+               let product = self</span>
+<span class="token inserted">+                   .state</span>
+<span class="token inserted">+                   .products</span>
+<span class="token inserted">+                   .iter()</span>
+<span class="token inserted">+                   .find(|p: &amp;&amp;Product| p.id == product_id)</span>
+<span class="token inserted">+                   .unwrap();</span>
+<span class="token inserted">+               let cart_product = self</span>
+<span class="token inserted">+                   .state</span>
+<span class="token inserted">+                   .cart_products</span>
+<span class="token inserted">+                   .iter_mut()</span>
+<span class="token inserted">+                   .find(|cp: &amp;&amp;mut CartProduct| cp.product.id == product_id);</span>
+<span class="token inserted">+</span>
+<span class="token inserted">+               if let Some(cp) = cart_product {</span>
+<span class="token inserted">+                   cp.quantity += 1;</span>
+<span class="token inserted">+               } else {</span>
+<span class="token inserted">+                   self.state.cart_products.push(CartProduct {</span>
+<span class="token inserted">+                       product: product.clone(),</span>
+<span class="token inserted">+                       quantity: 1,</span>
+<span class="token inserted">+                   })</span>
+<span class="token inserted">+               }</span>
+<span class="token inserted">+               true</span>
+<span class="token inserted">+           }</span>
+<span class="token inserted">+       }</span>
+<span class="token deleted">-       true</span>
+    }
+
+    fn change(&amp;mut self, _: Self::Properties) -> ShouldRender {
+        true
+    }
+
+    fn view(&amp;self) -> Html {
+        let products: Vec&lt;Html> = self
+            .state
+            .products
+            .iter()
+            .map(|product: &amp;Product| {
+<span class="token inserted">+              let product_id = product.id;</span>
+                html! {
+                  &lt;div>
+                    &lt;img src={&amp;product.image}/>
+                    &lt;div>{&amp;product.name}&lt;/div>
+                    &lt;div>{"$"}{&amp;product.price}&lt;/div>
+<span class="token inserted">+                   &lt;button onclick=self.link.callback(move |_| Msg::AddToCart(product_id))>{"Add To Cart"}&lt;/button></span>
+                  &lt;/div>
+                }
+            })
+            .collect();
+
+<span class="token inserted">+       let cart_value = self</span>
+<span class="token inserted">+           .state</span>
+<span class="token inserted">+           .cart_products</span>
+<span class="token inserted">+           .iter()</span>
+<span class="token inserted">+           .fold(0.0, |acc, cp| acc + (cp.quantity as f64 * cp.product.price));</span>
+
+<span class="token deleted">-       html! { &lt;span>{products}&lt;/span> }</span>
+<span class="token inserted">+       html! {</span>
+<span class="token inserted">+         &lt;div></span>
+<span class="token inserted">+           &lt;span>{format!("Cart Value: {:.2}", cart_value)}&lt;/span></span>
+<span class="token inserted">+           &lt;span>{products}&lt;/span></span>
+<span class="token inserted">+         &lt;/div></span>
+<span class="token inserted">+       }</span>
+      }
+  }
+</code></pre>
+<ul>
+<li><code>clone</code> - We’ve derived the <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html" target="_blank" rel="noopener"><code>Clone</code></a> trait in <code>Product</code> struct so we can save the cloned <code>Product</code> into <code>CartProduct</code> whenever the user adds them to cart.</li>
+<li><code>update</code> - This method is the place where the logic to update the component <code>State</code> or perform side-effects (like network requests) exist. It is invoked using a <code>Message</code> enum that contains all the actions the component supports. When we return <code>true</code> from this method, the component is re-rendered. In the above code, when the user clicks the “Add To Cart” button, we send a <code>Msg::AddToCart</code> message to <code>update</code>. Inside <code>update</code>, this either adds the product to <code>cart_product</code> if it doesn’t exist or it increments the quantity.</li>
+<li><code>link</code> - This allows us to register callbacks that can trigger our <code>update</code> lifecycle method.</li>
+</ul>
+<p>If you’ve used <a href="https://redux.js.org" target="_blank" rel="noopener">Redux</a> before, <code>update</code> is similar to <a href="https://redux.js.org/basics/reducers" target="_blank" rel="noopener"><code>Reducer</code></a> (for state updates) and <a href="https://redux.js.org/basics/actions#action-creators" target="_blank" rel="noopener"><code>Action Creator</code></a> (for side-effects), <code>Message</code> is similar to <a href="https://redux.js.org/basics/actions" target="_blank" rel="noopener"><code>Action</code></a> and <code>link</code> is similar to <a href="https://redux.js.org/basics/store#dispatching-actions" target="_blank" rel="noopener"><code>Dispatch</code></a>.</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-2.png" alt></p>
+<p>Here’s how the UI looks like, try clicking the “Add To Cart” button and see the changes in “Cart Value”:</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/image-3.png" alt></p>
+<h2 id="Fetching-Data"><a href="#Fetching-Data" class="headerlink" title="Fetching Data"></a>Fetching Data</h2><p>We’ll move the product data from the <code>create</code> function to <code>static/products/products.json</code> and query it using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank" rel="noopener"><code>fetch</code></a> api.</p>
+<pre class=" language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Apple"</span><span class="token punctuation">,</span>
+    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"An apple a day keeps the doctor away"</span><span class="token punctuation">,</span>
+    <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"/products/apple.png"</span><span class="token punctuation">,</span>
+    <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">3.65</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Banana"</span><span class="token punctuation">,</span>
+    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"An old banana leaf was once young and green"</span><span class="token punctuation">,</span>
+    <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"/products/banana.png"</span><span class="token punctuation">,</span>
+    <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">7.99</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span></code></pre>
+<p>Yew exposes common browser apis like fetch, localstorage etc through something called <a href="https://docs.rs/yew/0.17.2/yew/services/index.html" target="_blank" rel="noopener">“services”</a>. We can use the <code>FetchService</code> to make network requests. It requires <code>anyhow</code> and <code>serde</code> crates, let’s install them:</p>
+<pre class=" language-diff"><code class="language-diff">  [package]
+  name = "rustmart"
+  version = "0.1.0"
+  authors = ["sheshbabu &lt;sheshbabu@gmail.com>"]
+  edition = "2018"
+
+  [lib]
+  crate-type = ["cdylib", "rlib"]
+
+  [dependencies]
+  yew = "0.17"
+  wasm-bindgen = "0.2"
+<span class="token inserted">+ anyhow = "1.0.32"</span>
+<span class="token inserted">+ serde = { version = "1.0", features = ["derive"] }</span></code></pre>
+<p>Let’s extract the <code>Product</code> and <code>CartProduct</code> to <code>src/types.rs</code> so we can share it across multiple files:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">use</span> serde<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token punctuation">{</span>Deserialize<span class="token punctuation">,</span> Serialize<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token attribute attr-name">#[derive(Deserialize, Serialize, Clone, Debug)]</span>
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> Product <span class="token punctuation">{</span>
+    <span class="token keyword">pub</span> id<span class="token punctuation">:</span> i32<span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> name<span class="token punctuation">:</span> String<span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> description<span class="token punctuation">:</span> String<span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> image<span class="token punctuation">:</span> String<span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> price<span class="token punctuation">:</span> f64<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token attribute attr-name">#[derive(Clone, Debug)]</span>
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> CartProduct <span class="token punctuation">{</span>
+    <span class="token keyword">pub</span> product<span class="token punctuation">:</span> Product<span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> quantity<span class="token punctuation">:</span> i32<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>We’ve made both structs and their fields public, and have derived the <code>Deserialize</code> and <code>Serialize</code> traits.</p>
+<p>We’ll use the <a href="http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/">API module pattern</a> and create a separate module called <code>src/api.rs</code> to hold our fetch logic:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/api.rs</span>
+<span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>types<span class="token punctuation">:</span><span class="token punctuation">:</span>Product<span class="token punctuation">;</span>
+<span class="token keyword">use</span> anyhow<span class="token punctuation">:</span><span class="token punctuation">:</span>Error<span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>callback<span class="token punctuation">:</span><span class="token punctuation">:</span>Callback<span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>format<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token punctuation">{</span>Json<span class="token punctuation">,</span> Nothing<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>services<span class="token punctuation">:</span><span class="token punctuation">:</span>fetch<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token punctuation">{</span>FetchService<span class="token punctuation">,</span> FetchTask<span class="token punctuation">,</span> Request<span class="token punctuation">,</span> Response<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">type</span> FetchResponse<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">=</span> Response<span class="token operator">&lt;</span>Json<span class="token operator">&lt;</span>Result<span class="token operator">&lt;</span>T<span class="token punctuation">,</span> Error<span class="token operator">>></span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token keyword">type</span> FetchCallback<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">=</span> Callback<span class="token operator">&lt;</span>FetchResponse<span class="token operator">&lt;</span>T<span class="token operator">>></span><span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function">get_products</span><span class="token punctuation">(</span>callback<span class="token punctuation">:</span> FetchCallback<span class="token operator">&lt;</span>Vec<span class="token operator">&lt;</span>Product<span class="token operator">>></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> FetchTask <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> req <span class="token operator">=</span> Request<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"/products/products.json"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">body</span><span class="token punctuation">(</span>Nothing<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    FetchService<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">fetch</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The <code>FetchService</code> api is a bit awkward - it takes in a request object and callback as arguments and returns something called a “FetchTask”. One surprising gotcha here is that the network request gets aborted if this “FetchTask” is dropped. So we return this and store it in our component.</p>
+<p>Let’s update <code>lib.rs</code> to add these new modules into the <a href="http://www.sheshbabu.com/posts/rust-module-system/">module tree</a>:</p>
+<pre class=" language-diff"><code class="language-diff">  // src/lib.rs
+<span class="token inserted">+ mod api;</span>
+<span class="token inserted">+ mod types;</span>
+  mod pages;
+
+  use pages::Home;
+  use wasm_bindgen::prelude::*;
+  use yew::prelude::*;
+
+  #[wasm_bindgen(start)]
+  pub fn run_app() {
+      App::&lt;Home>::new().mount_to_body();
+  }</code></pre>
+<p>Finally, let’s update our HomePage component:</p>
+<pre class=" language-diff"><code class="language-diff"><span class="token inserted">+ use crate::api;</span>
+<span class="token inserted">+ use crate::types::{CartProduct, Product};</span>
+<span class="token inserted">+ use anyhow::Error;</span>
+<span class="token inserted">+ use yew::format::Json;</span>
+<span class="token inserted">+ use yew::services::fetch::FetchTask;</span>
+  use yew::prelude::*;
+
+<span class="token deleted">- #[derive(Clone)]</span>
+<span class="token deleted">- struct Product {</span>
+<span class="token deleted">-     id: i32,</span>
+<span class="token deleted">-     name: String,</span>
+<span class="token deleted">-     description: String,</span>
+<span class="token deleted">-     image: String,</span>
+<span class="token deleted">-     price: f64,</span>
+<span class="token deleted">- }</span>
+
+<span class="token deleted">- struct CartProduct {</span>
+<span class="token deleted">-     product: Product,</span>
+<span class="token deleted">-     quantity: i32,</span>
+<span class="token deleted">- }</span>
+
+  struct State {
+      products: Vec&lt;Product>,
+      cart_products: Vec&lt;CartProduct>,
+<span class="token inserted">+     get_products_error: Option&lt;Error>,</span>
+<span class="token inserted">+     get_products_loaded: bool,</span>
+  }
+
+  pub struct Home {
+      state: State,
+      link: ComponentLink&lt;Self>,
+<span class="token inserted">+     task: Option&lt;FetchTask>,</span>
+  }
+
+  pub enum Msg {
+      AddToCart(i32),
+<span class="token inserted">+     GetProducts,</span>
+<span class="token inserted">+     GetProductsSuccess(Vec&lt;Product>),</span>
+<span class="token inserted">+     GetProductsError(Error),</span>
+  }
+
+  impl Component for Home {
+      type Message = Msg;
+      type Properties = ();
+
+      fn create(_: Self::Properties, link: ComponentLink&lt;Self>) -> Self {
+<span class="token deleted">-         let products: Vec&lt;Product> = vec![</span>
+<span class="token deleted">-             Product {</span>
+<span class="token deleted">-                 id: 1,</span>
+<span class="token deleted">-                 name: "Apple".to_string(),</span>
+<span class="token deleted">-                 description: "An apple a day keeps the doctor away".to_string(),</span>
+<span class="token deleted">-                 image: "/products/apple.png".to_string(),</span>
+<span class="token deleted">-                 price: 3.65,</span>
+<span class="token deleted">-             },</span>
+<span class="token deleted">-             Product {</span>
+<span class="token deleted">-                 id: 2,</span>
+<span class="token deleted">-                 name: "Banana".to_string(),</span>
+<span class="token deleted">-                 description: "An old banana leaf was once young and green".to_string(),</span>
+<span class="token deleted">-                 image: "/products/banana.png".to_string(),</span>
+<span class="token deleted">-                 price: 7.99,</span>
+<span class="token deleted">-             },</span>
+<span class="token deleted">-         ];</span>
+<span class="token inserted">+         let products = vec![];</span>
+          let cart_products = vec![];
+
+<span class="token inserted">+         link.send_message(Msg::GetProducts);</span>
+
+          Self {
+              state: State {
+                  products,
+                  cart_products,
+<span class="token inserted">+                 get_products_error: None,</span>
+<span class="token inserted">+                 get_products_loaded: false,</span>
+              },
+              link,
+<span class="token inserted">+             task: None,</span>
+          }
+      }
+
+      fn update(&amp;mut self, message: Self::Message) -> ShouldRender {
+          match message {
+<span class="token inserted">+             Msg::GetProducts => {</span>
+<span class="token inserted">+                 self.state.get_products_loaded = false;</span>
+<span class="token inserted">+                 let handler =</span>
+<span class="token inserted">+                     self.link</span>
+<span class="token inserted">+                         .callback(move |response: api::FetchResponse&lt;Vec&lt;Product>>| {</span>
+<span class="token inserted">+                             let (_, Json(data)) = response.into_parts();</span>
+<span class="token inserted">+                             match data {</span>
+<span class="token inserted">+                                 Ok(products) => Msg::GetProductsSuccess(products),</span>
+<span class="token inserted">+                                 Err(err) => Msg::GetProductsError(err),</span>
+<span class="token inserted">+                             }</span>
+<span class="token inserted">+                         });</span>
+<span class="token inserted">+                 self.task = Some(api::get_products(handler));</span>
+<span class="token inserted">+                 true</span>
+<span class="token inserted">+             }</span>
+<span class="token inserted">+             Msg::GetProductsSuccess(products) => {</span>
+<span class="token inserted">+                 self.state.products = products;</span>
+<span class="token inserted">+                 self.state.get_products_loaded = true;</span>
+<span class="token inserted">+                 true</span>
+<span class="token inserted">+             }</span>
+<span class="token inserted">+             Msg::GetProductsError(error) => {</span>
+<span class="token inserted">+                 self.state.get_products_error = Some(error);</span>
+<span class="token inserted">+                 self.state.get_products_loaded = true;</span>
+<span class="token inserted">+                 true</span>
+<span class="token inserted">+             }</span>
+              Msg::AddToCart(product_id) => {
+                  let product = self
+                      .state
+                      .products
+                      .iter()
+                      .find(|p: &amp;&amp;Product| p.id == product_id)
+                      .unwrap();
+                  let cart_product = self
+                      .state
+                      .cart_products
+                      .iter_mut()
+                      .find(|cp: &amp;&amp;mut CartProduct| cp.product.id == product_id);
+
+                  if let Some(cp) = cart_product {
+                      cp.quantity += 1;
+                  } else {
+                      self.state.cart_products.push(CartProduct {
+                          product: product.clone(),
+                          quantity: 1,
+                      })
+                  }
+                  true
+              }
+          }
+      }
+
+      fn change(&amp;mut self, _: Self::Properties) -> ShouldRender {
+          true
+      }
+
+      fn view(&amp;self) -> Html {
+          let products: Vec&lt;Html> = self
+              .state
+              .products
+              .iter()
+              .map(|product: &amp;Product| {
+                  let product_id = product.id;
+                  html! {
+                    &lt;div>
+                      &lt;img src={&amp;product.image}/>
+                      &lt;div>{&amp;product.name}&lt;/div>
+                      &lt;div>{"$"}{&amp;product.price}&lt;/div>
+                      &lt;button onclick=self.link.callback(move |_| Msg::AddToCart(product_id))>{"Add To Cart"}&lt;/button>
+                    &lt;/div>
+                  }
+              })
+              .collect();
+
+          let cart_value = self
+              .state
+              .cart_products
+              .iter()
+              .fold(0.0, |acc, cp| acc + (cp.quantity as f64 * cp.product.price));
+
+<span class="token inserted">+         if !self.state.get_products_loaded {</span>
+<span class="token inserted">+             html! {</span>
+<span class="token inserted">+               &lt;div>{"Loading ..."}&lt;/div></span>
+<span class="token inserted">+             }</span>
+<span class="token inserted">+         } else if let Some(_) = self.state.get_products_error {</span>
+<span class="token inserted">+             html! {</span>
+<span class="token inserted">+               &lt;div></span>
+<span class="token inserted">+                 &lt;span>{"Error loading products! :("}&lt;/span></span>
+<span class="token inserted">+               &lt;/div></span>
+<span class="token inserted">+             }</span>
+<span class="token inserted">+         } else {</span>
+              html! {
+                &lt;div>
+                  &lt;span>{format!("Cart Value: {:.2}", cart_value)}&lt;/span>
+                  &lt;span>{products}&lt;/span>
+                &lt;/div>
+              }
+<span class="token inserted">+         }</span>
+      }
+  }
+</code></pre>
+<p>Quite a number of changes, but you should be able to understand most of them.</p>
+<ul>
+<li>We’ve replaced the hardcoded products list in <code>create</code> with an empty array. We’re also sending a message <code>Msg::GetProducts</code> to <code>update</code> which calls the <code>get_products</code> method in the <code>api</code> module. The returned <code>FetchTask</code> is stored in <code>task</code>.</li>
+<li>When the network request succeeds, the <code>Msg::GetProductsSuccess</code> message is called with products list or <code>Msg::GetProductsError</code> with error.</li>
+<li>These two messages set the <code>products</code> and <code>get_products_error</code> fields in state respectively. They also set the <code>get_products_loaded</code> state to true after the request is fulfilled.</li>
+<li>In the <code>view</code> method, we’ve used conditional rendering to render either the loading view, error view or products view based on the component’s state.</li>
+</ul>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-3.png" alt></p>
+<h2 id="Splitting-into-reusable-components"><a href="#Splitting-into-reusable-components" class="headerlink" title="Splitting into reusable components"></a>Splitting into reusable components</h2><p>Let’s extract the “product card” component into its own module so we can reuse it in other pages.</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/components/product_card.rs</span>
+<span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>types<span class="token punctuation">:</span><span class="token punctuation">:</span>Product<span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> ProductCard <span class="token punctuation">{</span>
+    props<span class="token punctuation">:</span> Props<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token attribute attr-name">#[derive(Properties, Clone)]</span>
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> Props <span class="token punctuation">{</span>
+    <span class="token keyword">pub</span> product<span class="token punctuation">:</span> Product<span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> on_add_to_cart<span class="token punctuation">:</span> Callback<span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">></span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">impl</span> Component <span class="token keyword">for</span> ProductCard <span class="token punctuation">{</span>
+    <span class="token keyword">type</span> Message <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">type</span> Properties <span class="token operator">=</span> Props<span class="token punctuation">;</span>
+
+    <span class="token keyword">fn</span> <span class="token function">create</span><span class="token punctuation">(</span>props<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">,</span> _link<span class="token punctuation">:</span> ComponentLink<span class="token operator">&lt;</span>Self<span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Self <span class="token punctuation">{</span>
+        Self <span class="token punctuation">{</span> props <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _msg<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Message<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">change</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _props<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Html <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> onclick <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>on_add_to_cart<span class="token punctuation">.</span><span class="token function">reform</span><span class="token punctuation">(</span><span class="token operator">|</span>_<span class="token operator">|</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span>
+          <span class="token operator">&lt;</span>div<span class="token operator">></span>
+            <span class="token operator">&lt;</span>img src<span class="token operator">=</span><span class="token punctuation">{</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>product<span class="token punctuation">.</span>image<span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token punctuation">{</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>product<span class="token punctuation">.</span>name<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+            <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"$"</span><span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>product<span class="token punctuation">.</span>price<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+            <span class="token operator">&lt;</span>button onclick<span class="token operator">=</span>onclick<span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"Add To Cart"</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+          <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/components/mod.rs</span>
+<span class="token keyword">mod</span> product_card<span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">use</span> product_card<span class="token punctuation">:</span><span class="token punctuation">:</span>ProductCard<span class="token punctuation">;</span></code></pre>
+<pre class=" language-diff"><code class="language-diff">  // src/pages/home.rs
+
+  use crate::api;
+<span class="token inserted">+ use crate::components::ProductCard;</span>
+  use crate::types::{CartProduct, Product};
+  use anyhow::Error;
+  use yew::format::Json;
+  use yew::prelude::*;
+  use yew::services::fetch::FetchTask;
+
+  // No changes
+
+  impl Component for Home {
+      // No changes
+
+      fn view(&amp;self) -> Html {
+          let products: Vec&lt;Html> = self
+              .state
+              .products
+              .iter()
+              .map(|product: &amp;Product| {
+                  let product_id = product.id;
+                  html! {
+<span class="token deleted">-                   &lt;div></span>
+<span class="token deleted">-                     &lt;img src={&amp;product.image}/></span>
+<span class="token deleted">-                     &lt;div>{&amp;product.name}&lt;/div></span>
+<span class="token deleted">-                     &lt;div>{"$"}{&amp;product.price}&lt;/div></span>
+<span class="token deleted">-                     &lt;button onclick=self.link.callback(move |_| Msg::AddToCart(product_id))>{"Add To Cart"}&lt;/button></span>
+<span class="token deleted">-                   &lt;/div></span>
+<span class="token inserted">+                   &lt;ProductCard product={product} on_add_to_cart=self.link.callback(move |_| Msg::AddToCart(product_id))/></span>
+                  }
+              })
+              .collect();
+
+          // No changes
+      }
+  }</code></pre>
+<p>Pretty straightforward, except for <code>Properties</code>, <code>Callback</code> and <code>reform</code>.</p>
+<ul>
+<li><code>Properties</code> - As mentioned in the beginning of the post, “Properties” or “Props” are input to a component. If you think of components as functions, then Props are the function arguments.</li>
+<li>For the <code>ProductCard</code> component, we’re passing the <code>Product</code> struct as well as a <code>on_add_to_cart</code> callback. This component doesn’t hold any state, so when user clicks on the “Add To Cart” button, this component calls the parent component to update the <code>cart_products</code> state. This callback is represented using the <code>Callback&lt;T&gt;</code> type and to call this from child component, we either use <code>emit</code> or <code>reform</code> methods on the callback.</li>
+</ul>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-4.png" alt></p>
+<h2 id="Styling"><a href="#Styling" class="headerlink" title="Styling"></a>Styling</h2><p>The UI looks barebones as we haven’t added any styles.</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/image-3.png" alt></p>
+<p>We can either use the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class" target="_blank" rel="noopener">class attribute</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/API/ElementCSSInlineStyle/style" target="_blank" rel="noopener">inline styles</a> with Yew. Let’s add some styles so the UI looks good.</p>
+<p>Let’s create a new CSS file <code>static/styles.css</code>, add it to <code>static/index.html</code> and then we can start using the classes in our components.</p>
+<pre class=" language-diff"><code class="language-diff">  // src/pages/home.rs
+
+  html! {
+    &lt;div>
+<span class="token deleted">-     &lt;span>{format!("Cart Value: {:.2}", cart_value)}&lt;/span></span>
+<span class="token deleted">-     &lt;span>{products}&lt;/span></span>
+<span class="token inserted">+     &lt;div class="navbar"></span>
+<span class="token inserted">+         &lt;div class="navbar_title">{"RustMart"}&lt;/div></span>
+<span class="token inserted">+         &lt;div class="navbar_cart_value">{format!("${:.2}", cart_value)}&lt;/div></span>
+<span class="token inserted">+     &lt;/div></span>
+<span class="token inserted">+     &lt;div class="product_card_list">{products}&lt;/div></span>
+    &lt;/div>
+  }</code></pre>
+<pre class=" language-diff"><code class="language-diff">  // src/components/product_card.rs
+
+  html! {
+<span class="token deleted">-   &lt;div></span>
+<span class="token deleted">-     &lt;img src={&amp;self.props.product.image}/></span>
+<span class="token deleted">-     &lt;div>{&amp;self.props.product.name}&lt;/div></span>
+<span class="token deleted">-     &lt;div>{"$"}{&amp;self.props.product.price}&lt;/div></span>
+<span class="token deleted">-     &lt;button onclick=onclick>{"Add To Cart"}&lt;/button></span>
+<span class="token deleted">-   &lt;/div></span>
+<span class="token inserted">+   &lt;div class="product_card_container"></span>
+<span class="token inserted">+     &lt;img class="product_card_image" src={&amp;self.props.product.image}/></span>
+<span class="token inserted">+     &lt;div class="product_card_name">{&amp;self.props.product.name}&lt;/div></span>
+<span class="token inserted">+     &lt;div class="product_card_price">{"$"}{&amp;self.props.product.price}&lt;/div></span>
+<span class="token inserted">+     &lt;button class="product_atc_button" onclick=onclick>{"Add To Cart"}&lt;/button></span>
+<span class="token inserted">+   &lt;/div></span>
+  }</code></pre>
+<p>After adding the styles and a few more products, here’s how the UI looks like:</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/image-4.png" alt></p>
+<p>CSS changes are outside the scope of this post, please refer to the <a href="https://github.com/sheshbabu/rustmart-yew-example" target="_blank" rel="noopener">GitHub repo</a>.</p>
+<h2 id="Routing"><a href="#Routing" class="headerlink" title="Routing"></a>Routing</h2><p>In server rendered pages (Jinja, ERB, JSP etc), each page the user sees is mapped to a different template file. For example, when the user navigates to “/login”, it’s rendered in server using “login.html” and when the user goes to “/settings”, it’s rendered using “settings.html”. Using unique urls for different UI pages is also useful for bookmarking and sharing.</p>
+<p>Since SPAs only have one html page (the “Single Page” in SPA), we should be able to replicate the above behavior. This is done using a <code>Router</code>. A Router maps different url paths (with query params, fragments etc) to different page components and helps in navigating between multiple pages without reloading.</p>
+<p>For our application, we’ll be using this mapping:</p>
+<pre class=" language-diff"><code class="language-diff">/            => HomePage
+/product/:id => ProductDetailPage</code></pre>
+<p>Let’s install <code>yew-router</code>:</p>
+<pre class=" language-diff"><code class="language-diff">  [package]
+  name = "rustmart"
+  version = "0.1.0"
+  authors = ["sheshbabu &lt;sheshbabu@gmail.com>"]
+  edition = "2018"
+
+  [lib]
+  crate-type = ["cdylib", "rlib"]
+
+  [dependencies]
+  yew = "0.17"
+<span class="token inserted">+ yew-router = "0.14.0"</span>
+  wasm-bindgen = "0.2"
+  log = "0.4.6"
+  wasm-logger = "0.2.0"
+  anyhow = "1.0.32"
+  serde = { version = "1.0", features = ["derive"] }</code></pre>
+<p>Let’s add the routes in a dedicated file so it’s easier to see all available routes at a glance:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/route.rs</span>
+<span class="token keyword">use</span> yew_router<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token attribute attr-name">#[derive(Switch, Debug, Clone)]</span>
+<span class="token keyword">pub</span> <span class="token keyword">enum</span> Route <span class="token punctuation">{</span>
+    #<span class="token punctuation">[</span>to <span class="token operator">=</span> <span class="token string">"/"</span><span class="token punctuation">]</span>
+    HomePage<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>For the time being, it only has one route. We’ll add more later.</p>
+<p>Let’s create a new file called <code>src/app.rs</code> to replace <code>HomePage</code> as the new root component:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew_router<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>pages<span class="token punctuation">:</span><span class="token punctuation">:</span>Home<span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>route<span class="token punctuation">:</span><span class="token punctuation">:</span>Route<span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> App <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">impl</span> Component <span class="token keyword">for</span> App <span class="token punctuation">{</span>
+    <span class="token keyword">type</span> Message <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">type</span> Properties <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">fn</span> <span class="token function">create</span><span class="token punctuation">(</span>_<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">,</span> _link<span class="token punctuation">:</span> ComponentLink<span class="token operator">&lt;</span>Self<span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Self <span class="token punctuation">{</span>
+        Self <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _msg<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Message<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">change</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">false</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Html <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> render <span class="token operator">=</span> Router<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token operator">|</span>switch<span class="token punctuation">:</span> Route<span class="token operator">|</span> <span class="token keyword">match</span> switch <span class="token punctuation">{</span>
+            Route<span class="token punctuation">:</span><span class="token punctuation">:</span>HomePage <span class="token operator">=</span><span class="token operator">></span> <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span><span class="token operator">&lt;</span>Home<span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span>
+            <span class="token operator">&lt;</span>Router<span class="token operator">&lt;</span>Route<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">></span> render<span class="token operator">=</span>render<span class="token operator">/</span><span class="token operator">></span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Let’s make the corresponding change in <code>lib.rs</code>:</p>
+<pre class=" language-diff"><code class="language-diff">  mod api;
+<span class="token inserted">+ mod app;</span>
+  mod components;
+  mod pages;
+<span class="token inserted">+ mod route;</span>
+  mod types;
+
+<span class="token deleted">- use pages::Home;</span>
+  use wasm_bindgen::prelude::*;
+  use yew::prelude::*;
+
+  #[wasm_bindgen(start)]
+  pub fn run_app() {
+      wasm_logger::init(wasm_logger::Config::default());
+<span class="token deleted">-     App::&lt;Home>::new().mount_to_body();</span>
+<span class="token inserted">+     App::&lt;app::App>::new().mount_to_body();</span>
+  }</code></pre>
+<p>This is how our component hierarchy looks like so far:</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-5.png" alt></p>
+<h2 id="ProductDetailPage"><a href="#ProductDetailPage" class="headerlink" title="ProductDetailPage"></a>ProductDetailPage</h2><p>Now that we have a router in place, let’s use it to navigate from one page to another. Since it’s a SPA, we should avoid page reload while navigating.</p>
+<p>Let’s add a route for ProductDetailPage under <code>/product/:id</code>. When the user clicks on a <code>ProductCard</code>, it will go to its detail page with the <code>id</code> in the route passed as a Prop.</p>
+<pre class=" language-diff"><code class="language-diff">  // src/route.rs
+  use yew_router::prelude::*;
+
+  #[derive(Switch, Debug, Clone)]
+  pub enum Route {
+<span class="token inserted">+     #[to = "/product/{id}"]</span>
+<span class="token inserted">+     ProductDetail(i32),</span>
+      #[to = "/"]
+      HomePage,
+  }</code></pre>
+<p>Add this route to <code>app.rs</code>:</p>
+<pre class=" language-diff"><code class="language-diff">  use yew::prelude::*;
+  use yew_router::prelude::*;
+
+<span class="token deleted">- use crate::pages::{Home};</span>
+<span class="token inserted">+ use crate::pages::{Home, ProductDetail};</span>
+  use crate::route::Route;
+
+  pub struct App {}
+
+  impl Component for App {
+      // No changes
+
+      fn view(&amp;self) -> Html {
+          let render = Router::render(|switch: Route| match switch {
+<span class="token inserted">+             Route::ProductDetail(id) => html! {&lt;ProductDetail id=id/>},</span>
+              Route::HomePage => html! {&lt;Home/>},
+          });
+
+          html! {
+              &lt;Router&lt;Route, ()> render=render/>
+          }
+      }
+  }</code></pre>
+<p>Let’s update the <code>ProductCard</code> so clicking on the product image, name or price takes us to this new page:</p>
+<pre class=" language-diff"><code class="language-diff">  // src/components/product_card.rs
+<span class="token inserted">+ use crate::route::Route;</span>
+  use crate::types::Product;
+  use yew::prelude::*;
+<span class="token inserted">+ use yew_router::components::RouterAnchor;</span>
+
+  // No changes
+
+  impl Component for ProductCard {
+      // No changes
+
+      fn view(&amp;self) -> Html {
+<span class="token inserted">+         type Anchor = RouterAnchor&lt;Route>;</span>
+          let onclick = self.props.on_add_to_cart.reform(|_| ());
+
+          html! {
+              &lt;div class="product_card_container">
+<span class="token inserted">+                 &lt;Anchor route=Route::ProductDetail(self.props.product.id) classes="product_card_anchor"></span>
+                      &lt;img class="product_card_image" src={&amp;self.props.product.image}/>
+                      &lt;div class="product_card_name">{&amp;self.props.product.name}&lt;/div>
+                      &lt;div class="product_card_price">{"$"}{&amp;self.props.product.price}&lt;/div>
+<span class="token inserted">+                 &lt;/Anchor></span>
+                  &lt;button class="product_atc_button" onclick=onclick>{"Add To Cart"}&lt;/button>
+              &lt;/div>
+          }
+      }
+  }</code></pre>
+<p>Notice how we used <code>classes</code> instead of <code>class</code> for <code>Anchor</code>.</p>
+<p>We’ll create files named <code>static/products/1.json</code>, <code>static/products/2.json</code> etc with mock data:</p>
+<pre class=" language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Apple"</span><span class="token punctuation">,</span>
+  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"An apple a day keeps the doctor away"</span><span class="token punctuation">,</span>
+  <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"/products/apple.png"</span><span class="token punctuation">,</span>
+  <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">3.65</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Let’s update the <code>api.rs</code> module with the new route:</p>
+<pre class=" language-diff"><code class="language-diff">  use crate::types::Product;
+  use anyhow::Error;
+  use yew::callback::Callback;
+  use yew::format::{Json, Nothing};
+  use yew::services::fetch::{FetchService, FetchTask, Request, Response};
+
+  pub type FetchResponse&lt;T> = Response&lt;Json&lt;Result&lt;T, Error>>>;
+  type FetchCallback&lt;T> = Callback&lt;FetchResponse&lt;T>>;
+
+  pub fn get_products(callback: FetchCallback&lt;Vec&lt;Product>>) -> FetchTask {
+      let req = Request::get("/products/products.json")
+          .body(Nothing)
+          .unwrap();
+
+      FetchService::fetch(req, callback).unwrap()
+  }
+
+<span class="token inserted">+ pub fn get_product(id: i32, callback: FetchCallback&lt;Product>) -> FetchTask {</span>
+<span class="token inserted">+     let req = Request::get(format!("/products/{}.json", id))</span>
+<span class="token inserted">+         .body(Nothing)</span>
+<span class="token inserted">+         .unwrap();</span>
+<span class="token inserted">+</span>
+<span class="token inserted">+     FetchService::fetch(req, callback).unwrap()</span>
+<span class="token inserted">+ }</span></code></pre>
+<p>Finally, here’s the <code>ProductDetail</code> page component:</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/pages/product_detail.rs</span>
+<span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>api<span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>types<span class="token punctuation">:</span><span class="token punctuation">:</span>Product<span class="token punctuation">;</span>
+<span class="token keyword">use</span> anyhow<span class="token punctuation">:</span><span class="token punctuation">:</span>Error<span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>format<span class="token punctuation">:</span><span class="token punctuation">:</span>Json<span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>services<span class="token punctuation">:</span><span class="token punctuation">:</span>fetch<span class="token punctuation">:</span><span class="token punctuation">:</span>FetchTask<span class="token punctuation">;</span>
+
+<span class="token keyword">struct</span> State <span class="token punctuation">{</span>
+    product<span class="token punctuation">:</span> Option<span class="token operator">&lt;</span>Product<span class="token operator">></span><span class="token punctuation">,</span>
+    get_product_error<span class="token punctuation">:</span> Option<span class="token operator">&lt;</span>Error<span class="token operator">></span><span class="token punctuation">,</span>
+    get_product_loaded<span class="token punctuation">:</span> bool<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> ProductDetail <span class="token punctuation">{</span>
+    props<span class="token punctuation">:</span> Props<span class="token punctuation">,</span>
+    state<span class="token punctuation">:</span> State<span class="token punctuation">,</span>
+    link<span class="token punctuation">:</span> ComponentLink<span class="token operator">&lt;</span>Self<span class="token operator">></span><span class="token punctuation">,</span>
+    task<span class="token punctuation">:</span> Option<span class="token operator">&lt;</span>FetchTask<span class="token operator">></span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token attribute attr-name">#[derive(Properties, Clone)]</span>
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> Props <span class="token punctuation">{</span>
+    <span class="token keyword">pub</span> id<span class="token punctuation">:</span> i32<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">enum</span> Msg <span class="token punctuation">{</span>
+    GetProduct<span class="token punctuation">,</span>
+    <span class="token function">GetProductSuccess</span><span class="token punctuation">(</span>Product<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">GetProductError</span><span class="token punctuation">(</span>Error<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">impl</span> Component <span class="token keyword">for</span> ProductDetail <span class="token punctuation">{</span>
+    <span class="token keyword">type</span> Message <span class="token operator">=</span> Msg<span class="token punctuation">;</span>
+    <span class="token keyword">type</span> Properties <span class="token operator">=</span> Props<span class="token punctuation">;</span>
+
+    <span class="token keyword">fn</span> <span class="token function">create</span><span class="token punctuation">(</span>props<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">,</span> link<span class="token punctuation">:</span> ComponentLink<span class="token operator">&lt;</span>Self<span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Self <span class="token punctuation">{</span>
+        link<span class="token punctuation">.</span><span class="token function">send_message</span><span class="token punctuation">(</span>Msg<span class="token punctuation">:</span><span class="token punctuation">:</span>GetProduct<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Self <span class="token punctuation">{</span>
+            props<span class="token punctuation">,</span>
+            state<span class="token punctuation">:</span> State <span class="token punctuation">{</span>
+                product<span class="token punctuation">:</span> None<span class="token punctuation">,</span>
+                get_product_error<span class="token punctuation">:</span> None<span class="token punctuation">,</span>
+                get_product_loaded<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            link<span class="token punctuation">,</span>
+            task<span class="token punctuation">:</span> None<span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> message<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Message<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">match</span> message <span class="token punctuation">{</span>
+            Msg<span class="token punctuation">:</span><span class="token punctuation">:</span>GetProduct <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">let</span> handler <span class="token operator">=</span> <span class="token keyword">self</span>
+                    <span class="token punctuation">.</span>link
+                    <span class="token punctuation">.</span><span class="token function">callback</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token punctuation">|</span>response<span class="token punctuation">:</span> api<span class="token punctuation">:</span><span class="token punctuation">:</span>FetchResponse&lt;Product><span class="token punctuation">|</span></span> <span class="token punctuation">{</span>
+                        <span class="token keyword">let</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token function">Json</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">=</span> response<span class="token punctuation">.</span><span class="token function">into_parts</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token keyword">match</span> data <span class="token punctuation">{</span>
+                            <span class="token function">Ok</span><span class="token punctuation">(</span>product<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Msg<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">GetProductSuccess</span><span class="token punctuation">(</span>product<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                            <span class="token function">Err</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Msg<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">GetProductError</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token keyword">self</span><span class="token punctuation">.</span>task <span class="token operator">=</span> <span class="token function">Some</span><span class="token punctuation">(</span>api<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">get_product</span><span class="token punctuation">(</span><span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>id<span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">true</span>
+            <span class="token punctuation">}</span>
+            Msg<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">GetProductSuccess</span><span class="token punctuation">(</span>product<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">self</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>product <span class="token operator">=</span> <span class="token function">Some</span><span class="token punctuation">(</span>product<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">self</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>get_product_loaded <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+                <span class="token keyword">true</span>
+            <span class="token punctuation">}</span>
+            Msg<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">GetProductError</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">self</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>get_product_error <span class="token operator">=</span> <span class="token function">Some</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">self</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>get_product_loaded <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+                <span class="token keyword">true</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">change</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">false</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Html <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token keyword">let</span> <span class="token function">Some</span><span class="token punctuation">(</span><span class="token keyword">ref</span> product<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>product <span class="token punctuation">{</span>
+            <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span>
+                <span class="token operator">&lt;</span>div class<span class="token operator">=</span><span class="token string">"product_detail_container"</span><span class="token operator">></span>
+                    <span class="token operator">&lt;</span>img class<span class="token operator">=</span><span class="token string">"product_detail_image"</span> src<span class="token operator">=</span><span class="token punctuation">{</span><span class="token operator">&amp;</span>product<span class="token punctuation">.</span>image<span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">></span>
+                    <span class="token operator">&lt;</span>div class<span class="token operator">=</span><span class="token string">"product_card_name"</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token operator">&amp;</span>product<span class="token punctuation">.</span>name<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+                    <span class="token operator">&lt;</span>div style<span class="token operator">=</span><span class="token string">"margin: 10px 0; line-height: 24px;"</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token operator">&amp;</span>product<span class="token punctuation">.</span>description<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+                    <span class="token operator">&lt;</span>div class<span class="token operator">=</span><span class="token string">"product_card_price"</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"$"</span><span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token operator">&amp;</span>product<span class="token punctuation">.</span>price<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+                    <span class="token operator">&lt;</span>button class<span class="token operator">=</span><span class="token string">"product_atc_button"</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"Add To Cart"</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+                <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token operator">!</span><span class="token keyword">self</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>get_product_loaded <span class="token punctuation">{</span>
+            <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span>
+                <span class="token operator">&lt;</span>div class<span class="token operator">=</span><span class="token string">"loading_spinner_container"</span><span class="token operator">></span>
+                    <span class="token operator">&lt;</span>div class<span class="token operator">=</span><span class="token string">"loading_spinner"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+                    <span class="token operator">&lt;</span>div class<span class="token operator">=</span><span class="token string">"loading_spinner_text"</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"Loading ..."</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+                <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span>
+                <span class="token operator">&lt;</span>div<span class="token operator">></span>
+                    <span class="token operator">&lt;</span>span<span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"Error loading product! :("</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span>
+                <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Very similar to the HomePage component. Let’s also add this file to the module tree:</p>
+<pre class=" language-diff"><code class="language-diff">  // src/pages/mod.rs
+  mod home;
+<span class="token inserted">+ mod product_detail;</span>
+
+  pub use home::Home;
+<span class="token inserted">+ pub use product_detail::ProductDetail;</span></code></pre>
+<p>This is how it looks like:</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/image-5.png" alt></p>
+<p>We can now move between multiple pages without refreshing the page!</p>
+<h2 id="State-Management"><a href="#State-Management" class="headerlink" title="State Management"></a>State Management</h2><p>One thing you might have noticed in the <code>ProductDetail</code> page is that clicking on the “Add To Cart” button doesn’t update the cart. This is because the state that holds the list of products in cart <code>cart_products</code> currently resides inside <code>Home</code> page component:<br><img src="/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-6.png" alt></p>
+<p>To share state between two components, we can either:</p>
+<ul>
+<li>Hoist the state to a common ancestor</li>
+<li>Move state to global app state</li>
+</ul>
+<p>The <code>App</code> component is a common ancestor to both <code>ProductDetail</code> and <code>Home</code>. We can move the <code>cart_products</code> state there and pass it as props to <code>ProductDetail</code> and <code>Home</code>.</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-7.png" alt></p>
+<p>This works fine for shallow component hierarchies but when you have deep component hierarchy (which is common in larger SPAs), you’ll need to pass this state through multiple layers of components (which might not have use for this prop) to reach the desired node. This is called “Prop Drilling”.</p>
+<p>You can see that <code>cart_products</code> is now passed from <code>App</code> to <code>AddToCart</code> component via <code>ProductDetail</code> and <code>Home</code> even though they have no use for this state. Imagine the same scenario with components many layers deep.</p>
+<p>This is the problem the global state solves. Here’s how it would look like:</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-8.png" alt></p>
+<p>Notice how there’s a direct link between the components that need this state and the global state.</p>
+<p>Unfortunately, Yew doesn’t seem to have a <a href="https://github.com/yewstack/yew/issues/576" target="_blank" rel="noopener">good solution</a> for this. The recommended solution is to use <code>Agents</code> for broadcasting state changes via pubsub. This is something I stay away from as it gets messy fast. I hope in future we see something similar to React’s <a href="https://reactjs.org/docs/context.html" target="_blank" rel="noopener">Context</a>, Redux or Mobx etc.</p>
+<p>Let’s solve our problem by hoisting the state.</p>
+<h2 id="Hoisting-State"><a href="#Hoisting-State" class="headerlink" title="Hoisting State"></a>Hoisting State</h2><p>We’ll be refactoring our code by moving <code>cart_products</code> state to <code>App</code> and extracting <code>Navbar</code> and <code>AtcButton</code> as separate components:</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/rust-wasm-yew-single-page-application-9.png" alt></p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/components/navbar.rs</span>
+<span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>types<span class="token punctuation">:</span><span class="token punctuation">:</span>CartProduct<span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> Navbar <span class="token punctuation">{</span>
+    props<span class="token punctuation">:</span> Props<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token attribute attr-name">#[derive(Properties, Clone)]</span>
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> Props <span class="token punctuation">{</span>
+    <span class="token keyword">pub</span> cart_products<span class="token punctuation">:</span> Vec<span class="token operator">&lt;</span>CartProduct<span class="token operator">></span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">impl</span> Component <span class="token keyword">for</span> Navbar <span class="token punctuation">{</span>
+    <span class="token keyword">type</span> Message <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">type</span> Properties <span class="token operator">=</span> Props<span class="token punctuation">;</span>
+
+    <span class="token keyword">fn</span> <span class="token function">create</span><span class="token punctuation">(</span>props<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">,</span> _link<span class="token punctuation">:</span> ComponentLink<span class="token operator">&lt;</span>Self<span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Self <span class="token punctuation">{</span>
+        Self <span class="token punctuation">{</span> props <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> _msg<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Message<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">change</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> props<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">self</span><span class="token punctuation">.</span>props <span class="token operator">=</span> props<span class="token punctuation">;</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Html <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> cart_value <span class="token operator">=</span> <span class="token keyword">self</span>
+            <span class="token punctuation">.</span>props
+            <span class="token punctuation">.</span>cart_products
+            <span class="token punctuation">.</span><span class="token function">iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">fold</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token operator">|</span>acc<span class="token punctuation">,</span> cp<span class="token operator">|</span> acc <span class="token operator">+</span> <span class="token punctuation">(</span>cp<span class="token punctuation">.</span>quantity <span class="token keyword">as</span> f64 <span class="token operator">*</span> cp<span class="token punctuation">.</span>product<span class="token punctuation">.</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span>
+            <span class="token operator">&lt;</span>div class<span class="token operator">=</span><span class="token string">"navbar"</span><span class="token operator">></span>
+                <span class="token operator">&lt;</span>div class<span class="token operator">=</span><span class="token string">"navbar_title"</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"RustMart"</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+              <span class="token operator">&lt;</span>div class<span class="token operator">=</span><span class="token string">"navbar_cart_value"</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token function">format!</span><span class="token punctuation">(</span><span class="token string">"${:.2}"</span><span class="token punctuation">,</span> cart_value<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+            <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Notice how we started using the <code>change</code> lifecycle methods in the <code>Navbar</code> component. When the props sent from parent changes, we need to update the props inside the component so the UI re-renders.</p>
+<pre class=" language-rust"><code class="language-rust"><span class="token comment" spellcheck="true">// src/components/atc_button.rs</span>
+<span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token punctuation">:</span><span class="token punctuation">:</span>types<span class="token punctuation">:</span><span class="token punctuation">:</span>Product<span class="token punctuation">;</span>
+<span class="token keyword">use</span> yew<span class="token punctuation">:</span><span class="token punctuation">:</span>prelude<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> AtcButton <span class="token punctuation">{</span>
+    props<span class="token punctuation">:</span> Props<span class="token punctuation">,</span>
+    link<span class="token punctuation">:</span> ComponentLink<span class="token operator">&lt;</span>Self<span class="token operator">></span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token attribute attr-name">#[derive(Properties, Clone)]</span>
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> Props <span class="token punctuation">{</span>
+    <span class="token keyword">pub</span> product<span class="token punctuation">:</span> Product<span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> on_add_to_cart<span class="token punctuation">:</span> Callback<span class="token operator">&lt;</span>Product<span class="token operator">></span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">enum</span> Msg <span class="token punctuation">{</span>
+    AddToCart<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">impl</span> Component <span class="token keyword">for</span> AtcButton <span class="token punctuation">{</span>
+    <span class="token keyword">type</span> Message <span class="token operator">=</span> Msg<span class="token punctuation">;</span>
+    <span class="token keyword">type</span> Properties <span class="token operator">=</span> Props<span class="token punctuation">;</span>
+
+    <span class="token keyword">fn</span> <span class="token function">create</span><span class="token punctuation">(</span>props<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">,</span> link<span class="token punctuation">:</span> ComponentLink<span class="token operator">&lt;</span>Self<span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Self <span class="token punctuation">{</span>
+        Self <span class="token punctuation">{</span> props<span class="token punctuation">,</span> link <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> msg<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Message<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">match</span> msg <span class="token punctuation">{</span>
+            Msg<span class="token punctuation">:</span><span class="token punctuation">:</span>AddToCart <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>on_add_to_cart<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>product<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">change</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> props<span class="token punctuation">:</span> Self<span class="token punctuation">:</span><span class="token punctuation">:</span>Properties<span class="token punctuation">)</span> <span class="token punctuation">-></span> ShouldRender <span class="token punctuation">{</span>
+        <span class="token keyword">self</span><span class="token punctuation">.</span>props <span class="token operator">=</span> props<span class="token punctuation">;</span>
+        <span class="token keyword">true</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> Html <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> onclick <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span>link<span class="token punctuation">.</span><span class="token function">callback</span><span class="token punctuation">(</span><span class="token operator">|</span>_<span class="token operator">|</span> Msg<span class="token punctuation">:</span><span class="token punctuation">:</span>AddToCart<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token macro-rules function">html!</span> <span class="token punctuation">{</span>
+          <span class="token operator">&lt;</span>button class<span class="token operator">=</span><span class="token string">"product_atc_button"</span> onclick<span class="token operator">=</span>onclick<span class="token operator">></span><span class="token punctuation">{</span><span class="token string">"Add To Cart"</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" language-diff"><code class="language-diff">  // src/components/mod.rs
+<span class="token inserted">+ mod atc_button;</span>
+<span class="token inserted">+ mod navbar;</span>
+  mod product_card;
+
+<span class="token inserted">+ pub use atc_button::AtcButton;</span>
+<span class="token inserted">+ pub use navbar::Navbar;</span>
+  pub use product_card::ProductCard;</code></pre>
+<p>Use the new <code>AtcButton</code> in <code>ProductCard</code> and <code>ProductDetail</code>:</p>
+<pre class=" language-diff"><code class="language-diff">  // src/components/product_card.rs
+<span class="token inserted">+ use crate::components::AtcButton;</span>
+  use crate::route::Route;
+  use crate::types::Product;
+  use yew::prelude::*;
+  use yew_router::components::RouterAnchor;
+
+  pub struct ProductCard {
+      props: Props,
+  }
+
+  #[derive(Properties, Clone)]
+  pub struct Props {
+      pub product: Product,
+<span class="token deleted">-     pub on_add_to_cart: Callback&lt;()>,</span>
+<span class="token inserted">+     pub on_add_to_cart: Callback&lt;Product>,</span>
+  }
+
+  impl Component for ProductCard {
+      // No changes
+
+      fn view(&amp;self) -> Html {
+          type Anchor = RouterAnchor&lt;Route>;
+<span class="token deleted">-         let onclick = self.props.on_add_to_cart.reform(|_| ());</span>
+
+          html! {
+              &lt;div class="product_card_container">
+                  &lt;Anchor route=Route::ProductDetail(self.props.product.id) classes="product_card_anchor">
+                      &lt;img class="product_card_image" src={&amp;self.props.product.image}/>
+                      &lt;div class="product_card_name">{&amp;self.props.product.name}&lt;/div>
+                      &lt;div class="product_card_price">{"$"}{&amp;self.props.product.price}&lt;/div>
+                  &lt;/Anchor>
+<span class="token deleted">-                 &lt;button class="product_atc_button" onclick=onclick>{"Add To Cart"}&lt;/button></span>
+<span class="token inserted">+                 &lt;AtcButton product=self.props.product.clone() on_add_to_cart=self.props.on_add_to_cart.clone() /></span>
+              &lt;/div>
+          }
+      }
+  }</code></pre>
+<pre class=" language-diff"><code class="language-diff">  // src/pages/product_detail.rs
+  use crate::api;
+<span class="token inserted">+ use crate::components::AtcButton;</span>
+  use crate::types::Product;
+  use anyhow::Error;
+  use yew::format::Json;
+  use yew::prelude::*;
+  use yew::services::fetch::FetchTask;
+
+  // No changes
+
+  #[derive(Properties, Clone)]
+  pub struct Props {
+      pub id: i32,
+<span class="token inserted">+     pub on_add_to_cart: Callback&lt;Product>,</span>
+  }
+
+  impl Component for ProductDetail {
+      // No changes
+
+      fn view(&amp;self) -> Html {
+          if let Some(ref product) = self.state.product {
+              html! {
+                  &lt;div class="product_detail_container">
+                      &lt;img class="product_detail_image" src={&amp;product.image}/>
+                      &lt;div class="product_card_name">{&amp;product.name}&lt;/div>
+                      &lt;div style="margin: 10px 0; line-height: 24px;">{&amp;product.description}&lt;/div>
+                      &lt;div class="product_card_price">{"$"}{&amp;product.price}&lt;/div>
+<span class="token deleted">-                     &lt;button class="product_atc_button">{"Add To Cart"}&lt;/button></span>
+<span class="token inserted">+                     &lt;AtcButton product=product.clone() on_add_to_cart=self.props.on_add_to_cart.clone() /></span>
+                  &lt;/div>
+              }
+          }
+
+          // No changes
+      }
+  }</code></pre>
+<p>Finally, move the <code>cart_products</code> state from <code>Home</code> to <code>App</code>:</p>
+<pre class=" language-diff"><code class="language-diff">  // src/app.rs
+<span class="token inserted">+ use crate::components::Navbar;</span>
+<span class="token inserted">+ use crate::types::{CartProduct, Product};</span>
+  use yew::prelude::*;
+  use yew_router::prelude::*;
+
+  use crate::pages::{Home, ProductDetail};
+  use crate::route::Route;
+
+<span class="token inserted">+ struct State {</span>
+<span class="token inserted">+     cart_products: Vec&lt;CartProduct>,</span>
+<span class="token inserted">+ }</span>
+
+<span class="token deleted">- pub struct App {}</span>
+<span class="token inserted">+ pub struct App {</span>
+<span class="token inserted">+     state: State,</span>
+<span class="token inserted">+     link: ComponentLink&lt;Self>,</span>
+<span class="token inserted">+ }</span>
+
+<span class="token inserted">+ pub enum Msg {</span>
+<span class="token inserted">+     AddToCart(Product),</span>
+<span class="token inserted">+ }</span>
+
+  impl Component for App {
+<span class="token deleted">-     type Message = ();</span>
+<span class="token inserted">+     type Message = Msg;</span>
+      type Properties = ();
+
+<span class="token deleted">-     fn create(_: Self::Properties, _link: ComponentLink&lt;Self>) -> Self {</span>
+<span class="token inserted">+     fn create(_: Self::Properties, link: ComponentLink&lt;Self>) -> Self {</span>
+<span class="token inserted">+         let cart_products = vec![];</span>
+
+<span class="token deleted">-         Self {}</span>
+<span class="token inserted">+         Self {</span>
+<span class="token inserted">+             state: State { cart_products },</span>
+<span class="token inserted">+             link,</span>
+<span class="token inserted">+         }</span>
+      }
+
+<span class="token deleted">-     fn update(&amp;mut self, _msg: Self::Message) -> ShouldRender {</span>
+<span class="token inserted">+     fn update(&amp;mut self, message: Self::Message) -> ShouldRender {</span>
+<span class="token inserted">+         match message {</span>
+<span class="token inserted">+             Msg::AddToCart(product) => {</span>
+<span class="token inserted">+                 let cart_product = self</span>
+<span class="token inserted">+                     .state</span>
+<span class="token inserted">+                     .cart_products</span>
+<span class="token inserted">+                     .iter_mut()</span>
+<span class="token inserted">+                     .find(|cp: &amp;&amp;mut CartProduct| cp.product.id == product.id);</span>
+
+<span class="token inserted">+                 if let Some(cp) = cart_product {</span>
+<span class="token inserted">+                     cp.quantity += 1;</span>
+<span class="token inserted">+                 } else {</span>
+<span class="token inserted">+                     self.state.cart_products.push(CartProduct {</span>
+<span class="token inserted">+                         product: product.clone(),</span>
+<span class="token inserted">+                         quantity: 1,</span>
+<span class="token inserted">+                     })</span>
+<span class="token inserted">+                 }</span>
+<span class="token inserted">+                 true</span>
+<span class="token inserted">+             }</span>
+<span class="token inserted">+         }</span>
+<span class="token deleted">-         true</span>
+      }
+
+      fn change(&amp;mut self, _: Self::Properties) -> ShouldRender {
+          false
+      }
+
+      fn view(&amp;self) -> Html {
+<span class="token inserted">+         let handle_add_to_cart = self</span>
+<span class="token inserted">+             .link</span>
+<span class="token inserted">+             .callback(|product: Product| Msg::AddToCart(product));</span>
+<span class="token inserted">+         let cart_products = self.state.cart_products.clone();</span>
+
+<span class="token deleted">-         let render = Router::render(|switch: Route| match switch {</span>
+<span class="token deleted">-           Route::ProductDetail(id) => html! {&lt;ProductDetail id=id/>},</span>
+<span class="token deleted">-           Route::HomePage => html! {&lt;Home/>},</span>
+<span class="token inserted">+         let render = Router::render(move |switch: Route| match switch {</span>
+<span class="token inserted">+             Route::ProductDetail(id) => {</span>
+<span class="token inserted">+                 html! {&lt;ProductDetail id=id on_add_to_cart=handle_add_to_cart.clone() />}</span>
+<span class="token inserted">+             }</span>
+<span class="token inserted">+             Route::HomePage => {</span>
+<span class="token inserted">+                 html! {&lt;Home cart_products=cart_products.clone() on_add_to_cart=handle_add_to_cart.clone()/>}</span>
+<span class="token inserted">+             }</span>
+          });
+
+          html! {
+<span class="token inserted">+             &lt;></span>
+<span class="token inserted">+                 &lt;Navbar cart_products=self.state.cart_products.clone() /></span>
+                  &lt;Router&lt;Route, ()> render=render/>
+<span class="token inserted">+             &lt;/></span>
+          }
+      }
+  }</code></pre>
+<pre class=" language-diff"><code class="language-diff">  // src/pages/home.rs
+  // No changes
+
+  struct State {
+      products: Vec&lt;Product>,
+<span class="token deleted">-     cart_products: Vec&lt;CartProduct>,</span>
+      get_products_error: Option&lt;Error>,
+      get_products_loaded: bool,
+  }
+
+<span class="token inserted">+ #[derive(Properties, Clone)]</span>
+<span class="token inserted">+ pub struct Props {</span>
+<span class="token inserted">+     pub cart_products: Vec&lt;CartProduct>,</span>
+<span class="token inserted">+     pub on_add_to_cart: Callback&lt;Product>,</span>
+<span class="token inserted">+ }</span>
+
+  pub struct Home {
+<span class="token inserted">+     props: Props,</span>
+      state: State,
+      link: ComponentLink&lt;Self>,
+      task: Option&lt;FetchTask>,
+  }
+
+  pub enum Msg {
+<span class="token deleted">-     AddToCart(i32),</span>
+      GetProducts,
+      GetProductsSuccess(Vec&lt;Product>),
+      GetProductsError(Error),
+  }
+
+  impl Component for Home {
+      type Message = Msg;
+<span class="token deleted">-     type Properties = ();</span>
+<span class="token inserted">+     type Properties = Props;</span>
+
+<span class="token deleted">-     fn create(_: Self::Properties, link: ComponentLink&lt;Self>) -> Self {</span>
+<span class="token inserted">+     fn create(props: Self::Properties, link: ComponentLink&lt;Self>) -> Self {</span>
+          let products = vec![];
+<span class="token deleted">-         let cart_products = vec![];</span>
+
+          link.send_message(Msg::GetProducts);
+
+          Self {
+              props,
+              state: State {
+                  products,
+<span class="token deleted">-                 cart_products,</span>
+                  get_products_error: None,
+                  get_products_loaded: false,
+              },
+              link,
+              task: None,
+          }
+      }
+
+      fn update(&amp;mut self, message: Self::Message) -> ShouldRender {
+          match message {
+              Msg::GetProducts => {
+                  self.state.get_products_loaded = false;
+                  let handler =
+                      self.link
+                          .callback(move |response: api::FetchResponse&lt;Vec&lt;Product>>| {
+                              let (_, Json(data)) = response.into_parts();
+                              match data {
+                                  Ok(products) => Msg::GetProductsSuccess(products),
+                                  Err(err) => Msg::GetProductsError(err),
+                              }
+                          });
+
+                  self.task = Some(api::get_products(handler));
+                  true
+              }
+              Msg::GetProductsSuccess(products) => {
+                  self.state.products = products;
+                  self.state.get_products_loaded = true;
+                  true
+              }
+              Msg::GetProductsError(error) => {
+                  self.state.get_products_error = Some(error);
+                  self.state.get_products_loaded = true;
+                  true
+              }
+<span class="token deleted">-             Msg::AddToCart(product_id) => {</span>
+<span class="token deleted">-                 let product = self</span>
+<span class="token deleted">-                     .state</span>
+<span class="token deleted">-                     .products</span>
+<span class="token deleted">-                     .iter()</span>
+<span class="token deleted">-                     .find(|p: &amp;&amp;Product| p.id == product_id)</span>
+<span class="token deleted">-                     .unwrap();</span>
+<span class="token deleted">-                 let cart_product = self</span>
+<span class="token deleted">-                     .state</span>
+<span class="token deleted">-                     .cart_products</span>
+<span class="token deleted">-                     .iter_mut()</span>
+<span class="token deleted">-                     .find(|cp: &amp;&amp;mut CartProduct| cp.product.id == product_id);</span>
+<span class="token deleted">-                 if let Some(cp) = cart_product {</span>
+<span class="token deleted">-                     cp.quantity += 1;</span>
+<span class="token deleted">-                 } else {</span>
+<span class="token deleted">-                     self.state.cart_products.push(CartProduct {</span>
+<span class="token deleted">-                         product: product.clone(),</span>
+<span class="token deleted">-                         quantity: 1,</span>
+<span class="token deleted">-                     })</span>
+<span class="token deleted">-                 }</span>
+<span class="token deleted">-                 true</span>
+<span class="token deleted">-             }</span>
+          }
+      }
+
+<span class="token deleted">-     fn change(&amp;mut self, _: Self::Properties) -> ShouldRender {</span>
+<span class="token inserted">+     fn change(&amp;mut self, props: Self::Properties) -> ShouldRender {</span>
+<span class="token inserted">+         self.props = props;</span>
+          true
+      }
+
+      fn view(&amp;self) -> Html {
+          let products: Vec&lt;Html> = self
+              .state
+              .products
+              .iter()
+              .map(|product: &amp;Product| {
+<span class="token deleted">-                 let product_id = product.id;</span>
+                  html! {
+<span class="token deleted">-                   &lt;ProductCard product={product} on_add_to_cart=self.link.callback(move |_| Msg::AddToCart(product_id))/></span>
+<span class="token inserted">+                   &lt;ProductCard product={product} on_add_to_cart=self.props.on_add_to_cart.clone()/></span>
+                  }
+              })
+              .collect();
+
+<span class="token deleted">-        let cart_value = self</span>
+<span class="token deleted">-            .state</span>
+<span class="token deleted">-            .cart_products</span>
+<span class="token deleted">-            .iter()</span>
+<span class="token deleted">-            .fold(0.0, |acc, cp| acc + (cp.quantity as f64 * cp.product.price));</span>
+
+          if !self.state.get_products_loaded {
+              // No changes
+          } else if let Some(_) = self.state.get_products_error {
+              // No changes
+          } else {
+              html! {
+<span class="token deleted">-               &lt;div></span>
+<span class="token deleted">-                 &lt;div class="navbar"></span>
+<span class="token deleted">-                     &lt;div class="navbar_title">{"RustMart"}&lt;/div></span>
+<span class="token deleted">-                     &lt;div class="navbar_cart_value">{format!("${:.2}", cart_value)}&lt;/div></span>
+<span class="token deleted">-                 &lt;/div></span>
+                  &lt;div class="product_card_list">{products}&lt;/div>
+<span class="token deleted">-               &lt;/div></span>
+              }
+          }
+      }
+  }</code></pre>
+<p>Now we can finally add to cart from <code>ProductDetail</code> page and we can also see the navbar in all pages</p>
+<p><img src="/images/2020-rust-wasm-yew-single-page-application/image-6.png" alt><br><img src="/images/2020-rust-wasm-yew-single-page-application/image-4.png" alt></p>
+<p>We’ve successfully built a SPA fully in Rust!</p>
+<p>I’ve hosted the demo <a href="https://rustmart-yew.netlify.app" target="_blank" rel="noopener">here</a> and the code is in this <a href="https://github.com/sheshbabu/rustmart-yew-example" target="_blank" rel="noopener">GitHub repo</a>. If you have questions or suggestions, please contact me at sheshbabu [at] gmail.com.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>The Yew community has done a good job designing abstractions like <code>html!</code>, <code>Component</code> etc so someone like me who’s familiar with React can immediately start being productive. It definitely has some rough edges like FetchTask, lack of <a href="https://redux.js.org/introduction/motivation" target="_blank" rel="noopener"><em>predictable</em></a> state management and the documentation is sparse, but has potential to become a good alternative to React, Vue etc once these issues are fixed.</p>
+<p>Thanks for reading! Feel free to follow me in <a href="https://twitter.com/sheshbabu" target="_blank" rel="noopener">Twitter</a> for more posts like this :)</p>
+</div><footer><div class="meta"><div class="tags">Tagged under: <a href="/tags/Rust/">Rust</a></div><div class="date-published">Published on: <time datetime="2020-08-11T03:30:00.000Z" itemprop="datePublished">11 Aug 2020</time></div></div></footer></div></article></div><footer id="footer"><div><a href="mailto:sheshbabu@gmail.com" target="_blank"><i class="fas fa-envelope-square fa-lg"></i></a><a href="https://github.com/sheshbabu" target="_blank"><i class="fab fa-github-square fa-lg"></i></a><a href="https://www.linkedin.com/in/sheshbabu/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a><a href="https://www.twitter.com/sheshbabu" target="_blank"><i class="fab fa-twitter-square fa-lg"></i></a><a href="/atom.xml"><i class="fas fa-rss-square fa-lg"></i></a></div><p>&copy; 2020 Sheshbabu Chinnakonda</p></footer></body></html>

@@ -2,44 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-functions-and-control-flow/</loc>
+    <loc>http://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
     
-    <lastmod>2020-08-05T16:08:08.981Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-pattern-matching-and-enums/</loc>
-    
-    <lastmod>2020-08-05T16:08:02.412Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-variables-and-data-types/</loc>
-    
-    <lastmod>2020-08-05T16:07:51.925Z</lastmod>
+    <lastmod>2020-08-11T03:24:00.512Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/</loc>
     
-    <lastmod>2020-08-05T16:07:44.681Z</lastmod>
+    <lastmod>2020-08-11T00:33:09.376Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-functions-and-control-flow/</loc>
+    
+    <lastmod>2020-08-11T00:33:03.566Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-pattern-matching-and-enums/</loc>
+    
+    <lastmod>2020-08-11T00:32:58.336Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-variables-and-data-types/</loc>
+    
+    <lastmod>2020-08-11T00:32:39.908Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.sheshbabu.com/posts/rust-error-handling/</loc>
     
-    <lastmod>2020-08-05T01:13:31.772Z</lastmod>
+    <lastmod>2020-08-11T00:32:11.921Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.sheshbabu.com/posts/rust-module-system/</loc>
     
-    <lastmod>2020-07-19T22:38:07.072Z</lastmod>
+    <lastmod>2020-08-11T00:32:07.204Z</lastmod>
     
   </url>
   
@@ -86,7 +93,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
+    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
@@ -100,7 +107,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
+    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
@@ -114,7 +121,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
+    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
@@ -128,7 +135,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/organizing-http-requests-using-api-module-pattern/</loc>
+    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
@@ -149,14 +156,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
@@ -170,14 +177,21 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
+    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/career-advice-for-new-developers/</loc>
+    <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
@@ -191,14 +205,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
+    <loc>http://www.sheshbabu.com/posts/career-advice-for-new-developers/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     
