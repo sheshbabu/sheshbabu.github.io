@@ -4,7 +4,7 @@
   <url>
     <loc>http://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
     
-    <lastmod>2020-08-11T03:24:00.512Z</lastmod>
+    <lastmod>2020-08-13T04:15:36.105Z</lastmod>
     
   </url>
   
@@ -93,7 +93,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
+    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
@@ -107,7 +107,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
+    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
     
     <lastmod>2020-06-18T23:30:12.124Z</lastmod>
     
@@ -128,14 +128,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
+    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
+    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
     
     <lastmod>2020-06-18T23:30:12.123Z</lastmod>
     
@@ -156,13 +156,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
     <lastmod>2020-06-18T23:30:12.122Z</lastmod>
@@ -177,16 +170,9 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
     
-    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
-    
-    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
+    <lastmod>2020-06-18T23:30:12.122Z</lastmod>
     
   </url>
   
@@ -206,6 +192,20 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/career-advice-for-new-developers/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
+    
+    <lastmod>2020-06-18T23:30:12.121Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
     
     <lastmod>2020-06-18T23:30:12.121Z</lastmod>
     

@@ -1059,6 +1059,13 @@ args = ["-i", "./static/", "-p", "3000", "--nocache", "--try-file", "./static/in
 <span class="token keyword">mod</span> product_card<span class="token punctuation">;</span>
 
 <span class="token keyword">pub</span> <span class="token keyword">use</span> product_card<span class="token punctuation">:</span><span class="token punctuation">:</span>ProductCard<span class="token punctuation">;</span></code></pre>
+<pre class=" language-diff"><code class="language-diff">  // src/lib.rs
+  mod api;
+<span class="token inserted">+ mod components;</span>
+  mod pages;
+  mod types;
+
+  // No changes</code></pre>
 <pre class=" language-diff"><code class="language-diff">  // src/pages/home.rs
 
   use crate::api;
@@ -1239,6 +1246,7 @@ args = ["-i", "./static/", "-p", "3000", "--nocache", "--try-file", "./static/in
       #[to = "/"]
       HomePage,
   }</code></pre>
+<p>Note that the order of the routes above determines which page gets rendered first. For example, the url <code>/product/2</code> matches both <code>/product/{id}</code> and <code>/</code> but since we wrote <code>/product/{id}</code> first, the <code>ProductDetail</code> page gets rendered instead of <code>Home</code>.</p>
 <p>Add this route to <code>app.rs</code>:</p>
 <pre class=" language-diff"><code class="language-diff">  use yew::prelude::*;
   use yew_router::prelude::*;
