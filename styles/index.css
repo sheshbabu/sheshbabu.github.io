@@ -1,0 +1,23 @@
+.posts .year-section-title {
+  margin-top: 50px;
+  margin-bottom: 15px;
+}
+
+.posts .article-row {
+  margin-bottom: 20px;
+}
+
+.posts .article-row .title {
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.posts .article-row .title a,
+.posts .article-row time a {
+  text-decoration: none;
+}
+
+.posts .article-row time a {
+  font-size: 12px;
+  color: #555;
+}
