@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sheshbabu.com/"/>
-  <updated>2024-02-19T09:43:42.010Z</updated>
+  <updated>2024-03-18T10:12:49.116Z</updated>
   <id>http://www.sheshbabu.com/</id>
   
   <author>
@@ -15,6 +15,51 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Thoughts on the Future of Software Development</title>
+    <link href="http://www.sheshbabu.com/posts/thoughts-on-the-future-of-software-development/"/>
+    <id>http://www.sheshbabu.com/posts/thoughts-on-the-future-of-software-development/</id>
+    <published>2024-03-18T09:57:18.000Z</published>
+    <updated>2024-03-18T10:12:49.116Z</updated>
+    
+    <content type="html"><![CDATA[<p>Large Language Models (LLMs) caused a huge stir in the creative circles when they were able to generate images, text and code. Initially the results were quite hilarious with <a href="https://twitter.com/weirddalle/status/1617240690290839553" target="_blank" rel="noopener">drawings of people with messed up hands</a>, hallucinating incorrect facts and code. But things are slowly <em>and steadily</em> getting better. Before the advent of these models, the main argument against automating these tasks was that machines can’t think creatively. Now this argument gets weaker by the day. Where do we go from here?</p><p>The downside of trying to think about some vague problem like predicting future is that your thoughts get muddled and it’s hard to think clearly. So we need to come up with frameworks and analogies for us to lean on. </p><p><img src="/images/2024-thoughts-on-the-future-of-software-development/2024-thoughts-on-the-future-of-software-development.png" alt=""></p><h2 id="Framework-Software-Development-Capability-Level"><a href="#Framework-Software-Development-Capability-Level" class="headerlink" title="Framework: Software Development Capability Level"></a>Framework: Software Development Capability Level</h2><p>Software development is not just about writing code. The image people have of programmers is a person sitting in a dark room looking at computers and furiously typing code. Though coding all day sounds very appealing, most of software development time is spent on communicating with other people or other admin work instead of just writing code: </p><ul><li>Gathering requirements from business users</li><li>Refining these requirements so they can be modeled as code</li><li>Talking with other team members like Designers and Product Managers to visualize the solution and coming up with a plan of attack</li><li>Working with other developers to come up with a technical design and refining it</li><li>Setting up infrastructure, configuration, boilerplate etc.</li><li>Actually writing some code</li><li>Debugging, trying to understand other people’s code, writing documentation, etc.</li><li>Deploying to production</li><li>Firefighting production issues</li><li>… and so many more tasks</li></ul><p>So saying things like “AI will replace Developers” requires “AI” to be competent in all the above tasks and not just writing code.</p><blockquote><p>So saying things like “AI will replace Developers” requires “AI” to be competent in all the above tasks and not just writing code.</p></blockquote><p>But looking at the list above, it looks like some of these tasks can also be automated in future but not yet. How do we frame this thought? </p><p>The world of self-driving cars come up with a way to <a href="https://en.wikipedia.org/wiki/Self-driving_car#Classifications" target="_blank" rel="noopener">classify the level of automation</a>. It has discrete levels and goes all the way from no automation to partial automation to full automation. I find this very useful for many reasons:</p><ul><li>It clearly describes what the current technology is capable of</li><li>It prevents us from thinking in black and white - it’s not about human driver vs AI driver where AI fully replaces human drivers, it’s possible to have gray areas where human drivers are assisted by AI in things like emergency braking, lane centering etc.</li></ul><p>How does such classification look like to AI driven software development?</p><ul><li>The lowest tier would be what we had before - no AI involved in work. Of course we had other types of automations like compilers, build processes, etc., but these are not AI, these were human written deterministic automation.</li><li>The next level is what we have now - developers using ChatGPT or GitHub Copilot to assist them. They use it for things like writing tests, boilerplate code, refactoring, understanding code/errors etc. It’s like talking with a fellow developer over chat whom you can ask questions and get some help from, but they don’t have access to your machine so they can’t create files, run build commands or deploy to production.</li><li>The highest level would be like delegating part of your project or the entire project to a developer. These “AI coders” would take in the requirements, write the code, fix errors and deploy the final product to production. I assumed were still many months away from this happening, but was proved wrong with the <a href="https://www.youtube.com/watch?v=fjHtjT7GO1c" target="_blank" rel="noopener">Devin demo</a> - even though it can only <a href="https://favtutor.com/articles/devin-ai-early-insights/" target="_blank" rel="noopener">perform simple development tasks</a> now, there’s a chance that this will improve in future.</li></ul><p><img src="/images/2024-thoughts-on-the-future-of-software-development/2024-thoughts-on-the-future-of-software-development-01.png" alt=""></p><p>Apart from what the AI model is capable of, we should ask think in terms of how accurate the solutions are. Initially these models were prone to hallucinations or you need to prompt them in specific ways to get what you want. This adds friction to adoption and most people give up on AI assistants at this point. But this is also improving, the newer models don’t need that level of prompt engineering. Also, the models should be able to “learn” by browsing the web instead of relying on their training data. This is important as new versions of libraries and programming languages get introduced. </p><h2 id="Framework-Outsourced-Software-Development"><a href="#Framework-Outsourced-Software-Development" class="headerlink" title="Framework: Outsourced Software Development"></a>Framework: Outsourced Software Development</h2><p>Now that we’ve established the capabilities, how would these influence the team or organizational structure? Companies do software development in multiple ways:</p><ul><li>Fully inhouse</li><li>Mostly inhouse with few vendors</li><li>Mostly vendors with few inhouse</li><li>Fully vendors</li></ul><p><img src="/images/2024-thoughts-on-the-future-of-software-development/2024-thoughts-on-the-future-of-software-development-02.png" alt=""></p><p>In a way, we can think of AI coders as outsourced software vendors/consultants. Some companies use them a lot and some don’t as much. Irrespective of the composition, I believe it’s always important to have an inhouse team oversee their work. This is to make sure vendor’s output is aligned with your organization’s long term goals. Of course, you can solve this via contracts, but they usually only apply to a specific vendor or a project, and you can’t enforce long terms goals using this method. It’s always better to have at least a small inhouse team who can guide the vendors. Similarly, even when AI coders can be rented out like EC2 instances, it will be beneficial to have an inhouse team of Software Developers to oversee their work.</p><h2 id="Framework-Software-Development-Is-Modeling-Complexity"><a href="#Framework-Software-Development-Is-Modeling-Complexity" class="headerlink" title="Framework: Software Development Is Modeling Complexity"></a>Framework: Software Development Is Modeling Complexity</h2><p>If we’re talking about solving business problems, let’s take sometime to talk about the elephant in the room - Excel. It’s a well known secret that the world runs on Excel, and <a href="https://news.microsoft.com/speeches/satya-nadella-and-terry-myerson-build-2016/" target="_blank" rel="noopener">more than 1 Billion people</a> use it. It provides a very low barrier to entry for business users who want to organize data, perform data analysis, or automate some process. However, we can’t use Excel for complex business workflows as it doesn’t have features like granular access control, ability to integrate with unsupported systems, testability, reusability, or just vendor lock-in etc. The same can be said for “Low Code” solutions like <a href="https://www.microsoft.com/en-us/power-platform/products/power-automate" target="_blank" rel="noopener">Power Automate</a>, etc.</p><p>Coming back to the original question, would business users be able to use AI coders to create these complex workflows without the help of software developers?</p><blockquote><p>Would business users be able to use AI coding tools to create these complex workflows without the help of software developers?</p></blockquote><p>If you think about it, Excel and Low Code tools have existed for many decades, so why does the Software Development profession still exist? It goes back to thinking of Software Development as just writing code. For complex problems, we need people who can effectively manage these complexity and translate the business problems from real world domain to digital models. </p><p>In other words, if you’re able to build a wooden shed from YouTube tutorials without the help of a Civil Engineer, doesn’t mean you can/should do the same for a 10 story building. If you go about learning how to do this properly, then you slowly become a Civil Engineer! It’s just a matter of whether you’re willing to put in the time to learn this properly or hire an experienced Engineer to do it for you. </p><p>So whether these people are using Excel or the latest AI coder, if they’re modeling complex logic, they’re still software developers in my opinion! They’re just using different tools to express the business requirements - spreadsheet formulas vs code vs prompts. </p><h2 id="Framework-Size-Of-The-Pie"><a href="#Framework-Size-Of-The-Pie" class="headerlink" title="Framework: Size Of The Pie"></a>Framework: Size Of The Pie</h2><p>Most of the anxiety surrounding this topic assumes the size of the market for Software Development remains the same - AI coders will slowly take “market share” away from humans. </p><p><img src="/images/2024-thoughts-on-the-future-of-software-development/2024-thoughts-on-the-future-of-software-development-03.png" alt=""></p><p>From the previous section, we know that the market size of “solving business problems” is much much bigger than just Software Development. So there’s no reason to believe that Software Development will disappear anytime soon.</p><p><img src="/images/2024-thoughts-on-the-future-of-software-development/2024-thoughts-on-the-future-of-software-development-04.png" alt=""></p><h2 id="Framework-Formal-Business-Logic-Definition"><a href="#Framework-Formal-Business-Logic-Definition" class="headerlink" title="Framework: Formal Business Logic Definition"></a>Framework: Formal Business Logic Definition</h2><p>Business logic must always be defined in an unambiguous format. This is why programming languages, even though they use English words like “if”, “switch” etc., are very particular about what these words mean and won’t work if you use the wrong words. If you think about it, the same goes for Excel formulas or Low Code flows. </p><p>In future, even if the AI coders could generate a software product from instructions given in conversational English, I believe there would still be an underlying formal definition of the business logic generated in the backend. It might look very different from the languages and frameworks we use today, but a formal definition of business logic sounds a lot like “code”. </p><p>Until AI coders can start generating these business logic from conversational English in a deterministic manner, there would still be a need for people who can understand the code it generates in the backend and make changes if necessary. These people would be Software Developers. </p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>In summary, I believe there would still be a market for Software Developers in the foreseeable future, though the nature of work will change and the tools we would use might be very different from what we have now.</p>]]></content>
+    
+    <summary type="html">
+    
+      My optimistic take on the future of Software Development in the age of AI.
+    
+    </summary>
+    
+    
+      <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
+    
+      <category term="LLM" scheme="http://www.sheshbabu.com/tags/LLM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>System-wide text summarization using Ollama and AppleScript</title>
+    <link href="http://www.sheshbabu.com/posts/system-wide-text-summarization-using-ollama-and-applescript/"/>
+    <id>http://www.sheshbabu.com/posts/system-wide-text-summarization-using-ollama-and-applescript/</id>
+    <published>2024-03-11T01:06:21.000Z</published>
+    <updated>2024-03-11T14:52:41.678Z</updated>
+    
+    <content type="html"><![CDATA[<p>Local LLMs like Mistral, Llama etc allow us to run ChatGPT like large language models locally inside our computers. Since all the processing happens within our systems, I feel more comfortable feeding it personal data compared to hosted LLMs.</p><p>A quick way to get started with Local LLMs is to use an application like <a href="https://ollama.com/" target="_blank" rel="noopener">Ollama</a>. It’s very easy to install, but interacting with it involves <a href="https://github.com/ollama/ollama?tab=readme-ov-file#quickstart" target="_blank" rel="noopener">running commands</a> on a terminal or installing other <a href="https://github.com/open-webui/open-webui" target="_blank" rel="noopener">server based GUI</a> in your system.</p><p>These are not a huge dealbreakers, but wouldn’t it be nice if you can select a piece of text in any application and ask the LLM to summarize it?</p><blockquote><p>Wouldn’t it be nice if you can select a piece of text in any application and ask the LLM to summarize it?</p></blockquote><p>In order to implement this, we would need to figure out a way to pass the current selected text to the ollama CLI program.</p><p>In macOS, there’s a concept call “<a href="https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/MakeaSystem-WideService.html" target="_blank" rel="noopener">Services</a>” which allows you to pass data from one app to another. For example. if you select a piece of text in most applications and right click, you would see this “Services” menu.</p><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-01.png" alt=""></p><p>We can use this feature to send data to the ollama CLI program.</p><p>To implement this, we need to use a builtin macOS application called “Automator”. Simply launch Automator, select “New Document” in the file picker dialog and choose “Quick Action” as the document type.</p><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-02.png" alt=""></p><p>You should see something like the above.</p><p>Add “Run Shell Script” and “Run AppleScript” actions as shown in the below screenshot and copy paste the following into them:</p><pre class=" language-shell"><code class="language-shell">/usr/local/bin/ollama run mistral summarize:</code></pre><pre class=" language-applescript"><code class="language-applescript"><span class="token keyword">on</span> run <span class="token punctuation">{</span>input<span class="token punctuation">,</span> parameters<span class="token punctuation">}</span>    display dialog <span class="token punctuation">(</span>input <span class="token operator">as</span> <span class="token class builtin">text</span><span class="token punctuation">)</span>    <span class="token keyword">return</span> input<span class="token keyword">end</span> run</code></pre><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-03.png" alt=""></p><p>Save this Quick Action as “Summarize with LLM” and you should see it in the Services menu.</p><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-04.png" alt=""></p><p>Let’s try this out! I select the content of a <a href="http://localhost:4000/posts/rust-module-system/" target="_blank" rel="noopener">blog post</a> and choose “Summarize with LLM”. After a few seconds, I will see a summarized version of the selected content.</p><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-05.png" alt=""></p><p>This Quick Action can be used in most applications, try it in your notes, email, etc!</p><p>Keep in mind that the first call to this Quick Action would take many minutes as the LLM needs to be downloaded into your machine. Subsequent invocations should only take a few seconds depending on how fast your machine is.</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Local LLMs like Mistral, Llama etc allow us to run ChatGPT like large language models locally inside our computers. Since all the process
+      
+    
+    </summary>
+    
+    
+      <category term="LLM" scheme="http://www.sheshbabu.com/tags/LLM/"/>
+    
+  </entry>
   
   <entry>
     <title>Entity Resolution Challenges</title>
@@ -230,9 +275,9 @@
     </summary>
     
     
-      <category term="Python" scheme="http://www.sheshbabu.com/tags/Python/"/>
-    
       <category term="Analytics" scheme="http://www.sheshbabu.com/tags/Analytics/"/>
+    
+      <category term="Python" scheme="http://www.sheshbabu.com/tags/Python/"/>
     
       <category term="Pandas" scheme="http://www.sheshbabu.com/tags/Pandas/"/>
     
@@ -537,11 +582,11 @@
     </summary>
     
     
+      <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
+    
       <category term="TypeScript" scheme="http://www.sheshbabu.com/tags/TypeScript/"/>
     
       <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
-    
-      <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
     
   </entry>
   
@@ -669,9 +714,9 @@
     
       <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
     
-      <category term="JavaScript" scheme="http://www.sheshbabu.com/tags/JavaScript/"/>
-    
       <category term="React" scheme="http://www.sheshbabu.com/tags/React/"/>
+    
+      <category term="JavaScript" scheme="http://www.sheshbabu.com/tags/JavaScript/"/>
     
       <category term="Maintainability" scheme="http://www.sheshbabu.com/tags/Maintainability/"/>
     
@@ -737,9 +782,9 @@
     </summary>
     
     
-      <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
-    
       <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
+    
+      <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
     
       <category term="JavaScript" scheme="http://www.sheshbabu.com/tags/JavaScript/"/>
     
@@ -785,9 +830,9 @@
     </summary>
     
     
-      <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
-    
       <category term="Development" scheme="http://www.sheshbabu.com/tags/Development/"/>
+    
+      <category term="ESLint" scheme="http://www.sheshbabu.com/tags/ESLint/"/>
     
       <category term="JavaScript" scheme="http://www.sheshbabu.com/tags/JavaScript/"/>
     
@@ -894,9 +939,9 @@
     </summary>
     
     
-      <category term="JavaScript" scheme="http://www.sheshbabu.com/tags/JavaScript/"/>
-    
       <category term="React" scheme="http://www.sheshbabu.com/tags/React/"/>
+    
+      <category term="JavaScript" scheme="http://www.sheshbabu.com/tags/JavaScript/"/>
     
       <category term="Optimizely" scheme="http://www.sheshbabu.com/tags/Optimizely/"/>
     
