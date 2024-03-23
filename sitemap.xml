@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/taurus-writing-jmeter-load-tests-as-code/</loc>
+    
+    <lastmod>2024-03-23T00:41:56.471Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/analyzing-slow-python-code-using-cprofile/</loc>
+    
+    <lastmod>2024-03-23T00:10:25.532Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/thoughts-on-the-future-of-software-development/</loc>
     
     <lastmod>2024-03-18T10:12:49.116Z</lastmod>
@@ -23,14 +37,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
+    <loc>http://www.sheshbabu.com/posts/automatic-pageview-tracking-using-react-router/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/automatic-pageview-tracking-using-react-router/</loc>
+    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -72,13 +86,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/generating-unique-pairs-in-python/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
@@ -93,21 +100,14 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/generating-unique-pairs-in-python/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/gentle-introduction-to-llms/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/loading-amplitude-events-data-into-pandas-dataframe/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -121,13 +121,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
@@ -135,7 +128,21 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-we-use-storybook-for-documentation-and-code-reviews/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/loading-amplitude-events-data-into-pandas-dataframe/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -143,6 +150,13 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -177,21 +191,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/redmart-experience-with-pwa/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-functions-and-control-flow/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-pattern-matching-and-enums/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -206,6 +206,13 @@
   
   <url>
     <loc>http://www.sheshbabu.com/posts/rust-error-handling/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-pattern-matching-and-enums/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -233,13 +240,6 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/tips-for-using-eslint-in-a-legacy-codebase/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
@@ -247,14 +247,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
+    <loc>http://www.sheshbabu.com/posts/redmart-experience-with-pwa/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -268,7 +261,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/writing-maintainable-tests-using-the-data-driven-approach/</loc>
+    <loc>http://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -282,7 +282,21 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/writing-maintainable-tests-using-the-data-driven-approach/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/visual-explanation-of-saml-authentication/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
