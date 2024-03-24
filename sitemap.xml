@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/what-every-programmer-should-know-about-load-testing/</loc>
+    
+    <lastmod>2024-03-24T06:25:34.426Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/taurus-writing-jmeter-load-tests-as-code/</loc>
     
     <lastmod>2024-03-23T00:41:56.471Z</lastmod>
@@ -30,6 +37,20 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/career-advice-for-new-developers/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/alerting-expectation-vs-reality/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
@@ -44,28 +65,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/career-advice-for-new-developers/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/detecting-clusters-in-graphs-using-networkx/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -79,6 +79,13 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/exploring-singapore-onemap-api/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
@@ -86,14 +93,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
+    <loc>http://www.sheshbabu.com/posts/fastapi-structured-json-logging/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/fastapi-structured-json-logging/</loc>
+    <loc>http://www.sheshbabu.com/posts/frontend-config-management/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -114,14 +121,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
+    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
+    <loc>http://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -135,21 +142,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.sheshbabu.com/posts/loading-amplitude-events-data-into-pandas-dataframe/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -170,7 +163,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/publishing-npx-command-to-npm/</loc>
+    <loc>http://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/packaging-node-js-code-into-cross-platform-executables/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -184,21 +184,21 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/publishing-npx-command-to-npm/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/redmart-experience-with-pwa/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/running-express-over-https-in-localhost/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-functions-and-control-flow/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -219,6 +219,13 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-functions-and-control-flow/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-variables-and-data-types/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
@@ -226,7 +233,21 @@
   </url>
   
   <url>
+    <loc>http://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sheshbabu.com/posts/rust-module-system/</loc>
+    
+    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -247,21 +268,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/redmart-experience-with-pwa/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/why-use-azure-openai-when-you-have-openai/</loc>
-    
-    <lastmod>2024-02-19T09:43:42.010Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
+    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -275,14 +282,14 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
+    <loc>http://www.sheshbabu.com/posts/why-use-azure-openai-when-you-have-openai/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/writing-maintainable-tests-using-the-data-driven-approach/</loc>
+    <loc>http://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
@@ -296,7 +303,7 @@
   </url>
   
   <url>
-    <loc>http://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
+    <loc>http://www.sheshbabu.com/posts/writing-maintainable-tests-using-the-data-driven-approach/</loc>
     
     <lastmod>2024-02-19T09:43:42.010Z</lastmod>
     
