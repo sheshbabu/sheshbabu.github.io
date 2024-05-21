@@ -1,0 +1,79 @@
+.post-content header h1 {
+  margin-bottom: 30px;
+}
+
+.post-content .entry p,
+.post-content .entry blockquote,
+.post-content .entry ol,
+.post-content .entry dl,
+.post-content .entry iframe,
+.post-content .entry .video-container {
+  margin-top: 18px;
+}
+
+.post-content .entry li {
+  margin: 8px 0 0 18px;
+}
+
+.post-content .entry h1,
+.post-content .entry h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.post-content .entry h3,
+.post-content .entry h4,
+.post-content .entry h5,
+.post-content .entry h6 {
+  margin-top: 40px;
+}
+
+.post-content .entry blockquote {
+  border-left: 5px solid #333;
+  padding-left: 20px;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+  margin: 30px 0;
+}
+
+.post-content .entry pre code {
+  word-break: initial;
+}
+
+.post-content .entry code {
+  background: #fafafa;
+  color: #666;
+  border-radius: 3px;
+  word-break: break-word;
+}
+
+.post-content .entry li code,
+.post-content .entry p code {
+  padding: 2px 5px;
+  font-size: 15px;
+  color: black;
+  background-color: #efefef;
+}
+
+.post-content footer .meta,
+.post-content footer .about-me {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.post-content footer .meta .share,
+.post-content footer .meta .tags,
+.post-content footer .meta .date-published {
+  margin-top: 10px;
+}
+
+.post-content footer .meta .share a {
+  margin: 0 5px;
+}
+
+.post-content footer .about-me h3 {
+  margin-bottom: 5px;
+}
