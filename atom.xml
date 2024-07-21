@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.sheshbabu.com/"/>
-  <updated>2024-07-20T09:53:41.102Z</updated>
+  <updated>2024-07-21T09:59:04.252Z</updated>
   <id>https://www.sheshbabu.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Remove PDF password protection using qpdf and AppleScript</title>
+    <link href="https://www.sheshbabu.com/posts/remove-pdf-passwords-using-qpdf-and-applescript/"/>
+    <id>https://www.sheshbabu.com/posts/remove-pdf-passwords-using-qpdf-and-applescript/</id>
+    <published>2024-07-21T09:13:30.000Z</published>
+    <updated>2024-07-21T09:59:04.252Z</updated>
+    
+    <content type="html"><![CDATA[<p>For removing password protection from PDFs, I prefer using <a href="https://github.com/qpdf/qpdf" target="_blank" rel="noopener">qpdf</a> instead of installing bloated applications. One downside is that it needs to be invoked from Terminal, which is okay but not super convenient. I found a way to use macOS Automator to call this tool from Finder. </p><p><img src="/images/2024-qpdf-and-applescript/2024-qpdf-and-applescript-01.png" alt=""></p><p>Install qpdf from <a href="https://formulae.brew.sh/formula/qpdf" target="_blank" rel="noopener">HomeBrew</a></p><pre class=" language-shell"><code class="language-shell">$ brew install qpdf</code></pre><p>Open the builtin macOS application called “Automator”. Select “New Document” in the file picker dialog and choose “Quick Action” as the document type.</p><p>Set <code>Workflow receives current</code> dropdown to “PDF files” and <code>in</code> “Finder”. Drag and drop <code>Run AppleScript</code> action into the left pane. </p><p>Add the following code and save this Quick Action as “Remove Password”:</p><pre class=" language-applescript"><code class="language-applescript"><span class="token keyword">on</span> run <span class="token punctuation">{</span>input<span class="token punctuation">,</span> parameters<span class="token punctuation">}</span>    <span class="token keyword">set</span> the_file_path <span class="token keyword">to</span> POSIX path <span class="token keyword">of</span> <span class="token punctuation">(</span>input <span class="token operator">as</span> <span class="token class builtin">text</span><span class="token punctuation">)</span>    <span class="token keyword">set</span> AppleScript's <span class="token class builtin">text</span> item delimiters <span class="token keyword">to</span> <span class="token string">"/"</span>    <span class="token keyword">set</span> file_name <span class="token keyword">to</span> <span class="token keyword">last</span> <span class="token class builtin">text</span> item <span class="token keyword">of</span> the_file_path    <span class="token keyword">set</span> AppleScript's <span class="token class builtin">text</span> item delimiters <span class="token keyword">to</span> <span class="token string">"."</span>    <span class="token keyword">set</span> file_name_without_extension <span class="token keyword">to</span> <span class="token keyword">first</span> <span class="token class builtin">text</span> item <span class="token keyword">of</span> file_name    <span class="token keyword">set</span> AppleScript's <span class="token class builtin">text</span> item delimiters <span class="token keyword">to</span> <span class="token string">""</span>    <span class="token keyword">set</span> the_password <span class="token keyword">to</span> display dialog <span class="token string">"Enter the password for the PDF file:"</span> default answer <span class="token string">""</span> <span class="token keyword">with</span> icon caution    <span class="token keyword">set</span> the_password <span class="token keyword">to</span> <span class="token class builtin">text</span> returned <span class="token keyword">of</span> the_password    <span class="token keyword">set</span> the_output_path <span class="token keyword">to</span> <span class="token string">"/Users/"</span> <span class="token operator">&amp;</span> <span class="token punctuation">(</span>do shell <span class="token class builtin">script</span> <span class="token string">"echo $USER"</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token string">"/Downloads/"</span> <span class="token operator">&amp;</span> file_name_without_extension <span class="token operator">&amp;</span> <span class="token string">"_decrypted.pdf"</span>    do shell <span class="token class builtin">script</span> "<span class="token operator">/</span>opt<span class="token operator">/</span>homebrew<span class="token operator">/</span>bin<span class="token operator">/</span>qpdf <span class="token comment" spellcheck="true">--password=" &amp; quoted form of the_password &amp; " --decrypt " &amp; quoted form of the_file_path &amp; " " &amp; quoted form of the_output_path</span>    display dialog <span class="token string">"The decrypted PDF file is saved as: "</span> <span class="token operator">&amp;</span> the_output_path<span class="token keyword">end</span> run</code></pre><p>This will show up when you right-click a PDF file in Finder under Quick Actions. Once decrypted, it saves the decrypted file to the user’s <code>Downloads</code> folder. </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;For removing password protection from PDFs, I prefer using &lt;a href=&quot;https://github.com/qpdf/qpdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;qpdf&lt;/a&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="AppleScript" scheme="https://www.sheshbabu.com/tags/AppleScript/"/>
+    
+  </entry>
   
   <entry>
     <title>Killing long running queries in Postgres</title>
@@ -160,7 +183,7 @@
     <link href="https://www.sheshbabu.com/posts/system-wide-text-summarization-using-ollama-and-applescript/"/>
     <id>https://www.sheshbabu.com/posts/system-wide-text-summarization-using-ollama-and-applescript/</id>
     <published>2024-03-11T01:06:21.000Z</published>
-    <updated>2024-05-19T06:17:28.272Z</updated>
+    <updated>2024-07-20T10:04:51.910Z</updated>
     
     <content type="html"><![CDATA[<p>Local LLMs like Mistral, Llama etc allow us to run ChatGPT like large language models locally inside our computers. Since all the processing happens within our systems, I feel more comfortable feeding it personal data compared to hosted LLMs.</p><p>A quick way to get started with Local LLMs is to use an application like <a href="https://ollama.com/" target="_blank" rel="noopener">Ollama</a>. It’s very easy to install, but interacting with it involves <a href="https://github.com/ollama/ollama?tab=readme-ov-file#quickstart" target="_blank" rel="noopener">running commands</a> on a terminal or installing other <a href="https://github.com/open-webui/open-webui" target="_blank" rel="noopener">server based GUI</a> in your system.</p><p>These are not a huge dealbreakers, but wouldn’t it be nice if you can select a piece of text in any application and ask the LLM to summarize it?</p><blockquote><p>Wouldn’t it be nice if you can select a piece of text in any application and ask the LLM to summarize it?</p></blockquote><p>In order to implement this, we would need to figure out a way to pass the current selected text to the ollama CLI program.</p><p>In macOS, there’s a concept call “<a href="https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/MakeaSystem-WideService.html" target="_blank" rel="noopener">Services</a>” which allows you to pass data from one app to another. For example. if you select a piece of text in most applications and right click, you would see this “Services” menu.</p><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-01.png" alt=""></p><p>We can use this feature to send data to the ollama CLI program.</p><p>To implement this, we need to use a builtin macOS application called “Automator”. Simply launch Automator, select “New Document” in the file picker dialog and choose “Quick Action” as the document type.</p><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-02.png" alt=""></p><p>You should see something like the above.</p><p>Add “Run Shell Script” and “Run AppleScript” actions as shown in the below screenshot and copy paste the following into them:</p><pre class=" language-shell"><code class="language-shell">/usr/local/bin/ollama run mistral summarize:</code></pre><pre class=" language-applescript"><code class="language-applescript"><span class="token keyword">on</span> run <span class="token punctuation">{</span>input<span class="token punctuation">,</span> parameters<span class="token punctuation">}</span>    display dialog <span class="token punctuation">(</span>input <span class="token operator">as</span> <span class="token class builtin">text</span><span class="token punctuation">)</span>    <span class="token keyword">return</span> input<span class="token keyword">end</span> run</code></pre><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-03.png" alt=""></p><p>Save this Quick Action as “Summarize with LLM” and you should see it in the Services menu.</p><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-04.png" alt=""></p><p>Let’s try this out! I select the content of a <a href="http://localhost:4000/posts/rust-module-system/" target="_blank" rel="noopener">blog post</a> and choose “Summarize with LLM”. After a few seconds, I will see a summarized version of the selected content.</p><p><img src="/images/2024-ollama-and-applescript/2024-ollama-and-applescript-05.png" alt=""></p><p>This Quick Action can be used in most applications, try it in your notes, email, etc!</p><p>Keep in mind that the first call to this Quick Action would take many minutes as the LLM needs to be downloaded into your machine. Subsequent invocations should only take a few seconds depending on how fast your machine is.</p>]]></content>
     
@@ -175,6 +198,8 @@
     
     
       <category term="LLM" scheme="https://www.sheshbabu.com/tags/LLM/"/>
+    
+      <category term="AppleScript" scheme="https://www.sheshbabu.com/tags/AppleScript/"/>
     
   </entry>
   
@@ -273,9 +298,9 @@
     
       <category term="Python" scheme="https://www.sheshbabu.com/tags/Python/"/>
     
-      <category term="FastAPI" scheme="https://www.sheshbabu.com/tags/FastAPI/"/>
-    
       <category term="Logging" scheme="https://www.sheshbabu.com/tags/Logging/"/>
+    
+      <category term="FastAPI" scheme="https://www.sheshbabu.com/tags/FastAPI/"/>
     
   </entry>
   
@@ -392,9 +417,9 @@
     </summary>
     
     
-      <category term="Analytics" scheme="https://www.sheshbabu.com/tags/Analytics/"/>
-    
       <category term="Python" scheme="https://www.sheshbabu.com/tags/Python/"/>
+    
+      <category term="Analytics" scheme="https://www.sheshbabu.com/tags/Analytics/"/>
     
       <category term="Pandas" scheme="https://www.sheshbabu.com/tags/Pandas/"/>
     
@@ -835,9 +860,9 @@
     
       <category term="JavaScript" scheme="https://www.sheshbabu.com/tags/JavaScript/"/>
     
-      <category term="Maintainability" scheme="https://www.sheshbabu.com/tags/Maintainability/"/>
-    
       <category term="Code Reviews" scheme="https://www.sheshbabu.com/tags/Code-Reviews/"/>
+    
+      <category term="Maintainability" scheme="https://www.sheshbabu.com/tags/Maintainability/"/>
     
   </entry>
   
@@ -975,8 +1000,6 @@
     </summary>
     
     
-      <category term="Logging" scheme="https://www.sheshbabu.com/tags/Logging/"/>
-    
       <category term="JavaScript" scheme="https://www.sheshbabu.com/tags/JavaScript/"/>
     
       <category term="Testing" scheme="https://www.sheshbabu.com/tags/Testing/"/>
@@ -984,6 +1007,8 @@
       <category term="Node.js" scheme="https://www.sheshbabu.com/tags/Node-js/"/>
     
       <category term="Bunyan" scheme="https://www.sheshbabu.com/tags/Bunyan/"/>
+    
+      <category term="Logging" scheme="https://www.sheshbabu.com/tags/Logging/"/>
     
   </entry>
   
