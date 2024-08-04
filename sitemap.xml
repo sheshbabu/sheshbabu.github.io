@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.sheshbabu.com/posts/how-big-things-get-done/</loc>
+    
+    <lastmod>2024-08-04T10:49:57.605Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sheshbabu.com/posts/graph-retrieval-using-postgres-recursive-ctes/</loc>
     
     <lastmod>2024-07-28T10:05:05.281Z</lastmod>
@@ -37,13 +44,6 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/writing-maintainable-tests-using-the-data-driven-approach/</loc>
-    
-    <lastmod>2024-05-19T06:17:28.273Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.sheshbabu.com/posts/why-use-azure-openai-when-you-have-openai/</loc>
     
     <lastmod>2024-05-19T06:17:28.273Z</lastmod>
@@ -52,6 +52,13 @@
   
   <url>
     <loc>https://www.sheshbabu.com/posts/working-with-fetch-api/</loc>
+    
+    <lastmod>2024-05-19T06:17:28.273Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.sheshbabu.com/posts/writing-maintainable-tests-using-the-data-driven-approach/</loc>
     
     <lastmod>2024-05-19T06:17:28.273Z</lastmod>
     
@@ -72,14 +79,14 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/rust-for-javascript-developers-variables-and-data-types/</loc>
+    <loc>https://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/</loc>
+    <loc>https://www.sheshbabu.com/posts/rust-for-javascript-developers-variables-and-data-types/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     
@@ -100,14 +107,14 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
+    <loc>https://www.sheshbabu.com/posts/taurus-writing-jmeter-load-tests-as-code/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/taurus-writing-jmeter-load-tests-as-code/</loc>
+    <loc>https://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     
@@ -121,21 +128,7 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/thoughts-on-the-future-of-software-development/</loc>
-    
-    <lastmod>2024-05-19T06:17:28.272Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
-    
-    <lastmod>2024-05-19T06:17:28.272Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     
@@ -149,6 +142,13 @@
   </url>
   
   <url>
+    <loc>https://www.sheshbabu.com/posts/using-optimizely-with-react/</loc>
+    
+    <lastmod>2024-05-19T06:17:28.272Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sheshbabu.com/posts/what-every-programmer-should-know-about-load-testing/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
@@ -156,9 +156,9 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/frontend-config-management/</loc>
+    <loc>https://www.sheshbabu.com/posts/thoughts-on-the-future-of-software-development/</loc>
     
-    <lastmod>2024-05-19T06:17:28.271Z</lastmod>
+    <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     
   </url>
   
@@ -177,14 +177,14 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
+    <loc>https://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
     
     <lastmod>2024-05-19T06:17:28.271Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/guidelines-to-choose-a-javascript-library/</loc>
+    <loc>https://www.sheshbabu.com/posts/how-to-prevent-code-reviews-from-slowing-down-your-team/</loc>
     
     <lastmod>2024-05-19T06:17:28.271Z</lastmod>
     
@@ -198,6 +198,13 @@
   </url>
   
   <url>
+    <loc>https://www.sheshbabu.com/posts/frontend-config-management/</loc>
+    
+    <lastmod>2024-05-19T06:17:28.271Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sheshbabu.com/posts/loading-amplitude-events-data-into-pandas-dataframe/</loc>
     
     <lastmod>2024-05-19T06:17:28.271Z</lastmod>
@@ -205,7 +212,7 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
+    <loc>https://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
     
     <lastmod>2024-05-19T06:17:28.271Z</lastmod>
     
@@ -213,13 +220,6 @@
   
   <url>
     <loc>https://www.sheshbabu.com/posts/nginx-caching-proxy/</loc>
-    
-    <lastmod>2024-05-19T06:17:28.271Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</loc>
     
     <lastmod>2024-05-19T06:17:28.271Z</lastmod>
     
@@ -254,14 +254,14 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/rust-error-handling/</loc>
+    <loc>https://www.sheshbabu.com/posts/running-express-over-https-in-localhost/</loc>
     
     <lastmod>2024-05-19T06:17:28.271Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/running-express-over-https-in-localhost/</loc>
+    <loc>https://www.sheshbabu.com/posts/rust-error-handling/</loc>
     
     <lastmod>2024-05-19T06:17:28.271Z</lastmod>
     
@@ -275,9 +275,9 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/alerting-expectation-vs-reality/</loc>
+    <loc>https://www.sheshbabu.com/posts/measuring-response-times-of-express-route-handlers/</loc>
     
-    <lastmod>2024-05-19T06:17:28.270Z</lastmod>
+    <lastmod>2024-05-19T06:17:28.271Z</lastmod>
     
   </url>
   
@@ -289,7 +289,7 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/automatic-pageview-tracking-using-react-router/</loc>
+    <loc>https://www.sheshbabu.com/posts/alerting-expectation-vs-reality/</loc>
     
     <lastmod>2024-05-19T06:17:28.270Z</lastmod>
     
@@ -297,6 +297,13 @@
   
   <url>
     <loc>https://www.sheshbabu.com/posts/blocking-usage-of-the-any-type-in-typescript-codebases/</loc>
+    
+    <lastmod>2024-05-19T06:17:28.270Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.sheshbabu.com/posts/automatic-pageview-tracking-using-react-router/</loc>
     
     <lastmod>2024-05-19T06:17:28.270Z</lastmod>
     
@@ -317,7 +324,7 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
+    <loc>https://www.sheshbabu.com/posts/entity-resolution-challenges/</loc>
     
     <lastmod>2024-05-19T06:17:28.270Z</lastmod>
     
@@ -331,14 +338,14 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/entity-resolution-challenges/</loc>
+    <loc>https://www.sheshbabu.com/posts/fastapi-structured-json-logging/</loc>
     
     <lastmod>2024-05-19T06:17:28.270Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/fastapi-structured-json-logging/</loc>
+    <loc>https://www.sheshbabu.com/posts/disabling-bunyan-in-tests/</loc>
     
     <lastmod>2024-05-19T06:17:28.270Z</lastmod>
     
