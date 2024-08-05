@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>Structured JSON Logging using FastAPI</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description"><meta name="keywords" content="Python, FastAPI, Uvicorn, Logging"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:type" content="website"><meta name="og:title" content="Structured JSON Logging using FastAPI"><meta name="og:description"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image" content="https://www.sheshbabu.com/images/2023-fastapi-structured-json-logging/2023-fastapi-structured-json-logging.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Structured JSON Logging using FastAPI"><meta name="twitter:description"><meta name="twitter:image" content="https://www.sheshbabu.com/images/2023-fastapi-structured-json-logging/2023-fastapi-structured-json-logging.png"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><script src="https://kit.fontawesome.com/f7954f6e2c.js" crossorigin="anonymous"></script><style>:root {
+<!DOCTYPE html><html lang="en"><head><title>FastAPI without ORM: Getting started with asyncpg</title><meta charset="utf-8"><meta name="author" content="Sheshbabu Chinnakonda"><meta name="description"><meta name="keywords" content="Python, FastAPI, asyncpg, Postgres"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="og:type" content="website"><meta name="og:title" content="FastAPI without ORM: Getting started with asyncpg"><meta name="og:description"><meta name="og:site_name" content="Shesh's blog"><meta name="og:image" content="https://www.sheshbabu.com/images/2024-fastapi-without-orm-getting-started-with-asyncpg/2024-fastapi-without-orm-getting-started-with-asyncpg.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="FastAPI without ORM: Getting started with asyncpg"><meta name="twitter:description"><meta name="twitter:image" content="https://www.sheshbabu.com/images/2024-fastapi-without-orm-getting-started-with-asyncpg/2024-fastapi-without-orm-getting-started-with-asyncpg.png"><link rel="alternate" href="/atom.xml"><link rel="icon" href="/favicon.ico" type="image/x-icon"><script src="https://kit.fontawesome.com/f7954f6e2c.js" crossorigin="anonymous"></script><style>:root {
   --default-font: "Merriweather", serif;
   --mono-font: Monaco, Menlo, Consolas, Courier New, monospace;
 }
@@ -410,7 +410,7 @@ gtag('config', 'G-YXQDQJWZ17');</script><script><!-- mouji snippet -->
     };
 
     window[GLOBAL_VAR_NAME].sendPageView();
-})();</script><meta name="generator" content="Hexo 4.2.1"></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>Structured JSON Logging using FastAPI</h1></header><div class="entry"><p>Let’s start with a simple FastAPI example:</p>
+})();</script><meta name="generator" content="Hexo 4.2.1"></head><body><header id="header"><h1><a href="/">Shesh's blog</a></h1></header><div id="content"><article class="post"><div class="post-content"><header><h1>FastAPI without ORM: Getting started with asyncpg</h1></header><div class="entry"><p>Let’s start with a simple FastAPI example:</p>
 <pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># src/main.py</span>
 
 <span class="token keyword">import</span> uvicorn
@@ -418,139 +418,158 @@ gtag('config', 'G-YXQDQJWZ17');</script><script><!-- mouji snippet -->
 
 app <span class="token operator">=</span> FastAPI<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-
-@app<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
-<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> <span class="token string">"Hello World"</span>
-
-
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
-    uvicorn<span class="token punctuation">.</span>run<span class="token punctuation">(</span>app<span class="token punctuation">,</span> host<span class="token operator">=</span><span class="token string">"0.0.0.0"</span><span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token number">8000</span><span class="token punctuation">)</span></code></pre>
-<p>When you run this app, you’ll see logs in text format:</p>
-<pre class=" language-plaintext"><code class="language-plaintext">INFO:     Started server process [9529]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)</code></pre>
-<p>If you make a request to this app, you’ll see similar text logs:</p>
-<pre class=" language-plaintext"><code class="language-plaintext">INFO:     127.0.0.1:50824 - "GET / HTTP/1.1" 200 OK</code></pre>
-<p>What if you want logs in a JSON format?</p>
-<h2 id="JSON-formatting"><a href="#JSON-formatting" class="headerlink" title="JSON formatting"></a>JSON formatting</h2><p>Let’s add a logger module:</p>
-<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># src/logger.py</span>
+    uvicorn<span class="token punctuation">.</span>run<span class="token punctuation">(</span>app<span class="token punctuation">,</span> host<span class="token operator">=</span><span class="token string">"0.0.0.0"</span><span class="token punctuation">)</span></code></pre>
+<p>Now, we want to add database logic to this app. We don’t want to use ORM, so we choose <a href="https://magicstack.github.io/asyncpg/current/" target="_blank" rel="noopener">asyncpg</a>. Let’s see how to integrate asyncpg with the above app.</p>
+<p>We first create a <code>postgres.py</code> module that encapsulates the database connection, pool, termination, and other logic:</p>
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># src/commons/postgres.py</span>
 
-<span class="token keyword">import</span> json
-<span class="token keyword">import</span> logging
-<span class="token keyword">from</span> logging <span class="token keyword">import</span> Formatter
+<span class="token keyword">import</span> asyncpg
 
-<span class="token keyword">class</span> <span class="token class-name">JsonFormatter</span><span class="token punctuation">(</span>Formatter<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        super<span class="token punctuation">(</span>JsonFormatter<span class="token punctuation">,</span> self<span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+DATABASE_URL <span class="token operator">=</span> <span class="token string">"postgresql://postgres@localhost/postgres"</span>
 
-    <span class="token keyword">def</span> <span class="token function">format</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> record<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        json_record <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
-        json_record<span class="token punctuation">[</span><span class="token string">"message"</span><span class="token punctuation">]</span> <span class="token operator">=</span> record<span class="token punctuation">.</span>getMessage<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>json_record<span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Postgres</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> database_url<span class="token punctuation">:</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>database_url <span class="token operator">=</span> database_url
 
-logger <span class="token operator">=</span> logging<span class="token punctuation">.</span>root
-handler <span class="token operator">=</span> logging<span class="token punctuation">.</span>StreamHandler<span class="token punctuation">(</span><span class="token punctuation">)</span>
-handler<span class="token punctuation">.</span>setFormatter<span class="token punctuation">(</span>JsonFormatter<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-logger<span class="token punctuation">.</span>handlers <span class="token operator">=</span> <span class="token punctuation">[</span>handler<span class="token punctuation">]</span>
-logger<span class="token punctuation">.</span>setLevel<span class="token punctuation">(</span>logging<span class="token punctuation">.</span>DEBUG<span class="token punctuation">)</span></code></pre>
-<p>Here we’re subclassing <code>logging.Formatter</code> and overriding the <code>format</code> method. This method takes in the log record, using which we can construct our JSON log record. We then add our formatter to the Root logger, remove other handlers and import this new logger module into our main application:</p>
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">connect</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>pool <span class="token operator">=</span> <span class="token keyword">await</span> asyncpg<span class="token punctuation">.</span>create_pool<span class="token punctuation">(</span>self<span class="token punctuation">.</span>database_url<span class="token punctuation">)</span>
+
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">disconnect</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+database <span class="token operator">=</span> Postgres<span class="token punctuation">(</span>DATABASE_URL<span class="token punctuation">)</span></code></pre>
+<p>I’ve hardcoded the database connection string here, but you can update this to pull from environment variables instead. </p>
+<p>You’ll also notice that I’ve instantiated the <code>Postgres</code> class as <code>database</code> variable. This is intentional, and this module-scoped variable can be imported into other modules without the need for dependency injection.</p>
+<p>Let’s update <code>main.py</code> to connect to the database:</p>
 <pre class=" language-diff"><code class="language-diff">  # src/main.py
 
   import uvicorn
   from fastapi import FastAPI
-<span class="token inserted">+ from src.logger import logger</span>
+<span class="token inserted">+ from contextlib import asynccontextmanager</span>
 
-  app = FastAPI()
+<span class="token inserted">+ from src.commons.postgres import database</span>
 
 
-  @app.get("/")
-  async def hello():
-<span class="token inserted">+     logger.info("Hello")</span>
-      return "Hello World"
+<span class="token inserted">+ @asynccontextmanager</span>
+<span class="token inserted">+ async def lifespan(app: FastAPI):</span>
+<span class="token inserted">+     await database.connect()</span>
+<span class="token inserted">+     yield</span>
+<span class="token inserted">+     await database.disconnect()</span>
 
+<span class="token deleted">- app = FastAPI()</span>
+<span class="token inserted">+ app = FastAPI(lifespan=lifespan)</span>
 
   if __name__ == "__main__":
-<span class="token deleted">-    uvicorn.run(app, host="0.0.0.0", port=8000)</span>
-<span class="token inserted">+    uvicorn.run(app, host="0.0.0.0", port=8000, log_config=None)</span></code></pre>
-<p>Here’s how the logs look now:</p>
-<pre class=" language-json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Using selector: KqueueSelector"</span><span class="token punctuation">}</span>
-<span class="token punctuation">{</span><span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Started server process [9981]"</span><span class="token punctuation">}</span>
-<span class="token punctuation">{</span><span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Waiting for application startup."</span><span class="token punctuation">}</span>
-<span class="token punctuation">{</span><span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Application startup complete."</span><span class="token punctuation">}</span>
-<span class="token punctuation">{</span><span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)"</span><span class="token punctuation">}</span></code></pre>
-<pre class=" language-json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Hello"</span><span class="token punctuation">}</span>
-<span class="token punctuation">{</span><span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"127.0.0.1:50896 - \"GET / HTTP/1.1\" 200"</span><span class="token punctuation">}</span></code></pre>
-<p>Not exactly structured logging, but some progress.</p>
-<h2 id="Structured-logging"><a href="#Structured-logging" class="headerlink" title="Structured logging"></a>Structured logging</h2><p>Let’s add a FastAPI middleware to log the requests. You can change the structure of the JSON log record in this method:</p>
-<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># src/log_middleware.py</span>
+      uvicorn.run(app, host="0.0.0.0")</code></pre>
+<p>We’ve added a <a href="https://fastapi.tiangolo.com/advanced/events/" target="_blank" rel="noopener">lifespan</a> function that connects to the database during application startup and then terminates the connection during shutdown.</p>
+<p>Now that the setup is complete, let’s create an example table:</p>
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token operator">NOT</span> <span class="token keyword">EXISTS</span> users <span class="token punctuation">(</span>
+    name  <span class="token keyword">TEXT</span>  <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    email <span class="token keyword">TEXT</span>  <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We then create an equivalent <code>pydantic</code> model:</p>
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># src/users/users_schema.py</span>
 
-<span class="token keyword">from</span> starlette<span class="token punctuation">.</span>middleware<span class="token punctuation">.</span>base <span class="token keyword">import</span> BaseHTTPMiddleware
-<span class="token keyword">from</span> src<span class="token punctuation">.</span>logger <span class="token keyword">import</span> logger
+<span class="token keyword">from</span> pydantic <span class="token keyword">import</span> BaseModel
+
+<span class="token keyword">class</span> <span class="token class-name">User</span><span class="token punctuation">(</span>BaseModel<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name<span class="token punctuation">:</span> str
+    email<span class="token punctuation">:</span> str</code></pre>
+<p>Let’s proceed to write logic for interacting with the above <code>users</code> table:</p>
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># src/users/users_model.py</span>
+
+<span class="token keyword">from</span> typing <span class="token keyword">import</span> List<span class="token punctuation">,</span> Optional
+<span class="token keyword">from</span> src<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>postgres <span class="token keyword">import</span> database
+<span class="token keyword">from</span> src<span class="token punctuation">.</span>users<span class="token punctuation">.</span>users_schema <span class="token keyword">import</span> User
+
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">get_user_by_email</span><span class="token punctuation">(</span>email<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> Optional<span class="token punctuation">[</span>User<span class="token punctuation">]</span><span class="token punctuation">:</span>
+    query <span class="token operator">=</span> <span class="token string">"SELECT name, email FROM users WHERE email = $1"</span>
+    <span class="token keyword">async</span> <span class="token keyword">with</span> database<span class="token punctuation">.</span>pool<span class="token punctuation">.</span>acquire<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> connection<span class="token punctuation">:</span>
+        row <span class="token operator">=</span> <span class="token keyword">await</span> connection<span class="token punctuation">.</span>fetchrow<span class="token punctuation">(</span>query<span class="token punctuation">,</span> email<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> row <span class="token keyword">is</span> <span class="token operator">not</span> None<span class="token punctuation">:</span>
+            user <span class="token operator">=</span> User<span class="token punctuation">(</span>name<span class="token operator">=</span>row<span class="token punctuation">[</span><span class="token string">"name"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> email<span class="token operator">=</span>row<span class="token punctuation">[</span><span class="token string">"email"</span><span class="token punctuation">]</span><span class="token punctuation">)</span> 
+            <span class="token keyword">return</span> user
+        <span class="token keyword">return</span> None
 
 
-<span class="token keyword">class</span> <span class="token class-name">LogMiddleware</span><span class="token punctuation">(</span>BaseHTTPMiddleware<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">dispatch</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">,</span> call_next<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        response <span class="token operator">=</span> <span class="token keyword">await</span> call_next<span class="token punctuation">(</span>request<span class="token punctuation">)</span>
-        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span>
-            <span class="token string">"Incoming request"</span><span class="token punctuation">,</span>
-            extra<span class="token operator">=</span><span class="token punctuation">{</span>
-                <span class="token string">"req"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token string">"method"</span><span class="token punctuation">:</span> request<span class="token punctuation">.</span>method<span class="token punctuation">,</span> <span class="token string">"url"</span><span class="token punctuation">:</span> str<span class="token punctuation">(</span>request<span class="token punctuation">.</span>url<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                <span class="token string">"res"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token string">"status_code"</span><span class="token punctuation">:</span> response<span class="token punctuation">.</span>status_code<span class="token punctuation">,</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-            <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span>
-        <span class="token keyword">return</span> response</code></pre>
-<p>Update the <code>logger.py</code> module to look for these new fields and add them to the final log output. Also, disable the <code>uvicorn.access</code> logger now that we’ve the above middleware.</p>
-<pre class=" language-diff"><code class="language-diff">  # src/logger.py
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">get_all_users</span><span class="token punctuation">(</span>limit<span class="token punctuation">:</span> int<span class="token punctuation">,</span> offset<span class="token punctuation">:</span> int<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> List<span class="token punctuation">[</span>User<span class="token punctuation">]</span><span class="token punctuation">:</span>
+    query <span class="token operator">=</span> <span class="token string">"SELECT name, email FROM users LIMIT $1 OFFSET $2"</span>
+    <span class="token keyword">async</span> <span class="token keyword">with</span> database<span class="token punctuation">.</span>pool<span class="token punctuation">.</span>acquire<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> connection<span class="token punctuation">:</span>
+        rows <span class="token operator">=</span> <span class="token keyword">await</span> connection<span class="token punctuation">.</span>fetch<span class="token punctuation">(</span>query<span class="token punctuation">,</span> limit<span class="token punctuation">,</span> offset<span class="token punctuation">)</span>
+        users <span class="token operator">=</span> <span class="token punctuation">[</span>User<span class="token punctuation">(</span>name<span class="token operator">=</span>record<span class="token punctuation">[</span><span class="token string">"name"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> email<span class="token operator">=</span>record<span class="token punctuation">[</span><span class="token string">"email"</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> record <span class="token keyword">in</span> rows<span class="token punctuation">]</span>
+        <span class="token keyword">return</span> users
 
-  import json
-  import logging
-  from logging import Formatter
 
-  class JsonFormatter(Formatter):
-      def __init__(self):
-          super(JsonFormatter, self).__init__()
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">insert_user</span><span class="token punctuation">(</span>user<span class="token punctuation">:</span> User<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    query <span class="token operator">=</span> <span class="token string">"INSERT INTO users (name, email) VALUES ($1, $2)"</span>
+    <span class="token keyword">async</span> <span class="token keyword">with</span> database<span class="token punctuation">.</span>pool<span class="token punctuation">.</span>acquire<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> connection<span class="token punctuation">:</span>
+        <span class="token keyword">await</span> connection<span class="token punctuation">.</span>execute<span class="token punctuation">(</span>query<span class="token punctuation">,</span> user<span class="token punctuation">.</span>name<span class="token punctuation">,</span> user<span class="token punctuation">.</span>email<span class="token punctuation">)</span>
 
-      def format(self, record):
-          json_record = {}
-          json_record["message"] = record.getMessage()
-<span class="token inserted">+         if "req" in record.__dict__:</span>
-<span class="token inserted">+             json_record["req"] = record.__dict__["req"]</span>
-<span class="token inserted">+         if "res" in record.__dict__:</span>
-<span class="token inserted">+             json_record["res"] = record.__dict__["res"]</span>
-<span class="token inserted">+         if record.levelno == logging.ERROR and record.exc_info:</span>
-<span class="token inserted">+             json_record["err"] = self.formatException(record.exc_info)</span>
-          return json.dumps(json_record)
 
-  logger = logging.root
-  handler = logging.StreamHandler()
-  handler.setFormatter(JsonFormatter())
-  logger.handlers = [handler]
-  logger.setLevel(logging.DEBUG)
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">bulk_insert_users</span><span class="token punctuation">(</span>users<span class="token punctuation">:</span> List<span class="token punctuation">[</span>User<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    query <span class="token operator">=</span> <span class="token string">"INSERT INTO users (name, email) VALUES ($1, $2)"</span>
+    user_tuples <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span>name<span class="token punctuation">,</span> user<span class="token punctuation">.</span>email<span class="token punctuation">)</span> <span class="token keyword">for</span> user <span class="token keyword">in</span> users<span class="token punctuation">]</span>
+    <span class="token keyword">async</span> <span class="token keyword">with</span> database<span class="token punctuation">.</span>pool<span class="token punctuation">.</span>acquire<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> connection<span class="token punctuation">:</span>
+        <span class="token keyword">await</span> connection<span class="token punctuation">.</span>executemany<span class="token punctuation">(</span>query<span class="token punctuation">,</span> user_tuples<span class="token punctuation">)</span></code></pre>
+<p>Okay, that’s a lot of code, but each function should be self-explanatory. As mentioned before, we’ve used the module-scoped variable <code>database</code> from <code>postgres.py</code> module. </p>
+<p>We first acquire the connection and then use the specialized methods within it:</p>
+<ul>
+<li><code>fetchrow</code> is for querying a single row.</li>
+<li><code>fetch</code> is for multiple rows.</li>
+<li><code>execute</code> is when you want to execute multiple queries without returning rows.</li>
+<li><code>executemany</code> is same as above and also accepts a list of arguments.</li>
+</ul>
+<p>One thing to note is that we need to perform “type conversion” before and after talking to asyncpg. You can see that we’re converting the <code>User</code> object in <code>insert_user</code> and <code>bulk_insert_users</code> to primitives or list of tuples before inserting them. We’re also converting the return value of asyncpg, which is a <a href="https://magicstack.github.io/asyncpg/current/api/index.html#asyncpg.Record" target="_blank" rel="noopener">dict-like object</a> to <code>User</code> type.</p>
+<p>We can tie this together with the rest of the application by creating a router:</p>
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># src/users/users_route.py</span>
 
-<span class="token inserted">+ logging.getLogger("uvicorn.access").disabled = True</span></code></pre>
-<p>Finally, add the middleware to the application.</p>
+<span class="token keyword">from</span> typing <span class="token keyword">import</span> Optional<span class="token punctuation">,</span> List
+<span class="token keyword">from</span> fastapi <span class="token keyword">import</span> APIRouter
+<span class="token keyword">from</span> src<span class="token punctuation">.</span>users <span class="token keyword">import</span> users_model
+<span class="token keyword">from</span> src<span class="token punctuation">.</span>users<span class="token punctuation">.</span>users_schema <span class="token keyword">import</span> User
+
+users_router <span class="token operator">=</span> APIRouter<span class="token punctuation">(</span>prefix<span class="token operator">=</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+
+@users_router<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">get_all_users</span><span class="token punctuation">(</span>limit<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>int<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span> offset<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span>int<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token keyword">await</span> users_model<span class="token punctuation">.</span>get_all_users<span class="token punctuation">(</span>limit<span class="token punctuation">,</span> offset<span class="token punctuation">)</span>
+
+@users_router<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"/{email}"</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">get_user_by_email</span><span class="token punctuation">(</span>email<span class="token punctuation">:</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token keyword">await</span> users_model<span class="token punctuation">.</span>get_user_by_email<span class="token punctuation">(</span>email<span class="token punctuation">)</span>
+
+@users_router<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">insert_user</span><span class="token punctuation">(</span>user<span class="token punctuation">:</span> User<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token keyword">await</span> users_model<span class="token punctuation">.</span>insert_user<span class="token punctuation">(</span>user<span class="token punctuation">)</span>
+
+@users_router<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">"/bulk"</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">bulk_insert_users</span><span class="token punctuation">(</span>users<span class="token punctuation">:</span> List<span class="token punctuation">[</span>User<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token keyword">await</span> users_model<span class="token punctuation">.</span>bulk_insert_users<span class="token punctuation">(</span>users<span class="token punctuation">)</span></code></pre>
+<p>And then adding it to <code>main.py</code>:</p>
 <pre class=" language-diff"><code class="language-diff">  # src/main.py
 
   import uvicorn
   from fastapi import FastAPI
-  from src.logger import logger
-<span class="token inserted">+ from src.log_middleware import LogMiddleware</span>
+  from contextlib import asynccontextmanager
 
-  app = FastAPI()
-<span class="token inserted">+ app.add_middleware(LogMiddleware)</span>
+  from src.commons.postgres import database
+<span class="token inserted">+ from src.users.users_route import users_router</span>
 
-  @app.get("/")
-  async def hello():
-      logger.info("Hello")
-      return "Hello World"
+  @asynccontextmanager
+  async def lifespan(app: FastAPI):
+      await database.connect()
+      yield
+      await database.disconnect()
 
+  app = FastAPI(lifespan=lifespan)
+
+<span class="token inserted">+ app.include_router(users_router)</span>
 
   if __name__ == "__main__":
-      uvicorn.run(app, host="0.0.0.0", port=8000, log_config=None)</code></pre>
-<p>You can now see structured JSON logs for the requests:</p>
-<pre class=" language-json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Hello"</span><span class="token punctuation">}</span>
-<span class="token punctuation">{</span><span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Incoming request"</span><span class="token punctuation">,</span> <span class="token property">"req"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"method"</span><span class="token operator">:</span> <span class="token string">"GET"</span><span class="token punctuation">,</span> <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://0.0.0.0:8000/"</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token property">"res"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"status_code"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">}</span><span class="token punctuation">}</span></code></pre>
-<p>You can find the full codebase in this <a href="https://github.com/sheshbabu/fastapi-structured-json-logging-demo" target="_blank" rel="noopener">repo</a>.</p>
-</div><footer><div class="meta"><div class="share">Share: <a href="https://twitter.com/intent/tweet?text=Structured JSON Logging using FastAPI%0a%0ahttps://www.sheshbabu.com/posts/fastapi-structured-json-logging/" target="_blank"><i class="fab fa-twitter"></i></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://www.sheshbabu.com/posts/fastapi-structured-json-logging/" target="_blank"><i class="fab fa-linkedin"></i></a></div><div class="tags">Tagged under: <a href="/tags/Python/">Python</a><span>, </span><a href="/tags/Logging/">Logging</a><span>, </span><a href="/tags/FastAPI/">FastAPI</a></div><div class="date-published">Published on: <time datetime="2023-06-24T07:25:26.000Z" itemprop="datePublished">24 Jun 2023</time></div></div></footer></div></article></div><footer id="footer"><div><a href="mailto:sheshbabu@gmail.com" target="_blank"><i class="fas fa-envelope-square fa-lg"></i></a><a href="https://github.com/sheshbabu" target="_blank"><i class="fab fa-github-square fa-lg"></i></a><a href="https://www.linkedin.com/in/sheshbabu/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a><a href="https://www.twitter.com/sheshbabu" target="_blank"><i class="fab fa-twitter-square fa-lg"></i></a><a href="/atom.xml"><i class="fas fa-rss-square fa-lg"></i></a></div><p>&copy; 2024 Sheshbabu Chinnakonda</p></footer></body></html>
+      uvicorn.run(app=app, host="0.0.0.0")</code></pre>
+<p>Related posts:</p>
+<ul>
+<li><a href="https://www.sheshbabu.com/posts/fastapi-structured-json-logging/">Structured JSON Logging using FastAPI</a></li>
+</ul>
+</div><footer><div class="meta"><div class="share">Share: <a href="https://twitter.com/intent/tweet?text=FastAPI without ORM: Getting started with asyncpg%0a%0ahttps://www.sheshbabu.com/posts/fastapi-without-orm-getting-started-with-asyncpg/" target="_blank"><i class="fab fa-twitter"></i></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://www.sheshbabu.com/posts/fastapi-without-orm-getting-started-with-asyncpg/" target="_blank"><i class="fab fa-linkedin"></i></a></div><div class="tags">Tagged under: <a href="/tags/Python/">Python</a><span>, </span><a href="/tags/FastAPI/">FastAPI</a><span>, </span><a href="/tags/asyncpg/">asyncpg</a><span>, </span><a href="/tags/Postgres/">Postgres</a></div><div class="date-published">Published on: <time datetime="2024-08-05T14:38:35.000Z" itemprop="datePublished">05 Aug 2024</time></div></div></footer></div></article></div><footer id="footer"><div><a href="mailto:sheshbabu@gmail.com" target="_blank"><i class="fas fa-envelope-square fa-lg"></i></a><a href="https://github.com/sheshbabu" target="_blank"><i class="fab fa-github-square fa-lg"></i></a><a href="https://www.linkedin.com/in/sheshbabu/" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a><a href="https://www.twitter.com/sheshbabu" target="_blank"><i class="fab fa-twitter-square fa-lg"></i></a><a href="/atom.xml"><i class="fas fa-rss-square fa-lg"></i></a></div><p>&copy; 2024 Sheshbabu Chinnakonda</p></footer></body></html>
