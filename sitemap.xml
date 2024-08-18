@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.sheshbabu.com/posts/my-binary-search-debugging-story/</loc>
+    
+    <lastmod>2024-08-18T13:38:09.087Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sheshbabu.com/posts/swiss-cheese-model-of-software-reliability/</loc>
     
     <lastmod>2024-08-18T07:11:30.511Z</lastmod>
@@ -135,6 +142,13 @@
   </url>
   
   <url>
+    <loc>https://www.sheshbabu.com/posts/rust-for-javascript-developers-pattern-matching-and-enums/</loc>
+    
+    <lastmod>2024-05-19T06:17:28.272Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sheshbabu.com/posts/rust-for-javascript-developers-tooling-ecosystem-overview/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
@@ -149,7 +163,7 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/rust-for-javascript-developers-pattern-matching-and-enums/</loc>
+    <loc>https://www.sheshbabu.com/posts/rust-module-system/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     
@@ -163,14 +177,14 @@
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/taurus-writing-jmeter-load-tests-as-code/</loc>
+    <loc>https://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.sheshbabu.com/posts/thoughts-on-the-future-of-software-development/</loc>
+    <loc>https://www.sheshbabu.com/posts/taurus-writing-jmeter-load-tests-as-code/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     
@@ -184,21 +198,14 @@
   </url>
   
   <url>
+    <loc>https://www.sheshbabu.com/posts/thoughts-on-the-future-of-software-development/</loc>
+    
+    <lastmod>2024-05-19T06:17:28.272Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sheshbabu.com/posts/unit-testing-express-route-handlers/</loc>
-    
-    <lastmod>2024-05-19T06:17:28.272Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sheshbabu.com/posts/rust-wasm-yew-single-page-application/</loc>
-    
-    <lastmod>2024-05-19T06:17:28.272Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sheshbabu.com/posts/rust-module-system/</loc>
     
     <lastmod>2024-05-19T06:17:28.272Z</lastmod>
     

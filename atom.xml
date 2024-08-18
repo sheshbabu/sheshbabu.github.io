@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.sheshbabu.com/"/>
-  <updated>2024-08-18T07:11:30.511Z</updated>
+  <updated>2024-08-18T13:38:09.087Z</updated>
   <id>https://www.sheshbabu.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>The Case of the Crashing Checkout Flows: My Strangest Debugging Story</title>
+    <link href="https://www.sheshbabu.com/posts/my-binary-search-debugging-story/"/>
+    <id>https://www.sheshbabu.com/posts/my-binary-search-debugging-story/</id>
+    <published>2024-08-18T07:54:34.000Z</published>
+    <updated>2024-08-18T13:38:09.087Z</updated>
+    
+    <content type="html"><![CDATA[<p>The year was 2015, and I had just joined RedMart.</p><p>I was very impressed by the importance RedMart placed on addressing customer feedback. We had a customer feedback form, and the responses were sent to everyone’s email inbox. We would triage the feedback, and if there were any software related issues, my team would pick them up.</p><p>At the end of that year, we started seeing a strange pattern in these feedback messages. Some users complained they couldn’t complete checkout, while others reported their browsers crashing during the process.</p><p><em>Note: If you’re not familiar with the term “checkout flow”, it’s the series of pages you need to go through when you’re ordering from an ecommerce shop. Like filling up your address, choosing your payment method etc.</em></p><h2 id="Memory-Leaks"><a href="#Memory-Leaks" class="headerlink" title="Memory Leaks?"></a>Memory Leaks?</h2><p>I started investigating this issue. One thing the feedback had in common was that they were all from MacBooks via Chrome browser (detected using useragent string). The <a href="https://support.apple.com/en-us/111956" target="_blank" rel="noopener">base model MacBook Air</a> at that time had 4GB of memory. I started suspecting it might be a memory leak.</p><p>In 2015, RedMart’s desktop webapp (aka “Golden Grocer” or “GG” internally) was written in Backbone.js and jQuery. We had started incrementally migrating the pages to React, but the checkout flow was still in Backbone and jQuery.</p><p>I had some past experience debugging memory leaks in JVM, so I fired up the Chrome Devtools and <a href="https://developer.chrome.com/docs/devtools/memory-problems" target="_blank" rel="noopener">started profiling</a>. I went through the checkout flow and found that there were about ~16MB of objects leaking memory. These were likely JS closures or Backbone/jQuery event handlers not cleaned up properly. But 16MB shouldn’t be enough to crash an entire browser. </p><p>In software debugging, there’s a saying:</p><blockquote><p>If you can reproduce a bug consistently, you’ve already solved half the problem.</p></blockquote><p>I’m not sure where I first heard this, but if you’re not able to reproduce a bug, then you can’t fix it properly. In this situation, I know it happened during checkout flow but I wasn’t able to get the browser to crash. For a couple of days, I use the Chrome Devtools to go through the checkout flow again and again trying to see if I could get it to produce a big memory leak.</p><p>This didn’t work out, so I wanted to try a different approach. Instead of using the fine-grained Chrome Devtools memory profiler, I opened the Chrome Task Manager. I noted down GG’s memory consumption on the home page - it was around 300MB. I went through the checkout flow. The first page was address selection, the memory didn’t budge much. The second was slots selection, memory remained the same. The third was payment selection, and the memory jumped to more than 1.5GB. </p><p><em>Bingo!</em></p><p>Something in payment page was causing the memory to jump from 300MB to more than 1.5GB. But there’s nothing special there in terms of code.</p><h2 id="Binary-Search-Debugging"><a href="#Binary-Search-Debugging" class="headerlink" title="Binary Search Debugging"></a>Binary Search Debugging</h2><p>Since there’s nothing wrong with the code, we can’t fix this issue using normal debugging techniques. We need to use a different approach. I’ve used this approach called “Binary Search Debugging” in the past and it’s very effective at locating the bugs. </p><p>Here’s how it works: We first divide our codebase into two parts. We comment out one part and check if we can reproduce the bug. If we can’t reproduce the bug, we then comment out the other part while uncommenting the first part. We then check if we can reproduce the bug. The bug is in the part that remains uncommented. Once we identify the problematic part, we further divide it into two and repeat the process. Eventually, we will pinpoint the specific line of code causing the bug.</p><p>This is very effective method and I’ve successfully used it many times in the past. But this time, I was not able to find the code that caused this bug. </p><p>I have been using this approach on the JS code, but I wondered if it’s a CSS issue. It sounds ridiculous, but the whole situation is ridiculous.</p><p>I did the same for CSS and I was actually able to find the bug! When a payment method is selected, we show a pulsing blue glow effect around that option. This was done using <code>box-shadow</code> and <code>animation</code>, and once I comment out the animation, the memory increase didn’t happen. I searched the web for related issues but I was not able to find it.</p><p>Finally, I was able to fix the memory issue that blocked checkout by just disabling a CSS glow animation. It wasn’t a code issue, it was a browser issue!</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>It was an interesting experience that required a combination of both skill and luck to fix the bug. I had the memory profiling skill and knowledge about the binary search debugging technique. However, it was also random luck that made me open the Chrome Task Manager and apply the debugging technique to CSS files.</p><p>Thanks for reading! :)</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;The year was 2015, and I had just joined RedMart.&lt;/p&gt;
+&lt;p&gt;I was very impressed by the importance RedMart placed on addressing customer fee
+      
+    
+    </summary>
+    
+    
+      <category term="Development" scheme="https://www.sheshbabu.com/tags/Development/"/>
+    
+      <category term="Testing" scheme="https://www.sheshbabu.com/tags/Testing/"/>
+    
+  </entry>
   
   <entry>
     <title>Swiss Cheese Model of Software Reliability</title>
@@ -68,11 +94,11 @@
     </summary>
     
     
-      <category term="Postgres" scheme="https://www.sheshbabu.com/tags/Postgres/"/>
-    
       <category term="JavaScript" scheme="https://www.sheshbabu.com/tags/JavaScript/"/>
     
       <category term="Node.js" scheme="https://www.sheshbabu.com/tags/Node-js/"/>
+    
+      <category term="Postgres" scheme="https://www.sheshbabu.com/tags/Postgres/"/>
     
   </entry>
   
@@ -152,11 +178,11 @@
     
       <category term="Python" scheme="https://www.sheshbabu.com/tags/Python/"/>
     
+      <category term="Testing" scheme="https://www.sheshbabu.com/tags/Testing/"/>
+    
       <category term="Postgres" scheme="https://www.sheshbabu.com/tags/Postgres/"/>
     
       <category term="asyncpg" scheme="https://www.sheshbabu.com/tags/asyncpg/"/>
-    
-      <category term="Testing" scheme="https://www.sheshbabu.com/tags/Testing/"/>
     
       <category term="FastAPI" scheme="https://www.sheshbabu.com/tags/FastAPI/"/>
     
@@ -287,13 +313,13 @@
     
       <category term="Python" scheme="https://www.sheshbabu.com/tags/Python/"/>
     
-      <category term="Postgres" scheme="https://www.sheshbabu.com/tags/Postgres/"/>
-    
       <category term="Entity Resolution" scheme="https://www.sheshbabu.com/tags/Entity-Resolution/"/>
     
       <category term="Graph" scheme="https://www.sheshbabu.com/tags/Graph/"/>
     
       <category term="NetworkX" scheme="https://www.sheshbabu.com/tags/NetworkX/"/>
+    
+      <category term="Postgres" scheme="https://www.sheshbabu.com/tags/Postgres/"/>
     
   </entry>
   
